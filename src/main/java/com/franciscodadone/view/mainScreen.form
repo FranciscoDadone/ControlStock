@@ -1,69 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.franciscodadone.view.mainScreen">
-  <grid id="27dc6" binding="panel" layout-manager="GridBagLayout">
+  <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="715" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-11973554"/>
+    </properties>
     <border type="none"/>
     <children>
-      <component id="1f068" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
+      <grid id="266d6" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="North"/>
         <properties>
-          <text value="Control de Stock"/>
+          <background color="-12236726"/>
         </properties>
-      </component>
-      <hspacer id="6be00">
-        <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-      </hspacer>
-      <vspacer id="e3281">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-      </vspacer>
-      <component id="88e0c" class="javax.swing.JButton" binding="button1" default-binding="true">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
+        <border type="none"/>
+        <children>
+          <component id="c50d1" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <background color="-3200479"/>
+              <font size="48"/>
+              <foreground color="-1"/>
+              <text value="Control de Stock - Mundo Helado"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="75e36" layout-manager="GridBagLayout">
+        <constraints border-constraint="Center"/>
         <properties>
-          <text value="Button"/>
+          <background color="-8618111"/>
         </properties>
-      </component>
-      <component id="ad0e9" class="javax.swing.JButton" binding="button2" default-binding="true">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
+        <border type="none"/>
+        <children>
+          <component id="1a1ef" class="javax.swing.JButton" binding="iniciarTurnoButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0" ipady="10"/>
+            </constraints>
+            <properties>
+              <alignmentY value="0.5"/>
+              <background color="-1"/>
+              <borderPainted value="true"/>
+              <contentAreaFilled value="true"/>
+              <defaultCapable value="true"/>
+              <focusPainted value="false"/>
+              <font size="36"/>
+              <margin top="0" left="0" bottom="0" right="0"/>
+              <preferredSize width="233" height="50"/>
+              <text value="Iniciar Turno"/>
+            </properties>
+          </component>
+          <component id="3c01d" class="javax.swing.JButton" binding="agregarMercaderíaButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0" ipady="10"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <font size="36"/>
+              <text value="Agregar Mercadería"/>
+            </properties>
+          </component>
+          <component id="cfe19" class="javax.swing.JButton" binding="modificarStockButton" default-binding="true">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0" ipady="10"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <borderPainted value="true"/>
+              <font size="36"/>
+              <text value="Modificar Stock"/>
+            </properties>
+          </component>
+          <component id="cd9fc" class="javax.swing.JButton" binding="historialButton" default-binding="true">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0" ipady="10"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <font size="36"/>
+              <text value="Historial"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="2b96f" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+        <constraints border-constraint="South"/>
         <properties>
-          <text value="Button"/>
+          <background color="-8618111"/>
         </properties>
-      </component>
-      <component id="2e022" class="javax.swing.JButton" binding="button3" default-binding="true">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-        <properties>
-          <text value="Button"/>
-        </properties>
-      </component>
-      <component id="3aaf7" class="javax.swing.JButton" binding="button4" default-binding="true">
-        <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-        <properties>
-          <text value="Button"/>
-        </properties>
-      </component>
+        <border type="none"/>
+        <children>
+          <component id="63dc4" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Francisco Dadone @ 01Computación"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>
