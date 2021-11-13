@@ -1,14 +1,14 @@
 package com.franciscodadone.util;
 
-import com.franciscodadone.view.mainScreen;
+import com.franciscodadone.view.MainScreen;
 import javax.swing.*;
 
 public class GUIHandler {
 
-    private static mainScreen main;
+    private static MainScreen main;
 
     public static void main() {
-        main = new mainScreen();
+        main = new MainScreen();
     }
 
     /**

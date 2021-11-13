@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.franciscodadone.view.mainScreen">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.franciscodadone.view.MainScreen">
   <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="715" height="400"/>
@@ -34,7 +34,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="1a1ef" class="javax.swing.JButton" binding="iniciarTurnoButton" default-binding="true">
+          <component id="1a1ef" class="javax.swing.JButton" binding="startTurnButton">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0" ipady="10"/>
@@ -52,7 +52,7 @@
               <text value="Iniciar Turno"/>
             </properties>
           </component>
-          <component id="3c01d" class="javax.swing.JButton" binding="agregarMercaderíaButton" default-binding="true">
+          <component id="3c01d" class="javax.swing.JButton" binding="addStockButton">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0" ipady="10"/>
@@ -63,7 +63,7 @@
               <text value="Agregar Mercadería"/>
             </properties>
           </component>
-          <component id="cfe19" class="javax.swing.JButton" binding="modificarStockButton" default-binding="true">
+          <component id="cfe19" class="javax.swing.JButton" binding="modifyStockButton">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0" ipady="10"/>
@@ -75,7 +75,7 @@
               <text value="Modificar Stock"/>
             </properties>
           </component>
-          <component id="cd9fc" class="javax.swing.JButton" binding="historialButton" default-binding="true">
+          <component id="cd9fc" class="javax.swing.JButton" binding="historyButton">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0" ipady="10"/>

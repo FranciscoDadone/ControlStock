@@ -1,16 +1,18 @@
 package com.franciscodadone.view;
 
+import com.franciscodadone.util.GUIHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class mainScreen extends JFrame {
+public class MainScreen extends JFrame {
     private JPanel panel;
-    private JButton iniciarTurnoButton;
-    private JButton agregarMercaderíaButton;
-    private JButton modificarStockButton;
-    private JButton historialButton;
+    private JButton startTurnButton;
+    private JButton addStockButton;
+    private JButton modifyStockButton;
+    private JButton historyButton;
 
-    public mainScreen() {
+    public MainScreen() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(panel);
         this.pack();
@@ -19,6 +21,9 @@ public class mainScreen extends JFrame {
 //        this.setIconImage(new ImageIcon(getClass().getResource("/images/logo.jpg")).getImage());
 
         this.setVisible(true);
+        startTurnButton.addActionListener(e -> {
+            GUIHandler.changeScreen(new TurnView().panel);
+        });
     }
 
 
