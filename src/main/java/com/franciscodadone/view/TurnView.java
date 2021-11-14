@@ -8,15 +8,22 @@ public class TurnView {
     public JPanel panel;
     public JList productList;
     private JButton terminarTurnoButton;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
+    public JTextField codeField;
+    private JTextField quantityField;
     private JList list1;
+    private JTextField textField5;
+    private JTextField textField6;
+    private JTextField textField7;
+    private JButton archivarVentaButton;
+    private JButton agregarProductoButton;
 
     public TurnView() {
         new TurnController(this);
+    }
 
+    public void focusField() {
+        codeField.setText("");
+        codeField.requestFocusInWindow();
     }
 
 }

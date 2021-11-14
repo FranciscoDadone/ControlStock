@@ -22,7 +22,9 @@ public class MainScreen extends JFrame {
 
         this.setVisible(true);
         startTurnButton.addActionListener(e -> {
-            GUIHandler.changeScreen(new TurnView().panel);
+            TurnView turn = new TurnView();
+            GUIHandler.changeScreen(turn.panel);
+            turn.focusField();
         });
     }
 
