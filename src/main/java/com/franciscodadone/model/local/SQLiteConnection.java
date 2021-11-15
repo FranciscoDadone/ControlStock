@@ -9,7 +9,7 @@ public class SQLiteConnection {
     /**
      * Connects to the database.
      *
-     * If the database doesn't exists, it creates it.
+     * If the database doesn't exist, it creates it.
      *
      * Creation of tables 'Sells', 'History', 'Stock' if it doesn't exist.
      *
@@ -52,9 +52,11 @@ public class SQLiteConnection {
                 Statement statement = con.createStatement();
                 statement.execute("CREATE TABLE Sells (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "products TEXT," +
+                        "products TEXT,"     +
                         "date VARCHAR(255)," +
-                        "totalPrice DOUBLE" +
+                        "totalPrice DOUBLE," +
+                        "seller VARCHAR(40)" +
+                        "sessionID INTEGER"  +
                         ");"
                 );
             }

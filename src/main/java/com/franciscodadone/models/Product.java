@@ -25,6 +25,11 @@ public class Product {
         return quantity;
     }
 
+    @Override
+    public String toString() {
+        return QR + ":" + price + ":" + quantity;
+    }
+
     private String QR;
     private String prodName;
     private double price;
