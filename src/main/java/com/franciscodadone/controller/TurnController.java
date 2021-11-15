@@ -1,11 +1,8 @@
 package com.franciscodadone.controller;
 
 import com.franciscodadone.view.TurnView;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class TurnController {
 
