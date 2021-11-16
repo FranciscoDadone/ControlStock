@@ -72,6 +72,20 @@ public class SQLiteConnection {
                         ");"
                 );
             }
+
+            /**
+             * Creation of table Sellers if it doesn't exist.
+             */
+            if(!tables.contains("Stock")) {
+                Statement statement = con.createStatement();
+                statement.execute("CREATE TABLE Stock (" +
+                        "code VARCHAR(50), " +
+                        "title VARCHAR(40), " +
+                        "quantity INTEGER, " +
+                        "price DOUBLE" +
+                        ");"
+                );
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
