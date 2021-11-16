@@ -18,6 +18,8 @@ public class AddStock {
     public JButton atrásButton;
     public JList stockList;
     public JTextField searchStock;
+    private JRadioButton numericRadioButton;
+    private JRadioButton gramsRadioButton;
 
     public AddStock() {
         new StockController(this);

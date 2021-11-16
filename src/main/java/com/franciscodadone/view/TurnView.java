@@ -16,6 +16,10 @@ public class TurnView {
     private JTextField textField7;
     private JButton archivarVentaButton;
     private JButton agregarProductoButton;
+    private JRadioButton numericRadioButton;
+    private JRadioButton gramsRadioButton;
+    private JButton eliminarButton;
+    private JButton modificarCantidadButton;
 
     public TurnView() {
         new TurnController(this);

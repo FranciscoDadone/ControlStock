@@ -82,7 +82,8 @@ public class SQLiteConnection {
                         "code VARCHAR(50), " +
                         "title VARCHAR(40), " +
                         "quantity INTEGER, " +
-                        "price DOUBLE" +
+                        "price DOUBLE, " +
+                        "quantityType INTEGER" +
                         ");"
                 );
             }
