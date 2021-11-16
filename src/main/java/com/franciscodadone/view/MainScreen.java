@@ -28,9 +28,7 @@ public class MainScreen extends JFrame {
         });
 
         addStockButton.addActionListener(e -> {
-            AddStock stock = new AddStock();
-            GUIHandler.changeScreen(stock.panel);
-            stock.focusField();
+            GUIHandler.changeScreen(new AddStock().panel);
         });
     }
 

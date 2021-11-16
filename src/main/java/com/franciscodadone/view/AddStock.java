@@ -9,22 +9,23 @@ import java.awt.*;
 
 public class AddStock {
 
-    private JTextField codeField;
-    private JTextField quantityField;
-    private JButton agregarProductoButton;
+    public JTextField codeField;
+    public JTextField quantityField;
+    public JButton agregarProductoButton;
     public JPanel panel;
-    private JTextField descriptionField;
-    private JTextField priceField;
-    private JButton atrásButton;
-    private JList stockList;
-    private JTextField searchStock;
+    public JTextField descriptionField;
+    public JTextField priceField;
+    public JButton atrásButton;
+    public JList stockList;
+    public JTextField searchStock;
 
     public AddStock() {
         new StockController(this);
 
-
-        PromptSupport.setPrompt("Buscar en el stock...", searchStock);
+        PromptSupport.setPrompt("Buscar por nombre o código...", searchStock);
+        PromptSupport.setPrompt("Código QR o dejar en blanco para generar un código.", codeField);
         searchStock.setFont(new Font("Arial", Font.PLAIN, 24));
+        codeField.setFont(new Font("Arial", Font.PLAIN, 24));
 
     }
 

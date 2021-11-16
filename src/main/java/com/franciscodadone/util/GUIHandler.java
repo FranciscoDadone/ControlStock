@@ -20,7 +20,6 @@ public class GUIHandler {
         main.getContentPanel().add(newScreen);
         main.getContentPanel().revalidate();
         main.getContentPanel().repaint();
-//        main.getContentPanel().setBackground(new Color(251, 235, 222));
     }
 
 }
