@@ -20,6 +20,8 @@ public class AddStock {
     public JTextField searchStock;
     public JRadioButton unitRadioButton;
     public JRadioButton gramsRadioButton;
+    public JLabel searchQuantity;
+    public JLabel searchPrice;
 
     public AddStock() {
         new AddStockController(this);

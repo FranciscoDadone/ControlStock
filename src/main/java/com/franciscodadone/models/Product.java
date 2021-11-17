@@ -30,9 +30,13 @@ public class Product {
         return quantityType;
     }
 
+    public String getProductFormatted() {
+        return code + ":" + price + ":" + quantity;
+    }
+
     @Override
     public String toString() {
-        return code + ":" + price + ":" + quantity;
+        return prodName;
     }
 
     private String code;

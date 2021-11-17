@@ -207,6 +207,27 @@
                       <toolTipText value=""/>
                     </properties>
                   </component>
+                  <grid id="152b" layout-manager="FlowLayout" hgap="50" vgap="5" flow-align="1">
+                    <constraints border-constraint="South"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="28b1b" class="javax.swing.JLabel" binding="searchQuantity">
+                        <constraints/>
+                        <properties>
+                          <font size="22"/>
+                          <text value="Cantidad: 0000"/>
+                        </properties>
+                      </component>
+                      <component id="aee2e" class="javax.swing.JLabel" binding="searchPrice">
+                        <constraints/>
+                        <properties>
+                          <font size="22"/>
+                          <text value="Precio: $0000"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
                 </children>
               </grid>
             </children>

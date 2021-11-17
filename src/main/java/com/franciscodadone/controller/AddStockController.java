@@ -20,7 +20,43 @@ public class AddStockController {
 
         addProductButton();
         backButton();
+        stockList();
+        stockSelection();
 
+    }
+
+
+    private void stockSelection() {
+        view.stockList.addListSelectionListener(e -> {
+            view.searchPrice.setText("Precio: $" + ((Product)view.stockList.getSelectedValue()).getPrice());
+            view.searchQuantity.setText("Cantidad: " + ((Product)view.stockList.getSelectedValue()).getQuantity());
+        });
+    }
+
+    DefaultListModel defaultListModel = new DefaultListModel();
+    private void stockList() {
+        StockQueries.getAllProducts().forEach((product) -> {
+            defaultListModel.addElement(product);
+        });
+        view.stockList.setModel(defaultListModel);
+        view.stockList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    /**
+     * Filters the names from the database to the searchTerm and if
+     * there are coincidences it saves it in the JList to show them.
+     * @param searchTerm
+     */
+    private void searchFilter(String searchTerm) {
+        DefaultListModel filteredItems = new DefaultListModel();
+        StockQueries.getAllProducts().forEach((product) -> {
+            String name = product.getProdName().toLowerCase();
+            if(name.contains(searchTerm.toLowerCase())) {
+                filteredItems.addElement(product);
+            }
+        });
+        defaultListModel = filteredItems;
+        view.stockList.setModel(defaultListModel);
     }
 
     private void addProductButton() {
@@ -49,6 +85,8 @@ public class AddStockController {
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
                     StockQueries.saveProduct(product);
+                    defaultListModel.clear();
+                    stockList();
                 }
             }
         });
@@ -67,6 +105,7 @@ public class AddStockController {
                     if(view.codeField.hasFocus() && view.codeField.getText().length() > 5) {
                         view.descriptionField.setText(CSVQueries.search(view.codeField.getText()));
                     }
+                    if(view.searchStock.hasFocus()) searchFilter(view.searchStock.getText());
                     return false;
                 });
     }
