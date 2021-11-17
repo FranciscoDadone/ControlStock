@@ -1,13 +1,13 @@
 package com.franciscodadone.view;
 
-import com.franciscodadone.controller.AddStockController;
+import com.franciscodadone.controller.AddModifyStockController;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AddStock {
+public class AddModifyStock {
 
     public JTextField codeField;
     public JTextField quantityField;
@@ -22,9 +22,14 @@ public class AddStock {
     public JRadioButton gramsRadioButton;
     public JLabel searchQuantity;
     public JLabel searchPrice;
+    public JLabel searchQR;
+    public JLabel productSearch;
+    private JButton modificarCantidadButton;
+    private JButton modificarPrecioButton;
+    private JButton modificarNombreButton;
 
-    public AddStock() {
-        new AddStockController(this);
+    public AddModifyStock() {
+        new AddModifyStockController(this);
 
         PromptSupport.setPrompt("Buscar por nombre o código...", searchStock);
         PromptSupport.setPrompt("Código QR o dejar en blanco para generar un código.", codeField);

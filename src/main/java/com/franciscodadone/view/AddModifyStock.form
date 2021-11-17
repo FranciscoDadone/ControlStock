@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.franciscodadone.view.AddStock">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.franciscodadone.view.AddModifyStock">
   <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="977" height="614"/>
+      <xy x="20" y="20" width="982" height="616"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -207,25 +207,79 @@
                       <toolTipText value=""/>
                     </properties>
                   </component>
-                  <grid id="152b" layout-manager="FlowLayout" hgap="50" vgap="5" flow-align="1">
+                  <grid id="a425a" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints border-constraint="South"/>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="28b1b" class="javax.swing.JLabel" binding="searchQuantity">
-                        <constraints/>
-                        <properties>
-                          <font size="22"/>
-                          <text value="Cantidad: 0000"/>
-                        </properties>
-                      </component>
-                      <component id="aee2e" class="javax.swing.JLabel" binding="searchPrice">
-                        <constraints/>
-                        <properties>
-                          <font size="22"/>
-                          <text value="Precio: $0000"/>
-                        </properties>
-                      </component>
+                      <grid id="152b" layout-manager="FlowLayout" hgap="50" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="a1923" class="javax.swing.JLabel" binding="productSearch">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="Producto: -"/>
+                            </properties>
+                          </component>
+                          <component id="28b1b" class="javax.swing.JLabel" binding="searchQuantity">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="Cantidad: 0000"/>
+                            </properties>
+                          </component>
+                          <component id="aee2e" class="javax.swing.JLabel" binding="searchPrice">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="Precio: $0000"/>
+                            </properties>
+                          </component>
+                          <component id="1a821" class="javax.swing.JLabel" binding="searchQR">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="QR: 000000000"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <grid id="53855" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="f2c92" class="javax.swing.JButton" binding="modificarNombreButton" default-binding="true">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="Modificar nombre"/>
+                            </properties>
+                          </component>
+                          <component id="23a50" class="javax.swing.JButton" binding="modificarCantidadButton" default-binding="true">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="Modificar cantidad"/>
+                            </properties>
+                          </component>
+                          <component id="6440" class="javax.swing.JButton" binding="modificarPrecioButton" default-binding="true">
+                            <constraints/>
+                            <properties>
+                              <font size="22"/>
+                              <text value="Modificar precio"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
                     </children>
                   </grid>
                 </children>

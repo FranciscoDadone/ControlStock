@@ -1,7 +1,7 @@
 package com.franciscodadone.controller;
 
 import com.franciscodadone.util.GUIHandler;
-import com.franciscodadone.view.AddStock;
+import com.franciscodadone.view.AddModifyStock;
 import com.franciscodadone.view.MainScreen;
 import com.franciscodadone.view.TurnView;
 
@@ -17,7 +17,7 @@ public class MainScreenController {
         });
 
         view.addStockButton.addActionListener(e -> {
-            GUIHandler.changeScreen(new AddStock().panel);
+            GUIHandler.changeScreen(new AddModifyStock().panel);
         });
     }
 

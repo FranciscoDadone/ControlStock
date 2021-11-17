@@ -10,7 +10,6 @@ public class MainScreen extends JFrame {
     private JPanel panel;
     public JButton startTurnButton;
     public JButton addStockButton;
-    public JButton modifyStockButton;
     public JButton historyButton;
 
     public MainScreen(boolean buildFrame) {

@@ -6,15 +6,15 @@ import com.franciscodadone.models.Product;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
-import com.franciscodadone.view.AddStock;
+import com.franciscodadone.view.AddModifyStock;
 import com.franciscodadone.view.MainScreen;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AddStockController {
+public class AddModifyStockController {
 
-    public AddStockController(AddStock view) {
+    public AddModifyStockController(AddModifyStock view) {
         this.view = view;
         handleKeyboard();
 
@@ -28,8 +28,10 @@ public class AddStockController {
 
     private void stockSelection() {
         view.stockList.addListSelectionListener(e -> {
+            view.productSearch.setText("Producto: " + ((Product)view.stockList.getSelectedValue()).getProdName());
             view.searchPrice.setText("Precio: $" + ((Product)view.stockList.getSelectedValue()).getPrice());
             view.searchQuantity.setText("Cantidad: " + ((Product)view.stockList.getSelectedValue()).getQuantity());
+            view.searchQR.setText("QR: " + ((Product)view.stockList.getSelectedValue()).getCode());
         });
     }
 
@@ -50,8 +52,7 @@ public class AddStockController {
     private void searchFilter(String searchTerm) {
         DefaultListModel filteredItems = new DefaultListModel();
         StockQueries.getAllProducts().forEach((product) -> {
-            String name = product.getProdName().toLowerCase();
-            if(name.contains(searchTerm.toLowerCase())) {
+            if(product.getProdName().toLowerCase().contains(searchTerm.toLowerCase()) || product.getCode().equals(searchTerm)) {
                 filteredItems.addElement(product);
             }
         });
@@ -84,9 +85,11 @@ public class AddStockController {
                 int res = JCustomOptionPane.confirmDialog(product);
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
-                    StockQueries.saveProduct(product);
-                    defaultListModel.clear();
-                    stockList();
+                    if(StockQueries.getProductByCode(product.getCode()) == null) {
+                        StockQueries.saveProduct(product);
+                        JCustomOptionPane.messageDialog("Producto guardado correctamente!", "", JOptionPane.PLAIN_MESSAGE);
+                    }
+                    GUIHandler.changeScreen(new AddModifyStock().panel);
                 }
             }
         });
@@ -103,7 +106,15 @@ public class AddStockController {
                 .addKeyEventDispatcher(e -> {
                     if(e.getKeyCode() == 118) view.focusField();
                     if(view.codeField.hasFocus() && view.codeField.getText().length() > 5) {
-                        view.descriptionField.setText(CSVQueries.search(view.codeField.getText()));
+                        if(StockQueries.getProductByCode(view.codeField.getText()) == null) {
+                            view.descriptionField.setText(CSVQueries.search(view.codeField.getText()));
+                            view.searchStock.setText("");
+                        } else {
+                            view.searchStock.setText(view.codeField.getText());
+                            searchFilter(view.codeField.getText());
+                            view.stockList.setSelectedIndex(0);
+                            view.codeField.setText("");
+                        }
                     }
                     if(view.searchStock.hasFocus()) searchFilter(view.searchStock.getText());
                     return false;
@@ -112,6 +123,6 @@ public class AddStockController {
 
 
 
-    private AddStock view;
+    private AddModifyStock view;
 
 }

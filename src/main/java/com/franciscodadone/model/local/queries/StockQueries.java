@@ -61,4 +61,29 @@ public class StockQueries extends SQLiteConnection {
         return products;
     }
 
+    public static Product getProductByCode(String code) {
+        Product p = null;
+        java.sql.Connection connection = connect();
+        try {
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Stock WHERE (code='" + code + "');");
+            while(res.next()) {
+                p = new Product(
+                        res.getString("code"),
+                        res.getString("title"),
+                        res.getDouble("price"),
+                        res.getInt("quantity"),
+                        res.getString("quantityType")
+                );
+            }
+        } catch (SQLException e) {}
+          finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return p;
+        }
+    }
+
 }
