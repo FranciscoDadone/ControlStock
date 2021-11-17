@@ -1,12 +1,14 @@
 package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.CSVQueries;
+import com.franciscodadone.model.local.queries.StockQueries;
 import com.franciscodadone.models.Product;
+import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
 import com.franciscodadone.view.AddStock;
+import com.franciscodadone.view.MainScreen;
 
-import javax.sound.sampled.Port;
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,7 +19,7 @@ public class StockController {
         handleKeyboard();
 
 
-        view.agregarProductoButton.addActionListener(e -> {
+        view.addProductButton.addActionListener(e -> {
 
             if(CSVQueries.search(view.codeField.getText()) == null) {
                 JCustomOptionPane.messageDialog("Código incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -32,14 +34,22 @@ public class StockController {
                         view.codeField.getText(),
                         view.descriptionField.getText(),
                         Double.parseDouble(view.priceField.getText()),
-                        Integer.parseInt(view.quantityField.getText()));
+                        Integer.parseInt(view.quantityField.getText()),
+                        (view.unitRadioButton.isSelected()) ? "U" : "G");
                 int res = JCustomOptionPane.confirmDialog(product);
 
                 if(res == JOptionPane.YES_OPTION) {
-                    System.out.println("correct");
+
+                    StockQueries.saveProduct(product);
+
                 }
             }
 
+        });
+
+
+        view.backButton.addActionListener(e -> {
+            GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
         });
 
     }

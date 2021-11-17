@@ -55,7 +55,7 @@ public class SQLiteConnection {
                         "products TEXT,"     +
                         "date VARCHAR(255)," +
                         "totalPrice DOUBLE," +
-                        "seller VARCHAR(40)" +
+                        "seller VARCHAR(40)," +
                         "sessionID INTEGER"  +
                         ");"
                 );
@@ -83,7 +83,7 @@ public class SQLiteConnection {
                         "title VARCHAR(40), " +
                         "quantity INTEGER, " +
                         "price DOUBLE, " +
-                        "quantityType INTEGER" +
+                        "quantityType VARCHAR(1)" +
                         ");"
                 );
             }

@@ -148,7 +148,7 @@
                               <background color="-4604738"/>
                               <font size="22"/>
                               <selected value="true"/>
-                              <text value="Numerica"/>
+                              <text value="Unidad"/>
                             </properties>
                           </component>
                           <component id="aa04a" class="javax.swing.JRadioButton" binding="gramsRadioButton">

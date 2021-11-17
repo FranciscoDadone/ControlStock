@@ -102,13 +102,13 @@
                         </properties>
                         <border type="none"/>
                         <children>
-                          <component id="47c7d" class="javax.swing.JRadioButton" binding="numericRadioButton">
+                          <component id="47c7d" class="javax.swing.JRadioButton" binding="unitRadioButton">
                             <constraints border-constraint="Center"/>
                             <properties>
                               <background color="-4604738"/>
                               <font size="22"/>
                               <selected value="true"/>
-                              <text value="Numérica"/>
+                              <text value="Unidad"/>
                             </properties>
                           </component>
                           <component id="7dbfd" class="javax.swing.JRadioButton" binding="gramsRadioButton">
@@ -163,7 +163,7 @@
                       <font size="24"/>
                     </properties>
                   </component>
-                  <component id="fdb1a" class="javax.swing.JButton" binding="agregarProductoButton" default-binding="true">
+                  <component id="fdb1a" class="javax.swing.JButton" binding="addProductButton">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -220,7 +220,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="cba7e" class="javax.swing.JButton" binding="atrásButton" default-binding="true">
+          <component id="cba7e" class="javax.swing.JButton" binding="backButton">
             <constraints border-constraint="West"/>
             <properties>
               <font size="24"/>

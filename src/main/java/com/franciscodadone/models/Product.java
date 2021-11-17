@@ -2,11 +2,12 @@ package com.franciscodadone.models;
 
 public class Product {
 
-    public Product(String code, String prodName, double price, int quantity) {
-        this.code       = code;
-        this.prodName = prodName;
-        this.price    = price;
-        this.quantity = quantity;
+    public Product(String code, String prodName, double price, int quantity, String quantityType) {
+        this.code         = code;
+        this.prodName     = prodName;
+        this.price        = price;
+        this.quantity     = quantity;
+        this.quantityType = quantityType;
     }
 
     public String getCode() {
@@ -25,6 +26,10 @@ public class Product {
         return quantity;
     }
 
+    public String getQuantityType() {
+        return quantityType;
+    }
+
     @Override
     public String toString() {
         return code + ":" + price + ":" + quantity;
@@ -34,5 +39,6 @@ public class Product {
     private String prodName;
     private double price;
     private int    quantity;
+    private String quantityType;
 
 }

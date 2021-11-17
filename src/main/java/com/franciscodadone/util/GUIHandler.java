@@ -8,7 +8,7 @@ public class GUIHandler {
     private static MainScreen main;
 
     public static void main() {
-        main = new MainScreen();
+        main = new MainScreen(true);
     }
 
     /**

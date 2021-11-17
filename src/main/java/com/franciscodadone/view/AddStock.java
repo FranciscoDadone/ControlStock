@@ -11,15 +11,15 @@ public class AddStock {
 
     public JTextField codeField;
     public JTextField quantityField;
-    public JButton agregarProductoButton;
+    public JButton addProductButton;
     public JPanel panel;
     public JTextField descriptionField;
     public JTextField priceField;
-    public JButton atrásButton;
+    public JButton backButton;
     public JList stockList;
     public JTextField searchStock;
-    private JRadioButton numericRadioButton;
-    private JRadioButton gramsRadioButton;
+    public JRadioButton unitRadioButton;
+    public JRadioButton gramsRadioButton;
 
     public AddStock() {
         new StockController(this);
