@@ -12,17 +12,21 @@ import com.franciscodadone.view.MainScreen;
 import javax.swing.*;
 import java.awt.*;
 
-public class StockController {
+public class AddStockController {
 
-    public StockController(AddStock view) {
+    public AddStockController(AddStock view) {
         this.view = view;
         handleKeyboard();
 
+        addProductButton();
+        backButton();
 
+    }
+
+    private void addProductButton() {
         view.addProductButton.addActionListener(e -> {
-
-            if(CSVQueries.search(view.codeField.getText()) == null) {
-                JCustomOptionPane.messageDialog("Código incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+            if(view.codeField.getText().length() <= 6) {
+                JCustomOptionPane.messageDialog("<html>Código de barras incorrecto.<br>(Si el producto no posee código QR, dejar el campo en blanco para que el sistema genere uno por usted.)</html>", "Error", JOptionPane.ERROR_MESSAGE);
             } else if(view.priceField.getText().length() == 0 || !Util.isNumeric(view.priceField.getText()) ) {
                 JCustomOptionPane.messageDialog("El precio no puede quedar vacío o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if(view.descriptionField.getText().length() == 0) {
@@ -30,6 +34,11 @@ public class StockController {
             } else if(view.quantityField.getText().length() == 0 || !Util.isNumeric(view.quantityField.getText())) {
                 JCustomOptionPane.messageDialog("La cantidad no puede quedar vacía o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
+                int resCode = -1;
+                if(CSVQueries.search(view.codeField.getText()) == null) {
+                    resCode = JCustomOptionPane.confirmDialog("<html>El código QR puede que se haya escaneado mal. ¿Continuar?<br>(Si el producto no posee código QR, dejar el campo en blanco para que el sistema genere uno por usted.)</html>", "Advertencia");
+                }
+
                 Product product = new Product(
                         view.codeField.getText(),
                         view.descriptionField.getText(),
@@ -38,20 +47,17 @@ public class StockController {
                         (view.unitRadioButton.isSelected()) ? "U" : "G");
                 int res = JCustomOptionPane.confirmDialog(product);
 
-                if(res == JOptionPane.YES_OPTION) {
-
+                if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
                     StockQueries.saveProduct(product);
-
                 }
             }
-
         });
+    }
 
-
+    private void backButton() {
         view.backButton.addActionListener(e -> {
             GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
         });
-
     }
 
     private void handleKeyboard() {

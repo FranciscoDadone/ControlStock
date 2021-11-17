@@ -1,6 +1,6 @@
 package com.franciscodadone.view;
 
-import com.franciscodadone.controller.StockController;
+import com.franciscodadone.controller.AddStockController;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 
@@ -22,7 +22,7 @@ public class AddStock {
     public JRadioButton gramsRadioButton;
 
     public AddStock() {
-        new StockController(this);
+        new AddStockController(this);
 
         PromptSupport.setPrompt("Buscar por nombre o código...", searchStock);
         PromptSupport.setPrompt("Código QR o dejar en blanco para generar un código.", codeField);
