@@ -8,7 +8,6 @@ import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
 import com.franciscodadone.view.AddModifyStock;
 import com.franciscodadone.view.MainScreen;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +74,21 @@ public class AddModifyStockController {
                 }
             }
         });
+
+        view.addToStockButton.addActionListener(e -> {
+            String res = JOptionPane.showInputDialog("Cantidad para agregar al stock actual del producto");
+            if(res != null) {
+                if(Util.isNumeric(res)) {
+                    Product product = (Product)view.stockList.getSelectedValue();
+                    product.setQuantity(product.getQuantity() + Integer.parseInt(res));
+                    StockQueries.modifyProductByCode(product.getCode(), product);
+                    JCustomOptionPane.messageDialog("Se sumó " + res + " al stock de " + product.getProdName(), "Info", JOptionPane.PLAIN_MESSAGE);
+                    updateList();
+                } else {
+                    JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
 
     private void stockSelection() {
@@ -87,6 +101,7 @@ public class AddModifyStockController {
                 view.modifyQuantityButton.setEnabled(true);
                 view.modifyPriceButton.setEnabled(true);
                 view.modifyNameButton.setEnabled(true);
+                view.addToStockButton.setEnabled(true);
             } catch (Exception e1) {
                 view.productSearch.setText("Producto: -");
                 view.searchPrice.setText("Precio: $0000");
@@ -95,6 +110,7 @@ public class AddModifyStockController {
                 view.modifyQuantityButton.setEnabled(false);
                 view.modifyPriceButton.setEnabled(false);
                 view.modifyNameButton.setEnabled(false);
+                view.addToStockButton.setEnabled(false);
             }
 
         });
