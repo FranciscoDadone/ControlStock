@@ -24,9 +24,9 @@ public class AddModifyStock {
     public JLabel searchPrice;
     public JLabel searchQR;
     public JLabel productSearch;
-    private JButton modificarCantidadButton;
-    private JButton modificarPrecioButton;
-    private JButton modificarNombreButton;
+    public JButton modifyQuantityButton;
+    public JButton modifyPriceButton;
+    public JButton modifyNameButton;
 
     public AddModifyStock() {
         new AddModifyStockController(this);

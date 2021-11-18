@@ -257,23 +257,26 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="f2c92" class="javax.swing.JButton" binding="modificarNombreButton" default-binding="true">
+                          <component id="f2c92" class="javax.swing.JButton" binding="modifyNameButton">
                             <constraints/>
                             <properties>
+                              <enabled value="false"/>
                               <font size="22"/>
                               <text value="Modificar nombre"/>
                             </properties>
                           </component>
-                          <component id="23a50" class="javax.swing.JButton" binding="modificarCantidadButton" default-binding="true">
+                          <component id="23a50" class="javax.swing.JButton" binding="modifyQuantityButton">
                             <constraints/>
                             <properties>
+                              <enabled value="false"/>
                               <font size="22"/>
                               <text value="Modificar cantidad"/>
                             </properties>
                           </component>
-                          <component id="6440" class="javax.swing.JButton" binding="modificarPrecioButton" default-binding="true">
+                          <component id="6440" class="javax.swing.JButton" binding="modifyPriceButton">
                             <constraints/>
                             <properties>
+                              <enabled value="false"/>
                               <font size="22"/>
                               <text value="Modificar precio"/>
                             </properties>

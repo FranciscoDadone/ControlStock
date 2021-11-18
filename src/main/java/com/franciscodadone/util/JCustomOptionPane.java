@@ -24,6 +24,17 @@ public class JCustomOptionPane {
         );
     }
 
+    public static int inputDialog(String placeholderText, String title) {
+        JTextField field = new JTextField(placeholderText, 30);
+        field.setFont(new Font("Arial", Font.BOLD, 24));
+        JOptionPane pane = new JOptionPane(field,
+                JOptionPane.PLAIN_MESSAGE,
+                JOptionPane.OK_CANCEL_OPTION,
+                null);
+        pane.createDialog(title).setVisible(true);
+        return 1;
+    }
+
     /**
      * Custom message dialog with bigger font and custom buttons.
      * @param txt

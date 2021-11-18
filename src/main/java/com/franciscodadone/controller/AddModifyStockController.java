@@ -8,6 +8,7 @@ import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
 import com.franciscodadone.view.AddModifyStock;
 import com.franciscodadone.view.MainScreen;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,22 +17,51 @@ public class AddModifyStockController {
 
     public AddModifyStockController(AddModifyStock view) {
         this.view = view;
-        handleKeyboard();
 
+        handleKeyboard();
         addProductButton();
         backButton();
         stockList();
         stockSelection();
+        editButtons();
 
     }
 
+    private void editButtons() {
+
+        view.modifyNameButton.addActionListener(e -> {
+            String res = JOptionPane.showInputDialog("Modificar nombre", view.stockList.getSelectedValue());
+        });
+
+        view.modifyPriceButton.addActionListener(e -> {
+            String res = JOptionPane.showInputDialog("Modificar precio", ((Product)view.stockList.getSelectedValue()).getPrice());
+        });
+
+        view.modifyQuantityButton.addActionListener(e -> {
+            String res = JOptionPane.showInputDialog("Modificar cantidad", ((Product)view.stockList.getSelectedValue()).getQuantity());
+        });
+    }
 
     private void stockSelection() {
         view.stockList.addListSelectionListener(e -> {
-            view.productSearch.setText("Producto: " + ((Product)view.stockList.getSelectedValue()).getProdName());
-            view.searchPrice.setText("Precio: $" + ((Product)view.stockList.getSelectedValue()).getPrice());
-            view.searchQuantity.setText("Cantidad: " + ((Product)view.stockList.getSelectedValue()).getQuantity());
-            view.searchQR.setText("QR: " + ((Product)view.stockList.getSelectedValue()).getCode());
+            try {
+                view.productSearch.setText("Producto: " + ((Product)view.stockList.getSelectedValue()).getProdName());
+                view.searchPrice.setText("Precio: $" + ((Product)view.stockList.getSelectedValue()).getPrice());
+                view.searchQuantity.setText("Cantidad: " + ((Product)view.stockList.getSelectedValue()).getQuantity());
+                view.searchQR.setText("QR: " + ((Product)view.stockList.getSelectedValue()).getCode());
+                view.modifyQuantityButton.setEnabled(true);
+                view.modifyPriceButton.setEnabled(true);
+                view.modifyNameButton.setEnabled(true);
+            } catch (Exception e1) {
+                view.productSearch.setText("Producto: -");
+                view.searchPrice.setText("Precio: $0000");
+                view.searchQuantity.setText("Cantidad: 0000");
+                view.searchQR.setText("QR: 00000000000");
+                view.modifyQuantityButton.setEnabled(false);
+                view.modifyPriceButton.setEnabled(false);
+                view.modifyNameButton.setEnabled(false);
+            }
+
         });
     }
 
