@@ -27,18 +27,53 @@ public class AddModifyStockController {
 
     }
 
-    private void editButtons() {
+    private void updateList() {
+        int a = view.stockList.getSelectedIndex();
+        defaultListModel.clear();
+        stockList();
+        view.stockList.setSelectedIndex(a);
+    }
 
+    private void editButtons() {
         view.modifyNameButton.addActionListener(e -> {
             String res = JOptionPane.showInputDialog("Modificar nombre", view.stockList.getSelectedValue());
+            if(res != null) {
+                Product product = (Product)view.stockList.getSelectedValue();
+                product.setProdName(res);
+                StockQueries.modifyProductByCode(product.getCode(), product);
+                JCustomOptionPane.messageDialog("Nombre modificado con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
+                updateList();
+            }
         });
 
         view.modifyPriceButton.addActionListener(e -> {
             String res = JOptionPane.showInputDialog("Modificar precio", ((Product)view.stockList.getSelectedValue()).getPrice());
+            if(res != null) {
+                if(Util.isNumeric(res)) {
+                    Product product = (Product)view.stockList.getSelectedValue();
+                    product.setPrice(Double.parseDouble(res));
+                    StockQueries.modifyProductByCode(product.getCode(), product);
+                    JCustomOptionPane.messageDialog("Precio modificado con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
+                    updateList();
+                } else {
+                    JCustomOptionPane.messageDialog("El precio tiene que ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 
         view.modifyQuantityButton.addActionListener(e -> {
             String res = JOptionPane.showInputDialog("Modificar cantidad", ((Product)view.stockList.getSelectedValue()).getQuantity());
+            if(res != null) {
+                if(Util.isNumeric(res)) {
+                    Product product = (Product)view.stockList.getSelectedValue();
+                    product.setQuantity(Integer.parseInt(res));
+                    StockQueries.modifyProductByCode(product.getCode(), product);
+                    JCustomOptionPane.messageDialog("Cantidad modificada con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
+                    updateList();
+                } else {
+                    JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
     }
 

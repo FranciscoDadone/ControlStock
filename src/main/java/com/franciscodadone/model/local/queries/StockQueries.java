@@ -86,4 +86,27 @@ public class StockQueries extends SQLiteConnection {
         }
     }
 
+    public static void modifyProductByCode(String code, Product product) {
+        java.sql.Connection connection = connect();
+        try {
+            connection.createStatement().execute(
+                    "UPDATE Stock SET title='" + product.getProdName() + "' WHERE code='" + code + "';"
+            );
+            connection.createStatement().execute(
+                    "UPDATE Stock SET price=" + product.getPrice() + " WHERE code='" + code + "';"
+            );
+            connection.createStatement().execute(
+                    "UPDATE Stock SET quantity=" + product.getQuantity() + " WHERE code='" + code + "';"
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
