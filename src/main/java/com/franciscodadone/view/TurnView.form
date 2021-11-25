@@ -24,7 +24,7 @@
               <text value="Vendedor: Nombre"/>
             </properties>
           </component>
-          <component id="7808a" class="javax.swing.JButton" binding="terminarTurnoButton" default-binding="true">
+          <component id="7808a" class="javax.swing.JButton" binding="endTurnButton">
             <constraints border-constraint="East"/>
             <properties>
               <background color="-1940643"/>
@@ -105,7 +105,7 @@
                   <color color="-16777216"/>
                 </border>
                 <children>
-                  <grid id="cc864" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="cc864" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
@@ -133,34 +133,9 @@
                         <properties>
                           <background color="-393729"/>
                           <font size="24"/>
+                          <text value="1"/>
                         </properties>
                       </component>
-                      <grid id="d62d" layout-manager="BorderLayout" hgap="0" vgap="0">
-                        <constraints>
-                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties/>
-                        <border type="none"/>
-                        <children>
-                          <component id="7315" class="javax.swing.JRadioButton" binding="numericRadioButton">
-                            <constraints border-constraint="Center"/>
-                            <properties>
-                              <background color="-4604738"/>
-                              <font size="22"/>
-                              <selected value="true"/>
-                              <text value="Unidad"/>
-                            </properties>
-                          </component>
-                          <component id="aa04a" class="javax.swing.JRadioButton" binding="gramsRadioButton">
-                            <constraints border-constraint="East"/>
-                            <properties>
-                              <background color="-4604738"/>
-                              <font size="22"/>
-                              <text value="Gramos"/>
-                            </properties>
-                          </component>
-                        </children>
-                      </grid>
                     </children>
                   </grid>
                   <grid id="d9813" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -174,16 +149,16 @@
                     <border type="none"/>
                     <children/>
                   </grid>
-                  <component id="35336" class="javax.swing.JLabel">
+                  <component id="35336" class="javax.swing.JLabel" binding="description">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <font size="24"/>
-                      <text value="Descripción: Coca Cola 3L"/>
+                      <text value="Descripción: "/>
                     </properties>
                   </component>
-                  <component id="9ac16" class="javax.swing.JLabel">
+                  <component id="9ac16" class="javax.swing.JLabel" binding="price">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -201,9 +176,10 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1a82f" class="javax.swing.JButton" binding="agregarProductoButton" default-binding="true">
+                  <component id="1a82f" class="javax.swing.JButton" binding="addProductButton">
                     <constraints border-constraint="Center"/>
                     <properties>
+                      <enabled value="false"/>
                       <font size="24"/>
                       <text value="Agregar producto"/>
                     </properties>
@@ -229,9 +205,11 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="cbc70" class="javax.swing.JList" binding="list1" default-binding="true">
+                  <component id="cbc70" class="javax.swing.JList" binding="cartList">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <font size="22"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -242,7 +220,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="e65dc" class="javax.swing.JButton" binding="eliminarButton" default-binding="true">
+                  <component id="e65dc" class="javax.swing.JButton" binding="deleteProductButton">
                     <constraints/>
                     <properties>
                       <enabled value="false"/>
@@ -250,7 +228,7 @@
                       <text value="Eliminar"/>
                     </properties>
                   </component>
-                  <component id="4c028" class="javax.swing.JButton" binding="modificarCantidadButton" default-binding="true">
+                  <component id="4c028" class="javax.swing.JButton" binding="modifyQuantityButton">
                     <constraints/>
                     <properties>
                       <enabled value="false"/>
@@ -400,10 +378,11 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="6c1a0" class="javax.swing.JButton" binding="archivarVentaButton" default-binding="true">
+                  <component id="6c1a0" class="javax.swing.JButton" binding="addSellButton">
                     <constraints border-constraint="Center"/>
                     <properties>
                       <background color="-13633152"/>
+                      <enabled value="false"/>
                       <font size="26"/>
                       <text value="Archivar venta"/>
                     </properties>

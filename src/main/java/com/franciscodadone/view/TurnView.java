@@ -7,19 +7,19 @@ import javax.swing.*;
 public class TurnView {
     public JPanel panel;
     public JList productList;
-    private JButton terminarTurnoButton;
+    public JButton endTurnButton;
     public JTextField codeField;
-    private JTextField quantityField;
-    private JList list1;
+    public JTextField quantityField;
+    public JList cartList;
     private JTextField textField5;
     private JTextField textField6;
     private JTextField textField7;
-    private JButton archivarVentaButton;
-    private JButton agregarProductoButton;
-    private JRadioButton numericRadioButton;
-    private JRadioButton gramsRadioButton;
-    private JButton eliminarButton;
-    private JButton modificarCantidadButton;
+    public JButton addSellButton;
+    public JButton addProductButton;
+    public JButton deleteProductButton;
+    public JButton modifyQuantityButton;
+    public JLabel price;
+    public JLabel description;
 
     public TurnView() {
         new TurnController(this);
