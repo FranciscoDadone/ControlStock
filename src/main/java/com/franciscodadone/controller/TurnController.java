@@ -51,6 +51,26 @@ public class TurnController {
             defaultListModel.clear();
             stockList();
         });
+
+        view.deleteProductButton.addActionListener(e -> {
+            defaultListModel1.removeElement(view.cartList.getSelectedValue());
+            view.deleteProductButton.setEnabled(false);
+            view.modifyQuantityButton.setEnabled(false);
+        });
+
+        view.modifyQuantityButton.addActionListener(e -> {
+            Product p = (Product) view.cartList.getSelectedValue();
+            int index = isInList(defaultListModel1, p);
+
+            String newQuantity = JOptionPane.showInputDialog("Ingrese la nueva cantidad", p.getQuantity());
+            if(!Util.isNumeric(newQuantity)) JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica", "Error", JOptionPane.ERROR_MESSAGE);
+            else {
+                p.setQuantity(Integer.parseInt(newQuantity));
+                p.setProdName(p.getUnmodifiedProdName() + "     (x" + newQuantity + ")");
+                defaultListModel1.set(index, p);
+            }
+        });
+
     }
 
     private void handleKeyboard() {
@@ -117,7 +137,13 @@ public class TurnController {
 
     private void cartSelection() {
         view.cartList.addListSelectionListener(e -> {
-
+            try {
+                view.deleteProductButton.setEnabled(true);
+                view.modifyQuantityButton.setEnabled(true);
+            } catch (Exception e1) {
+                view.deleteProductButton.setEnabled(false);
+                view.modifyQuantityButton.setEnabled(false);
+            }
         });
     }
 
