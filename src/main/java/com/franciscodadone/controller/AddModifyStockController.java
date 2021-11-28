@@ -162,7 +162,7 @@ public class AddModifyStockController {
                 JCustomOptionPane.messageDialog("La cantidad no puede quedar vacía o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 int resCode = -1;
-                if(CSVQueries.search(view.codeField.getText()) == null) {
+                if(new CSVQueries().search(view.codeField.getText()) == null) {
                     resCode = JCustomOptionPane.confirmDialog("<html>El código QR puede que se haya escaneado mal. ¿Continuar?<br>(Si el producto no posee código QR, dejar el campo en blanco para que el sistema genere uno por usted.)</html>", "Advertencia");
                 }
 
@@ -198,7 +198,7 @@ public class AddModifyStockController {
                     if(e.getKeyCode() == 118) view.focusField();
                     if(view.codeField.hasFocus() && view.codeField.getText().length() > 5) {
                         if(StockQueries.getProductByCode(view.codeField.getText()) == null) {
-                            view.descriptionField.setText(CSVQueries.search(view.codeField.getText()));
+                            view.descriptionField.setText(new CSVQueries().search(view.codeField.getText()));
                             view.searchStock.setText("");
                         } else {
                             view.searchStock.setText(view.codeField.getText());

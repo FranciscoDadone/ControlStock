@@ -1,16 +1,20 @@
 package com.franciscodadone.model.local.queries;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class CSVQueries {
 
-    public static String search(String code) {
-        String line = "";
+    public String search(String code) {
+        String line;
         String splitBy = ",";
         try {
-            BufferedReader br = new BufferedReader(new FileReader("/home/franciscodadone/Dev/ControlStock/src/main/resources/asw.producto.csv"));
+            FileReader fr = null;
+            try {
+                fr = new FileReader("asw.producto.csv");
+            } catch (FileNotFoundException e1) {
+                if(fr == null) fr = new FileReader("src/main/resources/asw.producto.csv");
+            }
+            BufferedReader br = new BufferedReader(fr);
             while ((line = br.readLine()) != null) {
                 String[] lineAux = line.split(splitBy);
                 if(lineAux.length > 1) {
