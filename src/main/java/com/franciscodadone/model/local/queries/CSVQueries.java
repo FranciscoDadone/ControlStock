@@ -8,13 +8,14 @@ public class CSVQueries {
         String line;
         String splitBy = ",";
         try {
-            FileReader fr = null;
+            BufferedReader br;
             try {
-                fr = new FileReader("asw.producto.csv");
-            } catch (FileNotFoundException e1) {
-                if(fr == null) fr = new FileReader("src/main/resources/asw.producto.csv");
+                InputStream in = getClass().getResourceAsStream("/asw.producto.csv");
+                br = new BufferedReader(new InputStreamReader(in));
+            } catch (Exception e1) {
+                br = new BufferedReader(new FileReader("src/main/resources/asw.producto.csv"));
             }
-            BufferedReader br = new BufferedReader(fr);
+
             while ((line = br.readLine()) != null) {
                 String[] lineAux = line.split(splitBy);
                 if(lineAux.length > 1) {
