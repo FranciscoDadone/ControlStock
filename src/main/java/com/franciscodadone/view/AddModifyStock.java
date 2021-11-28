@@ -28,6 +28,7 @@ public class AddModifyStock {
     public JButton modifyPriceButton;
     public JButton modifyNameButton;
     public JButton addToStockButton;
+    public JButton deleteProductButton;
 
     public AddModifyStock() {
         new AddModifyStockController(this);

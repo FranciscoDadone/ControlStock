@@ -17,12 +17,12 @@ public class StockQueries extends SQLiteConnection {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
-                    "INSERT INTO Stock (code, title, quantity, price, quantityType) VALUES (" +
+                    "INSERT INTO Stock (code, title, quantity, price, quantityType, deleted) VALUES (" +
                             "'" + product.getCode()         + "'," +
                             "'" + product.getProdName()     + "'," +
                                   product.getQuantity()     + "," +
                                   product.getPrice()        + "," +
-                            "'" + product.getQuantityType() + "');"
+                            "'" + product.getQuantityType() + "', false);"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,13 +41,16 @@ public class StockQueries extends SQLiteConnection {
         try {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Stock;");
             while(res.next()) {
-                products.add(new Product(
-                        res.getString("code"),
-                        res.getString("title"),
-                        res.getDouble("price"),
-                        res.getInt("quantity"),
-                        res.getString("quantityType")
-                ));
+                if(!res.getBoolean("deleted")) {
+                    products.add(new Product(
+                            res.getString("code"),
+                            res.getString("title"),
+                            res.getDouble("price"),
+                            res.getInt("quantity"),
+                            res.getString("quantityType"),
+                            res.getBoolean("deleted")
+                    ));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,7 +75,8 @@ public class StockQueries extends SQLiteConnection {
                         res.getString("title"),
                         res.getDouble("price"),
                         res.getInt("quantity"),
-                        res.getString("quantityType")
+                        res.getString("quantityType"),
+                        res.getBoolean("deleted")
                 );
             }
         } catch (SQLException e) {}
@@ -97,6 +101,23 @@ public class StockQueries extends SQLiteConnection {
             );
             connection.createStatement().execute(
                     "UPDATE Stock SET quantity=" + product.getQuantity() + " WHERE code='" + code + "';"
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void deleteProduct(Product product) {
+        java.sql.Connection connection = connect();
+        try {
+            connection.createStatement().execute(
+                    "UPDATE Stock SET deleted=true WHERE code='" + product.getCode() + "';"
             );
         } catch (SQLException e) {
             e.printStackTrace();

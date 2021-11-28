@@ -83,8 +83,8 @@ public class SQLiteConnection {
                         "title VARCHAR(40), " +
                         "quantity INTEGER, " +
                         "price DOUBLE, " +
-                        "quantityType VARCHAR(1)" +
-                        ");"
+                        "quantityType VARCHAR(1)," +
+                        "deleted INTEGER);"
                 );
             }
         } catch (SQLException e) {

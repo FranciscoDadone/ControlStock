@@ -89,19 +89,30 @@ public class AddModifyStockController {
                 }
             }
         });
+
+        view.deleteProductButton.addActionListener(e -> {
+            int res = JCustomOptionPane.confirmDialog("<html>Advertencia: Haciendo esto eliminará el producto de la base de datos.<br>¿Continuar?</html>", "Advertencia");
+            if(res == JOptionPane.YES_OPTION) {
+                StockQueries.deleteProduct((Product) view.stockList.getSelectedValue());
+                updateList();
+            }
+
+        });
     }
 
     private void stockSelection() {
         view.stockList.addListSelectionListener(e -> {
             try {
-                view.productSearch.setText("Producto: " + ((Product)view.stockList.getSelectedValue()).getProdName());
-                view.searchPrice.setText("Precio: $" + ((Product)view.stockList.getSelectedValue()).getPrice());
-                view.searchQuantity.setText("Cantidad: " + ((Product)view.stockList.getSelectedValue()).getQuantity());
-                view.searchQR.setText("QR: " + ((Product)view.stockList.getSelectedValue()).getCode());
+                Product product = ((Product)view.stockList.getSelectedValue());
+                view.productSearch.setText("Producto: " + product.getProdName());
+                view.searchPrice.setText("Precio: $" + product.getPrice());
+                view.searchQuantity.setText("Cantidad: " + product.getQuantity() + " " + ((product.getQuantityType().equals("G")) ? "gramos" : ""));
+                view.searchQR.setText("QR: " + product.getCode());
                 view.modifyQuantityButton.setEnabled(true);
                 view.modifyPriceButton.setEnabled(true);
                 view.modifyNameButton.setEnabled(true);
                 view.addToStockButton.setEnabled(true);
+                view.deleteProductButton.setEnabled(true);
             } catch (Exception e1) {
                 view.productSearch.setText("Producto: -");
                 view.searchPrice.setText("Precio: $0000");
@@ -111,8 +122,8 @@ public class AddModifyStockController {
                 view.modifyPriceButton.setEnabled(false);
                 view.modifyNameButton.setEnabled(false);
                 view.addToStockButton.setEnabled(false);
+                view.deleteProductButton.setEnabled(false);
             }
-
         });
     }
 
@@ -143,9 +154,7 @@ public class AddModifyStockController {
 
     private void addProductButton() {
         view.addProductButton.addActionListener(e -> {
-            if(view.codeField.getText().length() <= 6) {
-                JCustomOptionPane.messageDialog("<html>Código de barras incorrecto.<br>(Si el producto no posee código QR, dejar el campo en blanco para que el sistema genere uno por usted.)</html>", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if(view.priceField.getText().length() == 0 || !Util.isNumeric(view.priceField.getText()) ) {
+            if(view.priceField.getText().length() == 0 || !Util.isNumeric(view.priceField.getText()) ) {
                 JCustomOptionPane.messageDialog("El precio no puede quedar vacío o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if(view.descriptionField.getText().length() == 0) {
                 JCustomOptionPane.messageDialog("La descripción no puede quedar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -162,7 +171,8 @@ public class AddModifyStockController {
                         view.descriptionField.getText(),
                         Double.parseDouble(view.priceField.getText()),
                         Integer.parseInt(view.quantityField.getText()),
-                        (view.unitRadioButton.isSelected()) ? "U" : "G");
+                        (view.unitRadioButton.isSelected()) ? "U" : "G",
+                        false);
                 int res = JCustomOptionPane.confirmDialog(product);
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
@@ -195,6 +205,7 @@ public class AddModifyStockController {
                             searchFilter(view.codeField.getText());
                             view.stockList.setSelectedIndex(0);
                             view.codeField.setText("");
+                            JCustomOptionPane.messageDialog("Producto ya cargado anteriormente, puede modificarlo.", "", JOptionPane.PLAIN_MESSAGE);
                         }
                     }
                     if(view.searchStock.hasFocus()) searchFilter(view.searchStock.getText());
