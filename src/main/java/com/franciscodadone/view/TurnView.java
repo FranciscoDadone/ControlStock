@@ -11,15 +11,16 @@ public class TurnView {
     public JTextField codeField;
     public JTextField quantityField;
     public JList cartList;
-    private JTextField textField5;
-    private JTextField textField6;
-    private JTextField textField7;
+    public JTextField exchangeField;
+    public JTextField dateField;
     public JButton addSellButton;
     public JButton addProductButton;
     public JButton deleteProductButton;
     public JButton modifyQuantityButton;
     public JLabel price;
     public JLabel description;
+    public JLabel totalLabel;
+    public JLabel exchangeLabel;
 
     public TurnView() {
         new TurnController(this);

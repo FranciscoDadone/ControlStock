@@ -7,6 +7,7 @@ import com.franciscodadone.util.Util;
 import com.franciscodadone.view.TurnView;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 
 public class TurnController {
 
@@ -21,6 +22,8 @@ public class TurnController {
 
         view.cartList.setModel(defaultListModel1);
         view.cartList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        view.dateField.setText(new Date().toString());
 
     }
 
@@ -50,12 +53,14 @@ public class TurnController {
             view.addProductButton.setEnabled(false);
             defaultListModel.clear();
             stockList();
+            updateTotal();
         });
 
         view.deleteProductButton.addActionListener(e -> {
             defaultListModel1.removeElement(view.cartList.getSelectedValue());
             view.deleteProductButton.setEnabled(false);
             view.modifyQuantityButton.setEnabled(false);
+            updateTotal();
         });
 
         view.modifyQuantityButton.addActionListener(e -> {
@@ -69,6 +74,7 @@ public class TurnController {
                 p.setProdName(p.getUnmodifiedProdName() + "     (x" + newQuantity + ")");
                 defaultListModel1.set(index, p);
             }
+            updateTotal();
         });
 
     }
@@ -78,9 +84,8 @@ public class TurnController {
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(e -> {
                     if(e.getKeyCode() == 118) view.focusField();
-                    if(view.codeField.hasFocus()) {
-                        searchFilter(view.codeField.getText());
-                    }
+                    if(view.codeField.hasFocus()) searchFilter(view.codeField.getText());
+                    if(view.exchangeField.hasFocus()) updateExchange();
                     return false;
                 });
     }
@@ -157,6 +162,28 @@ public class TurnController {
                 view.addProductButton.setEnabled(false);
             }
         });
+    }
+
+    private double getTotal() {
+        double total = 0;
+        for(int i = 0; i < defaultListModel1.getSize(); i++) {
+            Product product = ((Product)defaultListModel1.get(i));
+            total += product.getPrice() * product.getQuantity();
+        }
+        return total;
+    }
+
+    private void updateTotal() {
+        view.totalLabel.setText("$" + getTotal());
+    }
+
+    public void updateExchange() {
+        if(Util.isNumeric(view.exchangeField.getText())) {
+            double exchange = Double.parseDouble(view.exchangeField.getText());
+            double total = getTotal();
+            if(exchange > total) view.exchangeLabel.setText("$" + (exchange - total));
+            else view.exchangeLabel.setText("$0");
+        }
     }
 
     private TurnView view;
