@@ -24,14 +24,30 @@
               <text value="Vendedor: Nombre"/>
             </properties>
           </component>
-          <component id="7808a" class="javax.swing.JButton" binding="endTurnButton">
+          <grid id="835bb" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="East"/>
             <properties>
-              <background color="-1940643"/>
-              <font size="20"/>
-              <text value="Terminar turno"/>
+              <background color="-4604738"/>
             </properties>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="a22a2" class="javax.swing.JButton" binding="backButton">
+                <constraints/>
+                <properties>
+                  <font size="20"/>
+                  <text value="Atrás"/>
+                </properties>
+              </component>
+              <component id="7808a" class="javax.swing.JButton" binding="endTurnButton">
+                <constraints/>
+                <properties>
+                  <background color="-1940643"/>
+                  <font size="20"/>
+                  <text value="Terminar turno"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
       <grid id="8deb7" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

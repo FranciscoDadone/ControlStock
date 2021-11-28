@@ -21,6 +21,7 @@ public class TurnView {
     public JLabel description;
     public JLabel totalLabel;
     public JLabel exchangeLabel;
+    public JButton backButton;
 
     public TurnView() {
         new TurnController(this);

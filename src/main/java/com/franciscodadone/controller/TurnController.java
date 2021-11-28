@@ -2,8 +2,10 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.StockQueries;
 import com.franciscodadone.models.Product;
+import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
+import com.franciscodadone.view.MainScreen;
 import com.franciscodadone.view.TurnView;
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +77,10 @@ public class TurnController {
                 defaultListModel1.set(index, p);
             }
             updateTotal();
+        });
+
+        view.backButton.addActionListener(e -> {
+            GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
         });
 
     }
@@ -174,7 +180,10 @@ public class TurnController {
     }
 
     private void updateTotal() {
-        view.totalLabel.setText("$" + getTotal());
+        double total = getTotal();
+        view.totalLabel.setText("$" + total);
+        if(total != 0) view.addSellButton.setEnabled(true);
+        else view.addSellButton.setEnabled(false);
     }
 
     public void updateExchange() {
