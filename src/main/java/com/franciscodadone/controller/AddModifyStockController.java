@@ -161,6 +161,8 @@ public class AddModifyStockController {
                 JCustomOptionPane.messageDialog("La descripción no puede quedar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if(view.quantityField.getText().length() == 0 || !Util.isNumeric(view.quantityField.getText())) {
                 JCustomOptionPane.messageDialog("La cantidad no puede quedar vacía o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if(view.codeField.getText().contains(":") || view.codeField.getText().contains(";")) {
+                JCustomOptionPane.messageDialog("El QR no puede tener símbolos.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 int resCode = -1;
                 if(new CSVQueries().search(view.codeField.getText()) == null) {

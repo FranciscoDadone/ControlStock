@@ -1,8 +1,14 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
+import com.franciscodadone.models.Product;
 import com.franciscodadone.models.Sell;
+import com.franciscodadone.models.Session;
+import com.franciscodadone.util.FDate;
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SellQueries extends SQLiteConnection {
 
@@ -28,6 +34,30 @@ public class SellQueries extends SQLiteConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static ArrayList<Sell> getAllSellsFromSession(Session session) {
+        ArrayList<Sell> sells = new ArrayList<>();
+        java.sql.Connection connection = connect();
+        try {
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sells WHERE sessionID=" + session.getId() + ";");
+            while(res.next()) {
+                sells.add(new Sell(
+                        StockQueries.getProducts(res.getString("products")),
+                        res.getDouble("totalPrice"),
+                        session.getId(),
+                        new FDate(res.getString("date"))
+                ));
+            }
+        } catch (SQLException e) {}
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return sells;
         }
     }
 

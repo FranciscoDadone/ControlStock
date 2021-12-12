@@ -2,8 +2,9 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.util.GUIHandler;
-import com.franciscodadone.util.HistoryPanel;
+import com.franciscodadone.util.JLabelFont;
 import com.franciscodadone.view.History;
+import com.franciscodadone.view.HistoryDetailsPopup;
 import com.franciscodadone.view.MainScreen;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -45,12 +46,35 @@ public class HistoryController {
         buttonsPanel.setBackground(new Color(124,127,129));
 
         SessionsQueries.getAllSessions().forEach(session -> {
-            new HistoryPanel(session, datePanel, descriptionPanel, buttonsPanel);
+            Font font = new Font("Arial", Font.PLAIN, 24);
+            JButton btn = new JButton("Detalles");
+            JLabelFont date = new JLabelFont("     (" + session.getDateStarted() + " - " + session.getDateEnded() + ")      ", font),
+                    sellerName = new JLabelFont(session.getSeller(), font);
+
+            JPanel subPanelCenter = new JPanel();
+            subPanelCenter.add(sellerName);
+            descriptionPanel.add(subPanelCenter);
+            subPanelCenter.setBackground(new Color(164,167,169));
+            subPanelCenter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+            btn.setFont(new Font("Arial", Font.BOLD, 15));
+            JPanel subPanelRight = new JPanel();
+            subPanelRight.add(btn);
+            buttonsPanel.add(subPanelRight);
+            subPanelRight.setBackground(new Color(164,167,169));
+            subPanelRight.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+            JPanel subPanelLeft = new JPanel();
+            subPanelLeft.add(date);
+            datePanel.add(subPanelLeft);
+            subPanelLeft.setBackground(new Color(164,167,169));
+            subPanelLeft.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+            btn.addActionListener(e -> {
+                new HistoryDetailsPopup(session);
+            });
         });
     }
-
-
-
 
     private static History view;
 

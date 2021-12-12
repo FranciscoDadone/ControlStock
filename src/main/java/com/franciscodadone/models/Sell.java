@@ -31,8 +31,8 @@ public class Sell {
     @Override
     public String toString() {
         String s = "";
-        for(Product p : products) {
-            s += p.getCode() + ";";
+        for(int i = 0; i < products.size(); i++) {
+            s += products.get(i).getCode() + ":" + products.get(i).getQuantity() + ((i+1 == products.size()) ? "" : ";");
         }
         return s;
     }
