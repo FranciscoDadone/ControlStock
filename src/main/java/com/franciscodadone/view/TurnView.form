@@ -328,7 +328,7 @@
                     </constraints>
                     <properties>
                       <font size="24"/>
-                      <text value="Cambio:"/>
+                      <text value="Cambio"/>
                     </properties>
                   </component>
                   <component id="d9198" class="javax.swing.JLabel" binding="exchangeLabel">

@@ -1,8 +1,10 @@
 package com.franciscodadone.controller;
 
+import com.franciscodadone.model.local.queries.SellQueries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.model.local.queries.StockQueries;
 import com.franciscodadone.models.Product;
+import com.franciscodadone.models.Sell;
 import com.franciscodadone.models.Session;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
@@ -11,6 +13,7 @@ import com.franciscodadone.view.MainScreen;
 import com.franciscodadone.view.TurnView;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TurnController {
@@ -46,11 +49,11 @@ public class TurnController {
                 if(index != -1) {
                     Product p1 = (Product) defaultListModel1.get(index);
                     p1.setQuantity(p1.getQuantity() + quantity);
-                    p1.setProdName(p.getProdName() + "     (x" + p1.getQuantity() + ")");
+                    p1.setProdName(p.getProdName() + "     (x" + p1.getQuantity() + ")               $" + p.getPrice() * p1.getQuantity());
                     defaultListModel1.set(index, p1);
                 } else {
                     p.setQuantity(quantity);
-                    p.setProdName(p.getProdName() + "     (x" + p.getQuantity() + ")");
+                    p.setProdName(p.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
                     defaultListModel1.addElement(p);
                 }
             }
@@ -79,7 +82,7 @@ public class TurnController {
             if(!Util.isNumeric(newQuantity)) JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica", "Error", JOptionPane.ERROR_MESSAGE);
             else {
                 p.setQuantity(Integer.parseInt(newQuantity));
-                p.setProdName(p.getUnmodifiedProdName() + "     (x" + newQuantity + ")");
+                p.setProdName(p.getUnmodifiedProdName() + "     (x" + newQuantity + ")               $" + p.getPrice() * Integer.parseInt(newQuantity));
                 defaultListModel1.set(index, p);
             }
             updateTotal();
@@ -98,7 +101,24 @@ public class TurnController {
         });
 
         view.addSellButton.addActionListener(e -> {
-            System.out.println("fdfdsfsd");
+            ArrayList<Product> products = new ArrayList<>();
+            for(int i = 0; i < defaultListModel1.getSize(); i++) {
+                Product product = (Product) defaultListModel1.get(i);
+                product.setProdName(product.getUnmodifiedProdName());
+                products.add(product);
+            }
+            Sell sell = new Sell(products, getTotal(), session.getId(), new Date());
+            SellQueries.saveSell(sell);
+
+            view.cartList.removeAll();
+            defaultListModel1.removeAllElements();
+            view.addSellButton.setEnabled(false);
+            view.exchangeLabel.setText("$0");
+            view.totalLabel.setText("$0");
+            view.exchangeField.setText("");
+            view.dateField.setText(new Date().toString());
+            GUIHandler.changeScreen(view.panel);
+
         });
 
     }

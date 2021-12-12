@@ -18,7 +18,7 @@ public class SellQueries extends SQLiteConnection {
                             "'" + sell.toString()            + "'," +
                             "'" + sell.getDate().toString()  + "'," +
                                   sell.getPrice()            + "," +
-                                  sell.getSession().getId()  + ");"
+                                  sell.getSessionID()        + ");"
             );
         } catch (SQLException e) {
             e.printStackTrace();

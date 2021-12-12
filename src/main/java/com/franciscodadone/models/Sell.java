@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class Sell {
 
-    public Sell(ArrayList<Product> products, double price, Session session, Date date) {
+    public Sell(ArrayList<Product> products, double price, int sessionID, Date date) {
         this.products = products;
         this.price    = price;
-        this.session  = session;
+        this.sessionID  = sessionID;
         this.date     = date;
     }
 
@@ -16,8 +16,8 @@ public class Sell {
         return products;
     }
 
-    public Session getSession() {
-        return session;
+    public int getSessionID() {
+        return sessionID;
     }
 
     public Date getDate() {
@@ -32,13 +32,13 @@ public class Sell {
     public String toString() {
         String s = "";
         for(Product p : products) {
-            s += p.toString() + ";";
+            s += p.getCode() + ";";
         }
         return s;
     }
 
     private ArrayList<Product> products;
-    private Session            session;
+    private int                sessionID;
     private Date               date;
     private double             price;
 
