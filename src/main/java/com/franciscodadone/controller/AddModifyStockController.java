@@ -1,7 +1,7 @@
 package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.CSVQueries;
-import com.franciscodadone.model.local.queries.StockQueries;
+import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.UtilQueries;
 import com.franciscodadone.models.Product;
 import com.franciscodadone.util.GUIHandler;
@@ -40,7 +40,7 @@ public class AddModifyStockController {
             if(res != null) {
                 Product product = (Product)view.stockList.getSelectedValue();
                 product.setProdName(res);
-                StockQueries.modifyProductByCode(product.getCode(), product);
+                ProductsQueries.modifyProductByCode(product.getCode(), product);
                 JCustomOptionPane.messageDialog("Nombre modificado con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
                 updateList();
             }
@@ -52,7 +52,7 @@ public class AddModifyStockController {
                 if(Util.isNumeric(res)) {
                     Product product = (Product)view.stockList.getSelectedValue();
                     product.setPrice(Double.parseDouble(res));
-                    StockQueries.modifyProductByCode(product.getCode(), product);
+                    ProductsQueries.modifyProductByCode(product.getCode(), product);
                     JCustomOptionPane.messageDialog("Precio modificado con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
                     updateList();
                 } else {
@@ -67,7 +67,7 @@ public class AddModifyStockController {
                 if(Util.isNumeric(res)) {
                     Product product = (Product)view.stockList.getSelectedValue();
                     product.setQuantity(Integer.parseInt(res));
-                    StockQueries.modifyProductByCode(product.getCode(), product);
+                    ProductsQueries.modifyProductByCode(product.getCode(), product);
                     JCustomOptionPane.messageDialog("Cantidad modificada con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
                     updateList();
                 } else {
@@ -82,7 +82,7 @@ public class AddModifyStockController {
                 if(Util.isNumeric(res)) {
                     Product product = (Product)view.stockList.getSelectedValue();
                     product.setQuantity(product.getQuantity() + Integer.parseInt(res));
-                    StockQueries.modifyProductByCode(product.getCode(), product);
+                    ProductsQueries.modifyProductByCode(product.getCode(), product);
                     JCustomOptionPane.messageDialog("Se sumó " + res + " al stock de " + product.getProdName(), "Info", JOptionPane.PLAIN_MESSAGE);
                     updateList();
                 } else {
@@ -94,7 +94,7 @@ public class AddModifyStockController {
         view.deleteProductButton.addActionListener(e -> {
             int res = JCustomOptionPane.confirmDialog("<html>Advertencia: Haciendo esto eliminará el producto de la base de datos.<br>¿Continuar?</html>", "Advertencia");
             if(res == JOptionPane.YES_OPTION) {
-                StockQueries.deleteProduct((Product) view.stockList.getSelectedValue());
+                ProductsQueries.deleteProduct((Product) view.stockList.getSelectedValue());
                 updateList();
             }
 
@@ -130,7 +130,7 @@ public class AddModifyStockController {
 
     DefaultListModel defaultListModel = new DefaultListModel();
     private void stockList() {
-        StockQueries.getAllProducts().forEach((product) -> {
+        ProductsQueries.getAllProducts().forEach((product) -> {
             defaultListModel.addElement(product);
         });
         view.stockList.setModel(defaultListModel);
@@ -144,7 +144,7 @@ public class AddModifyStockController {
      */
     private void searchFilter(String searchTerm) {
         DefaultListModel filteredItems = new DefaultListModel();
-        StockQueries.getAllProducts().forEach((product) -> {
+        ProductsQueries.getAllProducts().forEach((product) -> {
             if(product.getProdName().toLowerCase().contains(searchTerm.toLowerCase()) || product.getCode().equals(searchTerm)) {
                 filteredItems.addElement(product);
             }
@@ -187,8 +187,8 @@ public class AddModifyStockController {
                 int res = JCustomOptionPane.confirmDialog(product);
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
-                    if(StockQueries.getProductByCode(product.getCode()) == null) {
-                        StockQueries.saveProduct(product);
+                    if(ProductsQueries.getProductByCode(product.getCode()) == null) {
+                        ProductsQueries.saveProduct(product);
                         JCustomOptionPane.messageDialog("Producto guardado correctamente!", "", JOptionPane.PLAIN_MESSAGE);
                     } else {
                         JCustomOptionPane.messageDialog("Error: Ya hay un producto con ese código, búsquelo para modificarlo.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -211,7 +211,7 @@ public class AddModifyStockController {
                 .addKeyEventDispatcher(e -> {
                     if(e.getKeyCode() == 118) view.focusField();
                     if(view.codeField.hasFocus() && view.codeField.getText().length() > 5) {
-                        if(StockQueries.getProductByCode(view.codeField.getText()) == null) {
+                        if(ProductsQueries.getProductByCode(view.codeField.getText()) == null) {
                             view.descriptionField.setText(new CSVQueries().search(view.codeField.getText()));
                             view.searchStock.setText("");
                         } else {

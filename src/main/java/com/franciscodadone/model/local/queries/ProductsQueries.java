@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class StockQueries extends SQLiteConnection {
+public class ProductsQueries extends SQLiteConnection {
 
     /**
      * Adds a new sell to the database.

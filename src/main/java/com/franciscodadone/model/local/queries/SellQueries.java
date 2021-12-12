@@ -1,7 +1,6 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
-import com.franciscodadone.models.Product;
 import com.franciscodadone.models.Sell;
 import com.franciscodadone.models.Session;
 import com.franciscodadone.util.FDate;
@@ -44,7 +43,7 @@ public class SellQueries extends SQLiteConnection {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sells WHERE sessionID=" + session.getId() + ";");
             while(res.next()) {
                 sells.add(new Sell(
-                        StockQueries.getProducts(res.getString("products")),
+                        ProductsQueries.getProducts(res.getString("products")),
                         res.getDouble("totalPrice"),
                         session.getId(),
                         new FDate(res.getString("date"))

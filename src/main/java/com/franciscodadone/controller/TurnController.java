@@ -2,7 +2,7 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.SellQueries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
-import com.franciscodadone.model.local.queries.StockQueries;
+import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.models.Product;
 import com.franciscodadone.models.Sell;
 import com.franciscodadone.models.Session;
@@ -16,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class TurnController {
 
@@ -140,7 +139,7 @@ public class TurnController {
     DefaultListModel defaultListModel = new DefaultListModel();
     DefaultListModel defaultListModel1 = new DefaultListModel();
     private void stockList() {
-        StockQueries.getAllProducts().forEach((product) -> {
+        ProductsQueries.getAllProducts().forEach((product) -> {
             defaultListModel.addElement(product);
         });
         view.productList.setModel(defaultListModel);
@@ -163,7 +162,7 @@ public class TurnController {
      */
     private void searchFilter(String searchTerm) {
         DefaultListModel filteredItems = new DefaultListModel();
-        StockQueries.getAllProducts().forEach((product) -> {
+        ProductsQueries.getAllProducts().forEach((product) -> {
             if(product.getProdName().toLowerCase().contains(searchTerm.toLowerCase())) {
                 filteredItems.addElement(product);
             }
