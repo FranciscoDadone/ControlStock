@@ -6,8 +6,12 @@ import com.franciscodadone.models.Session;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 public class SessionsQueries extends SQLiteConnection {
 
@@ -38,18 +42,22 @@ public class SessionsQueries extends SQLiteConnection {
         Session session = null;
         java.sql.Connection connection = connect();
         try {
-            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sessions WHERE (active=1);");
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sessions WHERE active=1;");
+            DateFormat format = new SimpleDateFormat("EE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+
             while(res.next()) {
                 session = new Session(
-                        res.getInt("id"),
+                        Integer.parseInt(res.getString("id")),
                         res.getString("seller"),
-                        new SimpleDateFormat("dd/MM/yyyy").parse(res.getString("dateStarted")),
-                        new SimpleDateFormat("dd/MM/yyyy").parse(res.getString("dateEnded")),
+                        format.parse(res.getString("dateStarted")),
+                        (res.getString("dateEnded") == null) ? null : format.parse(res.getString("dateEnded")),
                         res.getDouble("startMoney"),
                         res.getDouble("endMoney")
                 );
             }
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         finally {
             try {
                 connection.close();
@@ -57,6 +65,30 @@ public class SessionsQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
             return session;
+        }
+    }
+
+    public static void endCurrentSession(double sessionEndMoney) {
+        Session currentSession = getActiveSession();
+        java.sql.Connection connection = connect();
+        try {
+            connection.createStatement().execute(
+                    "UPDATE Sessions SET active=0 WHERE id=" + currentSession.getId() + ";"
+            );
+            connection.createStatement().execute(
+                    "UPDATE Sessions SET dateEnded='" + new Date() + "' WHERE id=" + currentSession.getId() + ";"
+            );
+            connection.createStatement().execute(
+                    "UPDATE Sessions SET endMoney=" + sessionEndMoney + " WHERE id=" + currentSession.getId() + ";"
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

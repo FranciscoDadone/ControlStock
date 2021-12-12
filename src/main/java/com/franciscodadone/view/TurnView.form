@@ -31,6 +31,13 @@
             </properties>
             <border type="none"/>
             <children>
+              <component id="829a6" class="javax.swing.JLabel" binding="sessionStartLabel">
+                <constraints/>
+                <properties>
+                  <font size="20"/>
+                  <text value="Fecha de inicio del turno: 0000000000"/>
+                </properties>
+              </component>
               <component id="a22a2" class="javax.swing.JButton" binding="backButton">
                 <constraints/>
                 <properties>

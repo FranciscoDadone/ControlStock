@@ -1,7 +1,9 @@
 package com.franciscodadone.controller;
 
+import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.model.local.queries.StockQueries;
 import com.franciscodadone.models.Product;
+import com.franciscodadone.models.Session;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
@@ -13,10 +15,9 @@ import java.util.Date;
 
 public class TurnController {
 
-    public TurnController(TurnView view, String sellerName, double money) {
+    public TurnController(TurnView view, Session session) {
         this.view       = view;
-        this.sellerName = sellerName;
-        this.money      = money;
+        this.session    = session;
 
         handleKeyboard();
         stockList();
@@ -29,7 +30,8 @@ public class TurnController {
 
         view.dateField.setText(new Date().toString());
 
-        view.sellerNameField.setText("Vendedor: " + this.sellerName);
+        view.sellerNameField.setText("Vendedor: " + this.session.getSeller());
+        view.sessionStartLabel.setText("Fecha de inicio del turno: " + session.getDateStarted() + "        ");
 
     }
 
@@ -85,6 +87,14 @@ public class TurnController {
 
         view.backButton.addActionListener(e -> {
             GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
+        });
+
+        view.endTurnButton.addActionListener(e -> {
+            double sessionEndMoney = JCustomOptionPane.endSessionDialog();
+            if(sessionEndMoney != -1) {
+                SessionsQueries.endCurrentSession(sessionEndMoney);
+                GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
+            }
         });
 
     }
@@ -200,7 +210,6 @@ public class TurnController {
     }
 
     private TurnView view;
-    private String sellerName;
-    private double money;
+    private Session session;
 
 }
