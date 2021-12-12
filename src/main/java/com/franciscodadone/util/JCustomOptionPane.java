@@ -5,6 +5,7 @@ import com.franciscodadone.models.Product;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class JCustomOptionPane {
 
@@ -84,6 +85,47 @@ public class JCustomOptionPane {
                 null
         );
         return result;
+    }
+
+    public static Object[] inputDialogMultiLine() {
+        Font font = new Font("Arial", Font.PLAIN, 30);
+
+        JTextField sellerNameField = new JTextField(8);
+        JTextField money = new JTextField(8);
+        sellerNameField.setFont(font);
+        money.setFont(font);
+
+        JLabel moneyLabel = new JLabel("Dinero en la caja:");
+        JLabel sellerLabel = new JLabel("Vendedor");
+        moneyLabel.setFont(font);
+        sellerLabel.setFont(font);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(sellerLabel);
+        mainPanel.add(sellerNameField);
+        mainPanel.add(moneyLabel);
+        mainPanel.add(money);
+
+        int result = JOptionPane.showConfirmDialog(null, mainPanel,
+                "Iniciar turno", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+
+            if(sellerNameField.getText().equals("")) {
+                JCustomOptionPane.messageDialog("El nombre del vendedor no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            if(!Util.isNumeric(money.getText()) || money.getText().equals("")) {
+                JCustomOptionPane.messageDialog("El dinero en caja tiene que ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+
+            Object[] values = new Object[2];
+            values[0] = sellerNameField.getText();
+            values[1] = money.getText();
+            return values;
+        }
+        return null;
     }
 
 }

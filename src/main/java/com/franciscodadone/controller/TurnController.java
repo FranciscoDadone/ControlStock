@@ -13,8 +13,10 @@ import java.util.Date;
 
 public class TurnController {
 
-    public TurnController(TurnView view) {
-        this.view = view;
+    public TurnController(TurnView view, String sellerName, double money) {
+        this.view       = view;
+        this.sellerName = sellerName;
+        this.money      = money;
 
         handleKeyboard();
         stockList();
@@ -26,6 +28,8 @@ public class TurnController {
         view.cartList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         view.dateField.setText(new Date().toString());
+
+        view.sellerNameField.setText("Vendedor: " + this.sellerName);
 
     }
 
@@ -196,5 +200,7 @@ public class TurnController {
     }
 
     private TurnView view;
+    private String sellerName;
+    private double money;
 
 }

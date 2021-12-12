@@ -30,17 +30,17 @@ public class SQLiteConnection {
                 tables.add(res.getString(1));
             }
             /**
-             * Creation of table SessionsHistory if it doesn't exist.
+             * Creation of table Sessions if it doesn't exist.
              */
-            if(!tables.contains("SessionsHistory")) {
+            if(!tables.contains("Sessions")) {
                 Statement statement = con.createStatement();
-                statement.execute("CREATE TABLE SessionsHistory (" +
+                statement.execute("CREATE TABLE Sessions (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "sells TEXT," + // ID de las ventas que se hicieron en la sesión
-                        "startMoney DOUBLE," + // dinero con el que empieza la caja
-                        "endMoney DOUBLE," + // dinero con el que termina la caja
+                        "startMoney DOUBLE," +
+                        "endMoney DOUBLE," +
                         "seller VARCHAR(100)," +
-                        "hourRange TEXT" + // rango horario en el que estuvo abierta la sesión
+                        "dateStarted VARCHAR(255)," +
+                        "dateEnded VARCHAR(255)" +
                         ");"
                 );
             }

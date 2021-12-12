@@ -22,9 +22,10 @@ public class TurnView {
     public JLabel totalLabel;
     public JLabel exchangeLabel;
     public JButton backButton;
+    public JLabel sellerNameField;
 
-    public TurnView() {
-        new TurnController(this);
+    public TurnView(String sellerName, double money) {
+        new TurnController(this, sellerName, money);
     }
 
     public void focusField() {

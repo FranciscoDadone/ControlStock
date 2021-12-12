@@ -16,12 +16,12 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="b65db" class="javax.swing.JLabel">
+          <component id="b65db" class="javax.swing.JLabel" binding="sellerNameField">
             <constraints border-constraint="Center"/>
             <properties>
               <background color="-4604738"/>
               <font size="20"/>
-              <text value="Vendedor: Nombre"/>
+              <text value="Vendedor: -"/>
             </properties>
           </component>
           <grid id="835bb" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
