@@ -26,6 +26,8 @@ public class MainScreen extends JFrame {
             this.pack();
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 //        this.setIconImage(new ImageIcon(getClass().getResource("/images/logo.jpg")).getImage());
 
             this.addWindowListener(new WindowAdapter(){

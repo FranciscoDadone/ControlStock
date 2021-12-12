@@ -13,6 +13,7 @@ import com.franciscodadone.view.MainScreen;
 import com.franciscodadone.view.TurnView;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -128,7 +129,9 @@ public class TurnController {
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(e -> {
                     if(e.getKeyCode() == 118) view.focusField();
-                    if(view.codeField.hasFocus()) searchFilter(view.codeField.getText());
+                    if(view.codeField.hasFocus()) {
+                        searchFilter(view.codeField.getText());
+                    }
                     if(view.exchangeField.hasFocus()) updateExchange();
                     return false;
                 });
@@ -169,15 +172,21 @@ public class TurnController {
                 if(index != -1) {
                     Product p = (Product) defaultListModel1.get(index);
                     p.setQuantity(p.getQuantity() + 1);
-                    p.setProdName(product.getProdName() + "     (x" + p.getQuantity() + ")");
+                    p.setProdName(product.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
                     defaultListModel1.set(index, p);
                 } else {
                     product.setQuantity(1);
-                    product.setProdName(product.getProdName() + "     (x" + product.getQuantity() + ")");
+                    product.setProdName(product.getProdName() + "     (x" + product.getQuantity() + ")               $" + product.getPrice() * product.getQuantity());
                     defaultListModel1.addElement(product);
                 }
-
                 view.codeField.setText("");
+                try {
+                    Robot robot = new Robot();
+                    robot.keyPress(KeyEvent.VK_ESCAPE);
+                    robot.keyRelease(KeyEvent.VK_ESCAPE);
+                } catch (AWTException e) {
+                    e.printStackTrace();
+                }
             }
         });
         defaultListModel = filteredItems;

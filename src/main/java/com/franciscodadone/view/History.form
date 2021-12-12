@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.franciscodadone.view.History">
+  <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="958" height="582"/>
+    </constraints>
+    <properties>
+      <background color="-4604738"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="a8301" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-4604738"/>
+        </properties>
+        <border type="line">
+          <color color="-12236726"/>
+        </border>
+        <children>
+          <component id="3cd9" class="javax.swing.JLabel">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <background color="-4604738"/>
+              <font size="28"/>
+              <foreground color="-16777216"/>
+              <horizontalAlignment value="0"/>
+              <text value="Historial de la caja"/>
+            </properties>
+          </component>
+          <component id="3528e" class="javax.swing.JButton" binding="backButton">
+            <constraints border-constraint="East"/>
+            <properties>
+              <font size="20"/>
+              <text value="Atrás"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="334c">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <background color="-8618111"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="524a3" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints/>
+            <properties>
+              <background color="-8618111"/>
+            </properties>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </scrollpane>
+    </children>
+  </grid>
+</form>

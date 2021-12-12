@@ -55,6 +55,10 @@ public class MainScreenController {
         view.addStockButton.addActionListener(e -> {
             GUIHandler.changeScreen(new AddModifyStock().panel);
         });
+
+        view.historyButton.addActionListener(e -> {
+            GUIHandler.changeScreen(new History().panel);
+        });
     }
 
     private MainScreen view;
