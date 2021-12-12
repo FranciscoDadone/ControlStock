@@ -5,9 +5,8 @@ import java.util.Date;
 
 public class Sell {
 
-    public Sell(ArrayList<Product> products, Seller seller, double price, Session session, Date date) {
+    public Sell(ArrayList<Product> products, double price, Session session, Date date) {
         this.products = products;
-        this.seller   = seller;
         this.price    = price;
         this.session  = session;
         this.date     = date;
@@ -15,10 +14,6 @@ public class Sell {
 
     public ArrayList<Product> getProducts() {
         return products;
-    }
-
-    public Seller getSeller() {
-        return seller;
     }
 
     public Session getSession() {
@@ -43,7 +38,6 @@ public class Sell {
     }
 
     private ArrayList<Product> products;
-    private Seller             seller;
     private Session            session;
     private Date               date;
     private double             price;

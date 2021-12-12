@@ -5,27 +5,24 @@ import java.util.Date;
 
 public class Session {
 
-    public Session(Seller seller, Date date, double startMoney) {
-        this.seller     = seller;
-        this.date       = date;
-        this.startMoney = startMoney;
+    public Session(String seller, Date dateStarted, double startMoney) {
+        this.seller      = seller;
+        this.dateStarted = dateStarted;
+        this.startMoney  = startMoney;
+        this.active      = true;
     }
 
-    public Session(int id, Seller seller, Date date, double startMoney, double endMoney, ArrayList<Sell> sells) {
-        this.id         = id;
-        this.seller     = seller;
-        this.date       = date;
-        this.startMoney = startMoney;
-        this.endMoney   = endMoney;
-        this.sells      = sells;
+    public Session(int id, String seller, Date dateStarted, Date dateEnded, double startMoney, double endMoney) {
+        this.id          = id;
+        this.seller      = seller;
+        this.dateStarted = dateStarted;
+        this.dateEnded   = dateEnded;
+        this.startMoney  = startMoney;
+        this.endMoney    = endMoney;
     }
 
-    public Seller getSeller() {
+    public String getSeller() {
         return seller;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public double getStartMoney() {
@@ -36,19 +33,42 @@ public class Session {
         return endMoney;
     }
 
-    public ArrayList<Sell> getSells() {
-        return sells;
-    }
-
     public int getId() {
         return id;
     }
 
-    private Seller          seller;
-    private Date            date;
+
+
+    public void setEndMoney(double endMoney) {
+        this.endMoney = endMoney;
+    }
+
+    public void setDateEnded(Date dateEnded) {
+        this.dateEnded = dateEnded;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getDateStarted() {
+        return dateStarted;
+    }
+
+    public Date getDateEnded() {
+        return dateEnded;
+    }
+
+    private int             id;
     private double          startMoney;
     private double          endMoney;
-    private ArrayList<Sell> sells;
-    private int             id;
+    private String          seller;
+    private Date            dateStarted;
+    private Date            dateEnded;
+    private boolean         active;
 
 }

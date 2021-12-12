@@ -40,7 +40,8 @@ public class SQLiteConnection {
                         "endMoney DOUBLE," +
                         "seller VARCHAR(100)," +
                         "dateStarted VARCHAR(255)," +
-                        "dateEnded VARCHAR(255)" +
+                        "dateEnded VARCHAR(255)," +
+                        "active INTEGER" +
                         ");"
                 );
             }
@@ -55,26 +56,13 @@ public class SQLiteConnection {
                         "products TEXT,"     +
                         "date VARCHAR(255)," +
                         "totalPrice DOUBLE," +
-                        "seller VARCHAR(40)," +
                         "sessionID INTEGER"  +
                         ");"
                 );
             }
 
             /**
-             * Creation of table Sellers if it doesn't exist.
-             */
-            if(!tables.contains("Sellers")) {
-                Statement statement = con.createStatement();
-                statement.execute("CREATE TABLE Sellers (" +
-                        "id INTEGER, " +
-                        "name VARCHAR(40)" +
-                        ");"
-                );
-            }
-
-            /**
-             * Creation of table Sellers if it doesn't exist.
+             * Creation of table Stock if it doesn't exist.
              */
             if(!tables.contains("Stock")) {
                 Statement statement = con.createStatement();

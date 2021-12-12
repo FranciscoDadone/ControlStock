@@ -14,11 +14,10 @@ public class SellQueries extends SQLiteConnection {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
-                    "INSERT INTO Sells (products, date, totalPrice, seller, sessionID) VALUES (" +
+                    "INSERT INTO Sells (products, date, totalPrice, sessionID) VALUES (" +
                             "'" + sell.toString()            + "'," +
                             "'" + sell.getDate().toString()  + "'," +
                                   sell.getPrice()            + "," +
-                            "'" + sell.getSeller().getName() + "'," +
                                   sell.getSession().getId()  + ");"
             );
         } catch (SQLException e) {
