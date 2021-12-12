@@ -2,6 +2,7 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.CSVQueries;
 import com.franciscodadone.model.local.queries.StockQueries;
+import com.franciscodadone.model.local.queries.UtilQueries;
 import com.franciscodadone.models.Product;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
@@ -166,6 +167,14 @@ public class AddModifyStockController {
                     resCode = JCustomOptionPane.confirmDialog("<html>El código QR puede que se haya escaneado mal. ¿Continuar?<br>(Si el producto no posee código QR, dejar el campo en blanco para que el sistema genere uno por usted.)</html>", "Advertencia");
                 }
 
+                // Field empty, generate a custom code.
+                if(view.codeField.getText().equals("")) {
+                    String oldCode = UtilQueries.getLastCustomCode();
+                    String newCode = "C" + (Integer.parseInt(oldCode.substring(1)) + 1);
+                    view.codeField.setText(newCode);
+                    UtilQueries.modifyLastCode(newCode);
+                }
+
                 Product product = new Product(
                         view.codeField.getText(),
                         view.descriptionField.getText(),
@@ -179,7 +188,10 @@ public class AddModifyStockController {
                     if(StockQueries.getProductByCode(product.getCode()) == null) {
                         StockQueries.saveProduct(product);
                         JCustomOptionPane.messageDialog("Producto guardado correctamente!", "", JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        JCustomOptionPane.messageDialog("Error: Ya hay un producto con ese código, búsquelo para modificarlo.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
+
                     GUIHandler.changeScreen(new AddModifyStock().panel);
                 }
             }

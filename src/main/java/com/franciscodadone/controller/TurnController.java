@@ -97,6 +97,10 @@ public class TurnController {
             }
         });
 
+        view.addSellButton.addActionListener(e -> {
+            System.out.println("fdfdsfsd");
+        });
+
     }
 
     private void handleKeyboard() {

@@ -38,7 +38,6 @@ public class MainScreenController {
                         }
                     }
                 }
-
             } else {
                 Object[] nameAndMoney = JCustomOptionPane.startSessionDialog();
                 if(nameAndMoney != null) {
