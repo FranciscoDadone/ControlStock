@@ -1,18 +1,17 @@
 package com.franciscodadone.models;
 
-import java.util.ArrayList;
-import java.util.Date;
+import com.franciscodadone.util.FDate;
 
 public class Session {
 
-    public Session(String seller, Date dateStarted, double startMoney) {
+    public Session(String seller, FDate dateStarted, double startMoney) {
         this.seller      = seller;
         this.dateStarted = dateStarted;
         this.startMoney  = startMoney;
         this.active      = true;
     }
 
-    public Session(int id, String seller, Date dateStarted, Date dateEnded, double startMoney, double endMoney) {
+    public Session(int id, String seller, FDate dateStarted, FDate dateEnded, double startMoney, double endMoney) {
         this.id          = id;
         this.seller      = seller;
         this.dateStarted = dateStarted;
@@ -43,7 +42,7 @@ public class Session {
         this.endMoney = endMoney;
     }
 
-    public void setDateEnded(Date dateEnded) {
+    public void setDateEnded(FDate dateEnded) {
         this.dateEnded = dateEnded;
     }
 
@@ -55,20 +54,20 @@ public class Session {
         this.active = active;
     }
 
-    public Date getDateStarted() {
+    public FDate getDateStarted() {
         return dateStarted;
     }
 
-    public Date getDateEnded() {
+    public FDate getDateEnded() {
         return dateEnded;
     }
 
-    private int             id;
-    private double          startMoney;
-    private double          endMoney;
-    private String          seller;
-    private Date            dateStarted;
-    private Date            dateEnded;
-    private boolean         active;
+    private int     id;
+    private double  startMoney;
+    private double  endMoney;
+    private String  seller;
+    private FDate   dateStarted;
+    private FDate   dateEnded;
+    private boolean active;
 
 }

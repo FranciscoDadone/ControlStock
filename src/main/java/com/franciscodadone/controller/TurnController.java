@@ -6,6 +6,7 @@ import com.franciscodadone.model.local.queries.StockQueries;
 import com.franciscodadone.models.Product;
 import com.franciscodadone.models.Sell;
 import com.franciscodadone.models.Session;
+import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
@@ -32,10 +33,9 @@ public class TurnController {
         view.cartList.setModel(defaultListModel1);
         view.cartList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        view.dateField.setText(new Date().toString());
-
         view.sellerNameField.setText("Vendedor: " + this.session.getSeller());
-        view.sessionStartLabel.setText("Fecha de inicio del turno: " + session.getDateStarted() + "        ");
+        view.sessionStartLabel.setText("Inicio del turno: " + session.getDateStarted());
+        view.dateNowLabel.setText("Fecha actual: " + new FDate());
 
     }
 
@@ -108,7 +108,7 @@ public class TurnController {
                 product.setProdName(product.getUnmodifiedProdName());
                 products.add(product);
             }
-            Sell sell = new Sell(products, getTotal(), session.getId(), new Date());
+            Sell sell = new Sell(products, getTotal(), session.getId(), new FDate());
             SellQueries.saveSell(sell);
 
             view.cartList.removeAll();
@@ -117,7 +117,6 @@ public class TurnController {
             view.exchangeLabel.setText("$0");
             view.totalLabel.setText("$0");
             view.exchangeField.setText("");
-            view.dateField.setText(new Date().toString());
             GUIHandler.changeScreen(view.panel);
 
         });
@@ -128,6 +127,7 @@ public class TurnController {
         // Registers F7 in keyboard to focus the cursor to the barcode field.
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(e -> {
+                    view.dateNowLabel.setText("Fecha actual: " + new FDate()); // update date
                     if(e.getKeyCode() == 118) view.focusField();
                     if(view.codeField.hasFocus()) {
                         searchFilter(view.codeField.getText());

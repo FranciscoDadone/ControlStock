@@ -2,6 +2,7 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.models.Session;
+import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.view.*;
@@ -32,7 +33,7 @@ public class MainScreenController {
                             String sellerName = (String)nameAndMoney[0];
                             double money = Double.parseDouble(nameAndMoney[1].toString());
 
-                            TurnView turn = new TurnView(SessionsQueries.startSession(money, sellerName, new Date()));
+                            TurnView turn = new TurnView(SessionsQueries.startSession(money, sellerName, new FDate()));
                             GUIHandler.changeScreen(turn.panel);
                             turn.focusField();
                         }
@@ -44,7 +45,7 @@ public class MainScreenController {
                     String sellerName = (String)nameAndMoney[0];
                     double money = Double.parseDouble(nameAndMoney[1].toString());
 
-                    TurnView turn = new TurnView(SessionsQueries.startSession(money, sellerName, new Date()));
+                    TurnView turn = new TurnView(SessionsQueries.startSession(money, sellerName, new FDate()));
                     GUIHandler.changeScreen(turn.panel);
                     turn.focusField();
                 }

@@ -1,11 +1,11 @@
 package com.franciscodadone.models;
 
+import com.franciscodadone.util.FDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Sell {
 
-    public Sell(ArrayList<Product> products, double price, int sessionID, Date date) {
+    public Sell(ArrayList<Product> products, double price, int sessionID, FDate date) {
         this.products = products;
         this.price    = price;
         this.sessionID  = sessionID;
@@ -20,7 +20,7 @@ public class Sell {
         return sessionID;
     }
 
-    public Date getDate() {
+    public FDate getDate() {
         return date;
     }
 
@@ -39,7 +39,7 @@ public class Sell {
 
     private ArrayList<Product> products;
     private int                sessionID;
-    private Date               date;
+    private FDate              date;
     private double             price;
 
 }

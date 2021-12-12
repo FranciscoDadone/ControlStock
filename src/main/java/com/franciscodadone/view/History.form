@@ -50,7 +50,44 @@
               <background color="-8618111"/>
             </properties>
             <border type="none"/>
-            <children/>
+            <children>
+              <grid id="91ad0" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="North"/>
+                <properties>
+                  <background color="-8618111"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="4fd9e" class="javax.swing.JLabel">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <font size="26"/>
+                      <foreground color="-16777216"/>
+                      <horizontalAlignment value="4"/>
+                      <text value="FECHAS"/>
+                    </properties>
+                  </component>
+                  <component id="2e6c8" class="javax.swing.JLabel">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <background color="-8618111"/>
+                      <font size="26"/>
+                      <foreground color="-16777216"/>
+                      <horizontalAlignment value="0"/>
+                      <text value="VENDEDOR"/>
+                    </properties>
+                  </component>
+                  <component id="d054f" class="javax.swing.JLabel">
+                    <constraints border-constraint="East"/>
+                    <properties>
+                      <font size="26"/>
+                      <foreground color="-16777216"/>
+                      <text value="DETALLES"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
           </grid>
         </children>
       </scrollpane>

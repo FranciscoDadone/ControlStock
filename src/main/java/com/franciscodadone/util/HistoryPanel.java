@@ -1,56 +1,42 @@
 package com.franciscodadone.util;
 
+import com.franciscodadone.models.Session;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class HistoryPanel extends JPanel {
+public class HistoryPanel {
 
-    public HistoryPanel() {
-        JButton btn = new JButton("Detalles");
+    public HistoryPanel(Session session, JPanel datesPanel, JPanel descriptionPanel, JPanel buttonsPanel) {
+
         Font font = new Font("Arial", Font.PLAIN, 24);
-        JLabelFont date = new JLabelFont("     12/12/2021 (13:30hs - 18:30hs)      ", font),
-                sellerName = new JLabelFont("     Vendedor: Lorenzo     ", font),
-                startMoney = new JLabelFont("     Inicio caja: $10000     ", font),
-                endMoney = new JLabelFont("     Fin caja: $30000     ", font);
+        JButton btn = new JButton("Detalles");
+        JLabelFont date = new JLabelFont("     (" + session.getDateStarted() + " - " + session.getDateEnded() + ")      ", font),
+                sellerName = new JLabelFont(session.getSeller(), font);
 
-        JPanel panelVertical = new JPanel();
-        panelVertical.setLayout(new BoxLayout(panelVertical, BoxLayout.X_AXIS));
+        JPanel subPanelCenter = new JPanel();
+        subPanelCenter.add(sellerName);
+        descriptionPanel.add(subPanelCenter);
+        subPanelCenter.setBackground(new Color(164,167,169));
+        subPanelCenter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JPanel panelHorizontal = new JPanel();
-        panelHorizontal.setLayout(new BorderLayout());
-        panelVertical.add(panelHorizontal);
+        btn.setFont(new Font("Arial", Font.BOLD, 15));
+        JPanel subPanelRight = new JPanel();
+        subPanelRight.add(btn);
+        buttonsPanel.add(subPanelRight);
+        subPanelRight.setBackground(new Color(164,167,169));
+        subPanelRight.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JPanel subPanelHorizontal = new JPanel();
-        subPanelHorizontal.setLayout(new FlowLayout());
+        JPanel subPanelLeft = new JPanel();
+        subPanelLeft.add(date);
+        datesPanel.add(subPanelLeft);
+        subPanelLeft.setBackground(new Color(164,167,169));
+        subPanelLeft.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        subPanelHorizontal.add(sellerName);
-        subPanelHorizontal.add(startMoney);
-        subPanelHorizontal.add(endMoney);
-        panelHorizontal.add(subPanelHorizontal, BorderLayout.CENTER);
+        btn.addActionListener(e -> {
+            System.out.println(sellerName.getText());
+        });
 
-        JPanel datePanel = new JPanel();
-        JPanel btnPanel = new JPanel();
-
-        panelVertical.setBackground(new Color(185,188,190));
-        panelHorizontal.setBackground(new Color(185,188,190));
-        subPanelHorizontal.setBackground(new Color(185,188,190));
-        datePanel.setBackground(new Color(185,188,190));
-        btnPanel.setBackground(new Color(185,188,190));
-
-        datePanel.add(date);
-        btnPanel.add(btn);
-        panelHorizontal.add(datePanel, BorderLayout.WEST);
-        panelHorizontal.add(btnPanel, BorderLayout.EAST);
-
-        datePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        btnPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        subPanelHorizontal.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-
-        btn.setFont(font);
-        panelHorizontal.setMaximumSize(panelHorizontal.getPreferredSize());
-        panelVertical.setMaximumSize(panelVertical.getPreferredSize());
-        this.add(panelVertical);
-        this.setBackground(new Color(124,127,129));
     }
 
 }

@@ -1,28 +1,22 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
-import com.franciscodadone.models.Product;
 import com.franciscodadone.models.Session;
-
+import com.franciscodadone.util.FDate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
+import java.util.ArrayList;
 
 public class SessionsQueries extends SQLiteConnection {
 
-    public static Session startSession(double startMoney, String seller, Date dateStarted) {
+    public static Session startSession(double startMoney, String seller, FDate dateStarted) {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
                     "INSERT INTO Sessions (startMoney, seller, dateStarted, active) VALUES (" +
                                   startMoney             + "," +
                             "'" + seller                 + "'," +
-                            "'" + dateStarted.toString() + "'," +
+                            "'" + dateStarted + "'," +
                                   true                   + ");"
             );
         } catch (SQLException e) {
@@ -43,14 +37,13 @@ public class SessionsQueries extends SQLiteConnection {
         java.sql.Connection connection = connect();
         try {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sessions WHERE active=1;");
-            DateFormat format = new SimpleDateFormat("EE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
 
             while(res.next()) {
                 session = new Session(
                         Integer.parseInt(res.getString("id")),
                         res.getString("seller"),
-                        format.parse(res.getString("dateStarted")),
-                        (res.getString("dateEnded") == null) ? null : format.parse(res.getString("dateEnded")),
+                        new FDate(res.getString("dateStarted")),
+                        new FDate(res.getString("dateEnded")),
                         res.getDouble("startMoney"),
                         res.getDouble("endMoney")
                 );
@@ -76,7 +69,7 @@ public class SessionsQueries extends SQLiteConnection {
                     "UPDATE Sessions SET active=0 WHERE id=" + currentSession.getId() + ";"
             );
             connection.createStatement().execute(
-                    "UPDATE Sessions SET dateEnded='" + new Date() + "' WHERE id=" + currentSession.getId() + ";"
+                    "UPDATE Sessions SET dateEnded='" + new FDate() + "' WHERE id=" + currentSession.getId() + ";"
             );
             connection.createStatement().execute(
                     "UPDATE Sessions SET endMoney=" + sessionEndMoney + " WHERE id=" + currentSession.getId() + ";"
@@ -89,6 +82,35 @@ public class SessionsQueries extends SQLiteConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static ArrayList<Session> getAllSessions() {
+        ArrayList<Session> sessions = new ArrayList<>();
+        java.sql.Connection connection = connect();
+        try {
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sessions WHERE active=0;");
+
+            while(res.next()) {
+                sessions.add(new Session(
+                        Integer.parseInt(res.getString("id")),
+                        res.getString("seller"),
+                        new FDate(res.getString("dateStarted")),
+                        new FDate(res.getString("dateEnded")),
+                        res.getDouble("startMoney"),
+                        res.getDouble("endMoney")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return sessions;
         }
     }
 
