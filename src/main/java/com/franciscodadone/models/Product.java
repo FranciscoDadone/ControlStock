@@ -2,7 +2,7 @@ package com.franciscodadone.models;
 
 public class Product {
 
-    public Product(String code, String prodName, double price, int quantity, String quantityType, boolean deleted) {
+    public Product(String code, String prodName, double price, int quantity, String quantityType, boolean deleted, int minQuantity) {
         this.code         = code;
         this.prodName     = prodName;
         this.unmodifiedProdName = prodName;
@@ -10,6 +10,7 @@ public class Product {
         this.quantity     = quantity;
         this.quantityType = quantityType;
         this.deleted      = deleted;
+        this.minQuantity  = minQuantity;
     }
 
     public void setProdName(String prodName) {
@@ -61,12 +62,21 @@ public class Product {
         return deleted;
     }
 
-    private String code;
-    private String prodName;
-    private String unmodifiedProdName;
-    private double price;
-    private int    quantity;
-    private String quantityType;
+    public int getMinQuantity() {
+        return minQuantity;
+    }
+
+    public void setMinQuantity(int minQuantity) {
+        this.minQuantity = minQuantity;
+    }
+
+    private String  code;
+    private String  prodName;
+    private String  unmodifiedProdName;
+    private double  price;
+    private int     quantity;
+    private String  quantityType;
     private boolean deleted;
+    private int     minQuantity;
 
 }

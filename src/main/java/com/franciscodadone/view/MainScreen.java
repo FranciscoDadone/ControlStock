@@ -19,8 +19,6 @@ public class MainScreen extends JFrame {
     public JButton historyButton;
 
     public MainScreen(boolean buildFrame) {
-        new MainScreenController(this);
-
         if(buildFrame) {
             this.setContentPane(panel);
             this.pack();
@@ -49,6 +47,7 @@ public class MainScreen extends JFrame {
 
             this.setVisible(true);
         }
+        new MainScreenController(this);
     }
 
     public JPanel getContentPanel() {

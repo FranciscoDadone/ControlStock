@@ -17,12 +17,14 @@ public class ProductsQueries extends SQLiteConnection {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
-                    "INSERT INTO Stock (code, title, quantity, price, quantityType, deleted) VALUES (" +
+                    "INSERT INTO Stock (code, title, quantity, price, quantityType, deleted, minQuantity) VALUES (" +
                             "'" + product.getCode()         + "'," +
                             "'" + product.getProdName()     + "'," +
                                   product.getQuantity()     + "," +
                                   product.getPrice()        + "," +
-                            "'" + product.getQuantityType() + "', false);"
+                            "'" + product.getQuantityType() + "', " +
+                                 "false," +
+                                  product.getMinQuantity() + ");"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class ProductsQueries extends SQLiteConnection {
                             res.getDouble("price"),
                             res.getInt("quantity"),
                             res.getString("quantityType"),
-                            res.getBoolean("deleted")
+                            res.getBoolean("deleted"),
+                            res.getInt("minQuantity")
                     ));
                 }
             }
@@ -76,7 +79,8 @@ public class ProductsQueries extends SQLiteConnection {
                         res.getDouble("price"),
                         res.getInt("quantity"),
                         res.getString("quantityType"),
-                        res.getBoolean("deleted")
+                        res.getBoolean("deleted"),
+                        res.getInt("minQuantity")
                 );
             }
         } catch (SQLException e) {}
@@ -101,6 +105,9 @@ public class ProductsQueries extends SQLiteConnection {
             );
             connection.createStatement().execute(
                     "UPDATE Stock SET quantity=" + product.getQuantity() + " WHERE code='" + code + "';"
+            );
+            connection.createStatement().execute(
+                    "UPDATE Stock SET minQuantity=" + product.getMinQuantity() + " WHERE code='" + code + "';"
             );
         } catch (SQLException e) {
             e.printStackTrace();

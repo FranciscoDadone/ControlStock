@@ -99,6 +99,21 @@ public class AddModifyStockController {
             }
 
         });
+
+        view.modifyMinQuantity.addActionListener(e -> {
+            String res = JOptionPane.showInputDialog("Modificar cantidad minima (Para que aparezca la notificación)", ((Product)view.stockList.getSelectedValue()).getMinQuantity());
+            if(res != null) {
+                if(Util.isNumeric(res)) {
+                    Product product = (Product)view.stockList.getSelectedValue();
+                    product.setMinQuantity(Integer.parseInt(res));
+                    ProductsQueries.modifyProductByCode(product.getCode(), product);
+                    JCustomOptionPane.messageDialog("Cantidad mínima modificada con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
+                    updateList();
+                } else {
+                    JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
 
     private void stockSelection() {
@@ -109,21 +124,25 @@ public class AddModifyStockController {
                 view.searchPrice.setText("Precio: $" + product.getPrice());
                 view.searchQuantity.setText("Cantidad: " + product.getQuantity() + " " + ((product.getQuantityType().equals("G")) ? "gramos" : ""));
                 view.searchQR.setText("QR: " + product.getCode());
+                view.minQuantityLabel.setText("C/Min: " + product.getMinQuantity());
                 view.modifyQuantityButton.setEnabled(true);
                 view.modifyPriceButton.setEnabled(true);
                 view.modifyNameButton.setEnabled(true);
                 view.addToStockButton.setEnabled(true);
                 view.deleteProductButton.setEnabled(true);
+                view.modifyMinQuantity.setEnabled(true);
             } catch (Exception e1) {
                 view.productSearch.setText("Producto: -");
                 view.searchPrice.setText("Precio: $0000");
                 view.searchQuantity.setText("Cantidad: 0000");
                 view.searchQR.setText("QR: 00000000000");
+                view.minQuantityLabel.setText("C/Min: 0");
                 view.modifyQuantityButton.setEnabled(false);
                 view.modifyPriceButton.setEnabled(false);
                 view.modifyNameButton.setEnabled(false);
                 view.addToStockButton.setEnabled(false);
                 view.deleteProductButton.setEnabled(false);
+                view.modifyMinQuantity.setEnabled(false);
             }
         });
     }
@@ -163,6 +182,8 @@ public class AddModifyStockController {
                 JCustomOptionPane.messageDialog("La cantidad no puede quedar vacía o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if(view.codeField.getText().contains(":") || view.codeField.getText().contains(";")) {
                 JCustomOptionPane.messageDialog("El QR no puede tener símbolos.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if(!Util.isNumeric(view.minQuantity.getText())) {
+                JCustomOptionPane.messageDialog("La minima cantidad tiene que ser numérica.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 int resCode = -1;
                 if(new CSVQueries().search(view.codeField.getText()) == null) {
@@ -183,7 +204,8 @@ public class AddModifyStockController {
                         Double.parseDouble(view.priceField.getText()),
                         Integer.parseInt(view.quantityField.getText()),
                         (view.unitRadioButton.isSelected()) ? "U" : "G",
-                        false);
+                        false,
+                        Integer.parseInt(view.minQuantity.getText()));
                 int res = JCustomOptionPane.confirmDialog(product);
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {

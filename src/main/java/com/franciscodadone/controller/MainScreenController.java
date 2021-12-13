@@ -1,14 +1,14 @@
 package com.franciscodadone.controller;
 
+import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.models.Session;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.view.*;
-
 import javax.swing.*;
-import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainScreenController {
 
@@ -60,6 +60,25 @@ public class MainScreenController {
         view.historyButton.addActionListener(e -> {
             GUIHandler.changeScreen(new History().panel);
         });
+
+        lowStockNotification();
+    }
+
+    private void lowStockNotification() {
+        AtomicReference<String> lowStockStr = new AtomicReference<>("");
+        ProductsQueries.getAllProducts().forEach(product -> {
+            if(product.getQuantity() < product.getMinQuantity()) {
+                lowStockStr.set(lowStockStr + "   - " + product.getProdName() + "<br>");
+            }
+        });
+        if(!lowStockStr.equals("")) {
+            JCustomOptionPane.messageDialog(
+                    "<html>" +
+                            "<b>¡Advertencia! Stock bajo de los siguientes artículos:</b><br>" +
+                            lowStockStr +
+                            "</html>"
+                    , "Advertencia de stock", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     private MainScreen view;

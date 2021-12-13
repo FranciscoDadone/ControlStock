@@ -72,7 +72,8 @@ public class SQLiteConnection {
                         "quantity INTEGER, " +
                         "price DOUBLE, " +
                         "quantityType VARCHAR(1)," +
-                        "deleted INTEGER);"
+                        "deleted INTEGER," +
+                        "minQuantity INTEGER);"
                 );
             }
 

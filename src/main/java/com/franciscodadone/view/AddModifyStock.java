@@ -29,6 +29,9 @@ public class AddModifyStock {
     public JButton modifyNameButton;
     public JButton addToStockButton;
     public JButton deleteProductButton;
+    public JTextField minQuantity;
+    public JButton modifyMinQuantity;
+    public JLabel minQuantityLabel;
 
     public AddModifyStock() {
         new AddModifyStockController(this);
