@@ -345,15 +345,24 @@
       <grid id="78401" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="North"/>
         <properties>
-          <background color="-4604738"/>
+          <background color="-8618111"/>
         </properties>
         <border type="none"/>
         <children>
           <component id="cba7e" class="javax.swing.JButton" binding="backButton">
-            <constraints border-constraint="West"/>
+            <constraints border-constraint="East"/>
             <properties>
               <font size="24"/>
               <text value="Atrás"/>
+            </properties>
+          </component>
+          <component id="f304c" class="javax.swing.JLabel">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <font size="24"/>
+              <foreground color="-16777216"/>
+              <horizontalAlignment value="0"/>
+              <text value="Agregar o modificar stock"/>
             </properties>
           </component>
         </children>

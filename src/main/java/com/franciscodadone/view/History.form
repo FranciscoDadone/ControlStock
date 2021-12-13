@@ -12,7 +12,7 @@
       <grid id="a8301" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="North"/>
         <properties>
-          <background color="-4604738"/>
+          <background color="-8618111"/>
         </properties>
         <border type="line">
           <color color="-12236726"/>
@@ -21,7 +21,7 @@
           <component id="3cd9" class="javax.swing.JLabel">
             <constraints border-constraint="Center"/>
             <properties>
-              <background color="-4604738"/>
+              <background color="-12236726"/>
               <font size="28"/>
               <foreground color="-16777216"/>
               <horizontalAlignment value="0"/>
@@ -47,7 +47,7 @@
           <grid id="524a3" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints/>
             <properties>
-              <background color="-8618111"/>
+              <background color="-5986391"/>
             </properties>
             <border type="none"/>
             <children>

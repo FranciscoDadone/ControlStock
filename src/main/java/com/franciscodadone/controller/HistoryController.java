@@ -41,9 +41,9 @@ public class HistoryController {
         view.mainPanel.add(descriptionPanel, BorderLayout.CENTER);
         view.mainPanel.add(buttonsPanel, BorderLayout.EAST);
 
-        descriptionPanel.setBackground(new Color(124,127,129));
-        datePanel.setBackground(new Color(124,127,129));
-        buttonsPanel.setBackground(new Color(124,127,129));
+        descriptionPanel.setBackground(new Color(164,167,169));
+        datePanel.setBackground(new Color(164,167,169));
+        buttonsPanel.setBackground(new Color(164,167,169));
 
         SessionsQueries.getAllSessions().forEach(session -> {
             Font font = new Font("Arial", Font.PLAIN, 24);
