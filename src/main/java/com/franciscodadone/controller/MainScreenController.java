@@ -2,6 +2,7 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
+import com.franciscodadone.models.Product;
 import com.franciscodadone.models.Session;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.GUIHandler;
@@ -65,12 +66,12 @@ public class MainScreenController {
     }
 
     private void lowStockNotification() {
-        AtomicReference<String> lowStockStr = new AtomicReference<>("");
-        ProductsQueries.getAllProducts().forEach(product -> {
+        String lowStockStr = "";
+        for(Product product: ProductsQueries.getAllProducts()) {
             if(product.getQuantity() < product.getMinQuantity()) {
-                lowStockStr.set(lowStockStr + "   - " + product.getProdName() + "<br>");
+                lowStockStr += "   - " + product.getProdName() + "<br>";
             }
-        });
+        }
         if(!lowStockStr.equals("")) {
             JCustomOptionPane.messageDialog(
                     "<html>" +
