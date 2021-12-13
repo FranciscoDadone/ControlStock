@@ -110,6 +110,13 @@ public class TurnController {
             Sell sell = new Sell(products, getTotal(), session.getId(), new FDate());
             SellQueries.saveSell(sell);
 
+            // Removing from stock
+            products.forEach(product -> {
+                Product p = ProductsQueries.getProductByCode(product.getCode());
+                p.setQuantity(p.getQuantity() - product.getQuantity());
+                ProductsQueries.modifyProductByCode(product.getCode(), p);
+            });
+
             view.cartList.removeAll();
             defaultListModel1.removeAllElements();
             view.addSellButton.setEnabled(false);
