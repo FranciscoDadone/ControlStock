@@ -3,14 +3,14 @@ package com.franciscodadone.models;
 public class Product {
 
     public Product(String code, String prodName, double price, int quantity, String quantityType, boolean deleted, int minQuantity) {
-        this.code         = code;
-        this.prodName     = prodName;
+        this.code               = code;
+        this.prodName           = prodName;
         this.unmodifiedProdName = prodName;
-        this.price        = price;
-        this.quantity     = quantity;
-        this.quantityType = quantityType;
-        this.deleted      = deleted;
-        this.minQuantity  = minQuantity;
+        this.price              = price;
+        this.quantity           = quantity;
+        this.quantityType       = quantityType;
+        this.deleted            = deleted;
+        this.minQuantity        = minQuantity;
     }
 
     public void setProdName(String prodName) {

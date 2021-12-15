@@ -114,4 +114,27 @@ public class SessionsQueries extends SQLiteConnection {
         }
     }
 
+    public static void saveSession(Session session) {
+        java.sql.Connection connection = connect();
+        try {
+            connection.createStatement().execute(
+                    "INSERT INTO Sessions (startMoney, endMoney, seller, dateStarted, dateEnded, active) VALUES (" +
+                            session.getStartMoney()             + "," +
+                            session.getEndMoney()             + "," +
+                            "'" + session.getSeller()                 + "'," +
+                            "'" + session.getDateStarted() + "'," +
+                            "'" + session.getDateEnded() + "'," +
+                            false                   + ");"
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

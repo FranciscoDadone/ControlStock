@@ -39,6 +39,11 @@
             <artifactId>swingx-core</artifactId>
             <version>1.6.5-1</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.29</version>
+        </dependency>
     </dependencies>
 
 </project>

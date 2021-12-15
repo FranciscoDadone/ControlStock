@@ -25,7 +25,7 @@ public class Util {
 
     public static String formatDate(Date date) {
         DateFormat originalFormat = new SimpleDateFormat("EE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date d = null;
         try {
             d = originalFormat.parse(date.toString());

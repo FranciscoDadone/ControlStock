@@ -43,9 +43,35 @@ public class SellQueries extends SQLiteConnection {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sells WHERE sessionID=" + session.getId() + ";");
             while(res.next()) {
                 sells.add(new Sell(
+                        res.getInt("id"),
                         ProductsQueries.getProducts(res.getString("products")),
                         res.getDouble("totalPrice"),
                         session.getId(),
+                        new FDate(res.getString("date"))
+                ));
+            }
+        } catch (SQLException e) {}
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return sells;
+        }
+    }
+
+    public static ArrayList<Sell> getAllSells() {
+        ArrayList<Sell> sells = new ArrayList<>();
+        java.sql.Connection connection = connect();
+        try {
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sells;");
+            while(res.next()) {
+                sells.add(new Sell(
+                        res.getInt("id"),
+                        ProductsQueries.getProducts(res.getString("products")),
+                        res.getDouble("totalPrice"),
+                        res.getInt("sessionID"),
                         new FDate(res.getString("date"))
                 ));
             }

@@ -6,10 +6,18 @@ import java.util.ArrayList;
 public class Sell {
 
     public Sell(ArrayList<Product> products, double price, int sessionID, FDate date) {
-        this.products = products;
-        this.price    = price;
-        this.sessionID  = sessionID;
-        this.date     = date;
+        this.products  = products;
+        this.price     = price;
+        this.sessionID = sessionID;
+        this.date      = date;
+    }
+
+    public Sell(int id, ArrayList<Product> products, double price, int sessionID, FDate date) {
+        this.id        = id;
+        this.products  = products;
+        this.price     = price;
+        this.sessionID = sessionID;
+        this.date      = date;
     }
 
     public ArrayList<Product> getProducts() {
@@ -37,9 +45,14 @@ public class Sell {
         return s;
     }
 
+    public int getId() {
+        return id;
+    }
+
     private ArrayList<Product> products;
     private int                sessionID;
     private FDate              date;
     private double             price;
+    private int                id;
 
 }
