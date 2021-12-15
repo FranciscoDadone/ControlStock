@@ -37,12 +37,14 @@ public class AddModifyStockController {
     private void editButtons() {
         view.modifyNameButton.addActionListener(e -> {
             String res = JOptionPane.showInputDialog("Modificar nombre", view.stockList.getSelectedValue());
-            if(res != null) {
+            if(res != null && !res.equals("")) {
                 Product product = (Product)view.stockList.getSelectedValue();
                 product.setProdName(res);
                 ProductsQueries.modifyProductByCode(product.getCode(), product);
                 JCustomOptionPane.messageDialog("Nombre modificado con éxito!", "Info", JOptionPane.PLAIN_MESSAGE);
                 updateList();
+            } else {
+                JCustomOptionPane.messageDialog("El nombre no puede quedar en blanco.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

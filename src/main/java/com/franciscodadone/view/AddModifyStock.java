@@ -37,6 +37,7 @@ public class AddModifyStock {
         new AddModifyStockController(this);
 
         PromptSupport.setPrompt("Buscar por nombre o código...", searchStock);
+        PromptSupport.setPrompt("Cantidad a la cual saltará la alerta de bajo stock.", minQuantity);
         PromptSupport.setPrompt("Código QR o dejar en blanco para generar un código.", codeField);
         searchStock.setFont(new Font("Arial", Font.PLAIN, 24));
         codeField.setFont(new Font("Arial", Font.PLAIN, 24));

@@ -23,9 +23,7 @@ public class MainScreen extends JFrame {
             this.setContentPane(panel);
             this.pack();
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+            this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 //        this.setIconImage(new ImageIcon(getClass().getResource("/images/logo.jpg")).getImage());
 
             this.addWindowListener(new WindowAdapter(){
@@ -40,11 +38,10 @@ public class MainScreen extends JFrame {
                                 JCustomOptionPane.messageDialog("Turno gurdado exitosamente!", "", JOptionPane.PLAIN_MESSAGE);
                                 System.exit(0);
                             }
-                        } else System.exit(0);
+                        } else if(res == JOptionPane.NO_OPTION) System.exit(0);
                     } else System.exit(0);
                 }
             });
-
             this.setVisible(true);
         }
         new MainScreenController(this);
