@@ -67,6 +67,7 @@ public class RemoteSellQueries {
 
     protected static void retrieveFromRemote() {
         getAllSells().forEach((remoteSell) -> {
+            Logger.log("Retrieving sell from remote. id=" + remoteSell.getId());
             SellQueries.saveSell(remoteSell, false);
         });
 

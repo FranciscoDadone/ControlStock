@@ -40,6 +40,7 @@ public class RemoteUtilQueries {
     }
 
     protected static void retrieveFromRemote() {
+        Logger.log("Retrieving utils from remote.");
         UtilQueries.modifyLastCode(getLastCustomCode(), false);
     }
 

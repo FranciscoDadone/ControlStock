@@ -24,7 +24,7 @@ public class ProductsQueries extends SQLiteConnection {
                                   product.getQuantity()     + "," +
                                   product.getPrice()        + "," +
                             "'" + product.getQuantityType() + "', " +
-                                  product.isDeleted()       +
+                                  product.isDeleted()       + ", " +
                                   product.getMinQuantity()  + ");"
             );
         } catch (SQLException e) {

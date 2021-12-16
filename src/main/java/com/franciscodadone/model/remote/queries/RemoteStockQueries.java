@@ -66,6 +66,7 @@ public class RemoteStockQueries {
 
     protected static void retrieveFromRemote() {
         getAllProducts().forEach((remoteProduct) -> {
+            Logger.log("Retrieving product from remote. name=" + remoteProduct.getProdName());
             ProductsQueries.saveProduct(remoteProduct, false);
         });
     }

@@ -67,6 +67,7 @@ public class RemoteSessionsQueries {
 
     protected static void retrieveFromRemote() {
         getAllSessions().forEach((remoteSession) -> {
+            Logger.log("Retrieving session from remote. id=" + remoteSession.getId());
             SessionsQueries.saveSession(remoteSession);
         });
 
