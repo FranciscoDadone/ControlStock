@@ -65,16 +65,16 @@ public class RemoteStockQueries {
         return false;
     }
 
-    public static void retrieveFromRemote() {
+    protected static void retrieveFromRemote() {
         getAllProducts().forEach((remoteProduct) -> {
-            ProductsQueries.saveProduct(remoteProduct);
+            ProductsQueries.saveProduct(remoteProduct, false);
         });
     }
 
     public static void backupProduct(Product product) {
         new Thread(() -> {
             MongoConnection mongoConnection = new MongoConnection();
-            Logger.log("Making backup of Product code=" + product.getCode());
+            Logger.log("Making backup of Product '" + product.getProdName() + "'");
             mongoConnection.mongoStock.insertOne(new Document()
                     .append("code", product.getCode())
                     .append("title", product.getProdName())
@@ -89,7 +89,7 @@ public class RemoteStockQueries {
     }
 
     public static void editProduct(Product product) {
-        Logger.log("Editing Product code=" + product.getCode());
+        Logger.log("Editing Product '" + product.getProdName() + "'");
         new Thread(() -> {
             MongoConnection mongoConnection = new MongoConnection();
             Bson filter = Filters.eq("code", product.getCode());

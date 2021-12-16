@@ -70,6 +70,10 @@ public class Product {
         this.minQuantity = minQuantity;
     }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     private String  code;
     private String  prodName;
     private String  unmodifiedProdName;

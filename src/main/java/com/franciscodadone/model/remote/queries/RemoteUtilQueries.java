@@ -39,11 +39,11 @@ public class RemoteUtilQueries {
         return false;
     }
 
-    public static void retrieveFromRemote() {
-        UtilQueries.modifyLastCode(getLastCustomCode());
+    protected static void retrieveFromRemote() {
+        UtilQueries.modifyLastCode(getLastCustomCode(), false);
     }
 
-    public static void backupLastCode(String code) {
+    private static void backupLastCode(String code) {
         new Thread(() -> {
             MongoConnection mongoConnection = new MongoConnection();
             Logger.log("Making backup of Util (last code) code=" + code);

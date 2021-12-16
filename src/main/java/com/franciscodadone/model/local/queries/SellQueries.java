@@ -3,6 +3,7 @@ package com.franciscodadone.model.local.queries;
 import com.franciscodadone.model.local.SQLiteConnection;
 import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.model.models.Session;
+import com.franciscodadone.model.remote.queries.RemoteSellQueries;
 import com.franciscodadone.util.FDate;
 
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ public class SellQueries extends SQLiteConnection {
      * Adds a new sell to the database.
      * @param sell
      */
-    public static void saveSell(Sell sell) {
+    public static void saveSell(Sell sell, boolean saveRemote) {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
@@ -34,6 +35,7 @@ public class SellQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
+        if(saveRemote) RemoteSellQueries.backupSell(sell);
     }
 
     public static ArrayList<Sell> getAllSellsFromSession(Session session) {
@@ -86,4 +88,26 @@ public class SellQueries extends SQLiteConnection {
         }
     }
 
+    public static int getSellID(Sell sell) {
+        int id = -1;
+        java.sql.Connection connection = connect();
+        try {
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Sells WHERE " +
+                    "date='" + sell.getDate().toString() + "' AND " +
+                    "totalPrice=" + sell.getPrice() + ";");
+            while(res.next()) {
+                id = res.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return id;
+        }
+    }
 }

@@ -65,9 +65,9 @@ public class RemoteSellQueries {
         return false;
     }
 
-    public static void retrieveFromRemote() {
+    protected static void retrieveFromRemote() {
         getAllSells().forEach((remoteSell) -> {
-            SellQueries.saveSell(remoteSell);
+            SellQueries.saveSell(remoteSell, false);
         });
 
         SellQueries.getAllSells().forEach((localSell) -> {
@@ -91,9 +91,12 @@ public class RemoteSellQueries {
     public static void backupSell(Sell sell) {
         new Thread(() -> {
             MongoConnection mongoConnection = new MongoConnection();
-            Logger.log("Making backup of sell id=" + sell.getId());
+
+            int id = SellQueries.getSellID(sell);
+
+            Logger.log("Making backup of sell id=" + id);
             mongoConnection.mongoSells.insertOne(new Document()
-                    .append("id", sell.getId())
+                    .append("id", id)
                     .append("products", sell.toString())
                     .append("totalPrice", sell.getPrice())
                     .append("sessionID", sell.getSessionID())

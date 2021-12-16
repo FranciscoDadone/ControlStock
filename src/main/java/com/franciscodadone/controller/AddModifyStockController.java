@@ -197,7 +197,7 @@ public class AddModifyStockController {
                     String oldCode = UtilQueries.getLastCustomCode();
                     String newCode = "C" + (Integer.parseInt(oldCode.substring(1)) + 1);
                     view.codeField.setText(newCode);
-                    UtilQueries.modifyLastCode(newCode);
+                    UtilQueries.modifyLastCode(newCode, true);
                 }
 
                 Product product = new Product(
@@ -212,7 +212,7 @@ public class AddModifyStockController {
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
                     if(ProductsQueries.getProductByCode(product.getCode()) == null) {
-                        ProductsQueries.saveProduct(product);
+                        ProductsQueries.saveProduct(product, true);
                         JCustomOptionPane.messageDialog("Producto guardado correctamente!", "", JOptionPane.PLAIN_MESSAGE);
                     } else {
                         JCustomOptionPane.messageDialog("Error: Ya hay un producto con ese código, búsquelo para modificarlo.", "Error", JOptionPane.ERROR_MESSAGE);

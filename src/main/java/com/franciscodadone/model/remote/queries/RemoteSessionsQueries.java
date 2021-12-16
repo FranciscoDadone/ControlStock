@@ -65,7 +65,7 @@ public class RemoteSessionsQueries {
         return false;
     }
 
-    public static void retrieveFromRemote() {
+    protected static void retrieveFromRemote() {
         getAllSessions().forEach((remoteSession) -> {
             SessionsQueries.saveSession(remoteSession);
         });

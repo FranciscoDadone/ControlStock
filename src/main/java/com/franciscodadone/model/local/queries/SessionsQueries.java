@@ -2,6 +2,7 @@ package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
 import com.franciscodadone.model.models.Session;
+import com.franciscodadone.model.remote.queries.RemoteSessionsQueries;
 import com.franciscodadone.util.FDate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,13 +64,14 @@ public class SessionsQueries extends SQLiteConnection {
 
     public static void endCurrentSession(double sessionEndMoney) {
         Session currentSession = getActiveSession();
+        currentSession.setDateEnded(new FDate());
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
                     "UPDATE Sessions SET active=0 WHERE id=" + currentSession.getId() + ";"
             );
             connection.createStatement().execute(
-                    "UPDATE Sessions SET dateEnded='" + new FDate() + "' WHERE id=" + currentSession.getId() + ";"
+                    "UPDATE Sessions SET dateEnded='" + currentSession.getDateEnded().toString() + "' WHERE id=" + currentSession.getId() + ";"
             );
             connection.createStatement().execute(
                     "UPDATE Sessions SET endMoney=" + sessionEndMoney + " WHERE id=" + currentSession.getId() + ";"
@@ -83,6 +85,7 @@ public class SessionsQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
+        RemoteSessionsQueries.backupSession(currentSession);
     }
 
     public static ArrayList<Session> getAllSessions() {
@@ -119,12 +122,12 @@ public class SessionsQueries extends SQLiteConnection {
         try {
             connection.createStatement().execute(
                     "INSERT INTO Sessions (startMoney, endMoney, seller, dateStarted, dateEnded, active) VALUES (" +
-                            session.getStartMoney()             + "," +
-                            session.getEndMoney()             + "," +
-                            "'" + session.getSeller()                 + "'," +
+                            session.getStartMoney()        + "," +
+                            session.getEndMoney()          + "," +
+                            "'" + session.getSeller()      + "'," +
                             "'" + session.getDateStarted() + "'," +
-                            "'" + session.getDateEnded() + "'," +
-                            false                   + ");"
+                            "'" + session.getDateEnded()   + "'," +
+                                  false                    + ");"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,5 +139,4 @@ public class SessionsQueries extends SQLiteConnection {
             }
         }
     }
-
 }

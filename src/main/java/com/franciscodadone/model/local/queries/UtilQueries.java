@@ -1,6 +1,7 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
+import com.franciscodadone.model.remote.queries.RemoteUtilQueries;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class UtilQueries extends SQLiteConnection {
         }
     }
 
-    public static void modifyLastCode(String newCode) {
+    public static void modifyLastCode(String newCode, boolean saveRemote) {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
@@ -41,6 +42,7 @@ public class UtilQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
+        if(saveRemote) RemoteUtilQueries.setLastCustomCode(newCode);
     }
 
 }

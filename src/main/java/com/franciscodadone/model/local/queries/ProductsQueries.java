@@ -2,6 +2,7 @@ package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
 import com.franciscodadone.model.models.Product;
+import com.franciscodadone.model.remote.queries.RemoteStockQueries;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ public class ProductsQueries extends SQLiteConnection {
      * Adds a new sell to the database.
      * @param product
      */
-    public static void saveProduct(Product product) {
+    public static void saveProduct(Product product, boolean saveRemote) {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
@@ -35,6 +36,7 @@ public class ProductsQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
+        if(saveRemote) RemoteStockQueries.backupProduct(product);
     }
 
     public static ArrayList<Product> getAllProducts() {
@@ -118,9 +120,11 @@ public class ProductsQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
+        RemoteStockQueries.editProduct(product);
     }
 
     public static void deleteProduct(Product product) {
+        product.setDeleted(true);
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
@@ -135,6 +139,7 @@ public class ProductsQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
+        RemoteStockQueries.editProduct(product);
     }
 
     public static ArrayList<Product> getProducts(String products) {
