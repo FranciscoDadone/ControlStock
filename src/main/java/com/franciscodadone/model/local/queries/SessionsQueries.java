@@ -65,6 +65,7 @@ public class SessionsQueries extends SQLiteConnection {
     public static void endCurrentSession(double sessionEndMoney) {
         Session currentSession = getActiveSession();
         currentSession.setDateEnded(new FDate());
+        currentSession.setEndMoney(sessionEndMoney);
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(

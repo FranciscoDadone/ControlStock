@@ -60,7 +60,6 @@ public class RemoteStockQueries {
                 }
             }
         }
-
         mongoConnection.close();
         return false;
     }

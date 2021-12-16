@@ -106,7 +106,6 @@ public class RemoteSellQueries {
         }).start();
     }
 
-
     public static void editSell(Sell sell) {
         Logger.log("Editing sell id=" + sell.getId());
         new Thread(() -> {

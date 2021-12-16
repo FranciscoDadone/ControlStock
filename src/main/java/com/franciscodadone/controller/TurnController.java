@@ -147,7 +147,7 @@ public class TurnController {
     DefaultListModel defaultListModel1 = new DefaultListModel();
     private void stockList() {
         ProductsQueries.getAllProducts().forEach((product) -> {
-            defaultListModel.addElement(product);
+            if(!product.isDeleted()) defaultListModel.addElement(product);
         });
         view.productList.setModel(defaultListModel);
         view.productList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -170,7 +170,7 @@ public class TurnController {
     private void searchFilter(String searchTerm) {
         DefaultListModel filteredItems = new DefaultListModel();
         ProductsQueries.getAllProducts().forEach((product) -> {
-            if(product.getProdName().toLowerCase().contains(searchTerm.toLowerCase())) {
+            if((product.getProdName().toLowerCase().contains(searchTerm.toLowerCase())) && !product.isDeleted()) {
                 filteredItems.addElement(product);
             }
             if(product.getCode().equals(searchTerm)) {

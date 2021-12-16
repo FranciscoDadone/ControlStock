@@ -152,7 +152,7 @@ public class AddModifyStockController {
     DefaultListModel defaultListModel = new DefaultListModel();
     private void stockList() {
         ProductsQueries.getAllProducts().forEach((product) -> {
-            defaultListModel.addElement(product);
+            if(!product.isDeleted()) defaultListModel.addElement(product);
         });
         view.stockList.setModel(defaultListModel);
         view.stockList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -166,7 +166,7 @@ public class AddModifyStockController {
     private void searchFilter(String searchTerm) {
         DefaultListModel filteredItems = new DefaultListModel();
         ProductsQueries.getAllProducts().forEach((product) -> {
-            if(product.getProdName().toLowerCase().contains(searchTerm.toLowerCase()) || product.getCode().equals(searchTerm)) {
+            if((product.getProdName().toLowerCase().contains(searchTerm.toLowerCase()) || product.getCode().equals(searchTerm)) && !product.isDeleted()) {
                 filteredItems.addElement(product);
             }
         });

@@ -24,8 +24,8 @@ public class ProductsQueries extends SQLiteConnection {
                                   product.getQuantity()     + "," +
                                   product.getPrice()        + "," +
                             "'" + product.getQuantityType() + "', " +
-                                 "false," +
-                                  product.getMinQuantity() + ");"
+                                  product.isDeleted()       +
+                                  product.getMinQuantity()  + ");"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,17 +45,15 @@ public class ProductsQueries extends SQLiteConnection {
         try {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Stock;");
             while(res.next()) {
-                if(!res.getBoolean("deleted")) {
-                    products.add(new Product(
-                            res.getString("code"),
-                            res.getString("title"),
-                            res.getDouble("price"),
-                            res.getInt("quantity"),
-                            res.getString("quantityType"),
-                            res.getBoolean("deleted"),
-                            res.getInt("minQuantity")
-                    ));
-                }
+                products.add(new Product(
+                        res.getString("code"),
+                        res.getString("title"),
+                        res.getDouble("price"),
+                        res.getInt("quantity"),
+                        res.getString("quantityType"),
+                        res.getBoolean("deleted"),
+                        res.getInt("minQuantity")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
