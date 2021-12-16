@@ -3,7 +3,7 @@ package com.franciscodadone.model.remote.queries;
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SellQueries;
 import com.franciscodadone.model.remote.MongoConnection;
-import com.franciscodadone.models.Sell;
+import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.Logger;
 import com.mongodb.client.FindIterable;

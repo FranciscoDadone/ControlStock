@@ -1,8 +1,8 @@
 package com.franciscodadone.util;
 
 import com.franciscodadone.model.local.queries.SessionsQueries;
-import com.franciscodadone.models.Product;
-import com.franciscodadone.models.Session;
+import com.franciscodadone.model.models.Product;
+import com.franciscodadone.model.models.Session;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

@@ -2,14 +2,13 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
-import com.franciscodadone.models.Product;
-import com.franciscodadone.models.Session;
+import com.franciscodadone.model.models.Product;
+import com.franciscodadone.model.models.Session;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.view.*;
 import javax.swing.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainScreenController {
 

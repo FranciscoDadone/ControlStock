@@ -1,4 +1,4 @@
-package com.franciscodadone.models;
+package com.franciscodadone.model.models;
 
 public class Product {
 

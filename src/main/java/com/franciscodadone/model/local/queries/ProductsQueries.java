@@ -1,7 +1,7 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
-import com.franciscodadone.models.Product;
+import com.franciscodadone.model.models.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

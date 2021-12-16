@@ -2,15 +2,12 @@ package com.franciscodadone.view;
 
 import com.franciscodadone.controller.MainScreenController;
 import com.franciscodadone.model.local.queries.SessionsQueries;
-import com.franciscodadone.models.Session;
-import com.franciscodadone.util.GUIHandler;
+import com.franciscodadone.model.models.Session;
 import com.franciscodadone.util.JCustomOptionPane;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Date;
 
 public class MainScreen extends JFrame {
     private JPanel panel;

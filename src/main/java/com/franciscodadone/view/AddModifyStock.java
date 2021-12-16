@@ -41,7 +41,7 @@ public class AddModifyStock {
         PromptSupport.setPrompt("Código QR o dejar en blanco para generar un código.", codeField);
         searchStock.setFont(new Font("Arial", Font.PLAIN, 24));
         codeField.setFont(new Font("Arial", Font.PLAIN, 24));
-
+        minQuantity.setFont(new Font("Arial", Font.PLAIN, 24));
     }
 
     public void focusField() {

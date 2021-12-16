@@ -1,7 +1,7 @@
 package com.franciscodadone.view;
 
 import com.franciscodadone.model.local.queries.SellQueries;
-import com.franciscodadone.models.Session;
+import com.franciscodadone.model.models.Session;
 import com.franciscodadone.util.JLabelFont;
 import org.jdesktop.swingx.VerticalLayout;
 

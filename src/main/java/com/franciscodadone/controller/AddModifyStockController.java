@@ -3,7 +3,7 @@ package com.franciscodadone.controller;
 import com.franciscodadone.model.local.queries.CSVQueries;
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.UtilQueries;
-import com.franciscodadone.models.Product;
+import com.franciscodadone.model.models.Product;
 import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;

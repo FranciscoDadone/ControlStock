@@ -1,4 +1,4 @@
-package com.franciscodadone.models;
+package com.franciscodadone.model.models;
 
 import com.franciscodadone.util.FDate;
 
