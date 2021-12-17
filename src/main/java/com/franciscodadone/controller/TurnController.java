@@ -22,6 +22,7 @@ public class TurnController {
     public TurnController(TurnView view, Session session) {
         this.view       = view;
         this.session    = session;
+        this.inAnotherScreen = false;
 
         handleKeyboard();
         stockList();
@@ -29,13 +30,22 @@ public class TurnController {
         stockSelection();
         handleButtons();
 
-        view.cartList.setModel(defaultListModel1);
+        view.cartList.setModel(cartListModel);
         view.cartList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         view.sellerNameField.setText("Vendedor: " + this.session.getSeller());
         view.sessionStartLabel.setText("Inicio del turno: " + session.getDateStarted());
-        view.dateNowLabel.setText("Fecha actual: " + new FDate());
 
+        new Thread(() -> {
+            while(true) {
+                view.dateNowLabel.setText("Fecha actual: " + new FDate());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void handleButtons() {
@@ -45,16 +55,16 @@ public class TurnController {
             } else {
                 Product p = (Product)view.productList.getSelectedValue();
                 int quantity = Integer.parseInt(view.quantityField.getText());
-                int index = isInList(defaultListModel1, p);
+                int index = isInList(cartListModel, p);
                 if(index != -1) {
-                    Product p1 = (Product) defaultListModel1.get(index);
+                    Product p1 = (Product) cartListModel.get(index);
                     p1.setQuantity(p1.getQuantity() + quantity);
                     p1.setProdName(p.getProdName() + "     (x" + p1.getQuantity() + ")               $" + p.getPrice() * p1.getQuantity());
-                    defaultListModel1.set(index, p1);
+                    cartListModel.set(index, p1);
                 } else {
                     p.setQuantity(quantity);
                     p.setProdName(p.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
-                    defaultListModel1.addElement(p);
+                    cartListModel.addElement(p);
                 }
             }
             view.codeField.setText("");
@@ -62,13 +72,13 @@ public class TurnController {
             view.description.setText("Descripción: ");
             view.price.setText("Precio: $0000");
             view.addProductButton.setEnabled(false);
-            defaultListModel.clear();
+            stockListModel.clear();
             stockList();
             updateTotal();
         });
 
         view.deleteProductButton.addActionListener(e -> {
-            defaultListModel1.removeElement(view.cartList.getSelectedValue());
+            cartListModel.removeElement(view.cartList.getSelectedValue());
             view.deleteProductButton.setEnabled(false);
             view.modifyQuantityButton.setEnabled(false);
             updateTotal();
@@ -76,34 +86,35 @@ public class TurnController {
 
         view.modifyQuantityButton.addActionListener(e -> {
             Product p = (Product) view.cartList.getSelectedValue();
-            int index = isInList(defaultListModel1, p);
+
+            inAnotherScreen = true;
 
             String newQuantity = JOptionPane.showInputDialog("Ingrese la nueva cantidad", p.getQuantity());
             if(!Util.isNumeric(newQuantity)) JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica", "Error", JOptionPane.ERROR_MESSAGE);
             else {
-                p.setQuantity(Integer.parseInt(newQuantity));
-                p.setProdName(p.getUnmodifiedProdName() + "     (x" + newQuantity + ")               $" + p.getPrice() * Integer.parseInt(newQuantity));
-                defaultListModel1.set(index, p);
+                modifyQuantity(p, Integer.parseInt(newQuantity));
+                inAnotherScreen = false;
             }
-            updateTotal();
         });
 
         view.backButton.addActionListener(e -> {
+            inAnotherScreen = true;
             GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
         });
 
         view.endTurnButton.addActionListener(e -> {
+            inAnotherScreen = true;
             double sessionEndMoney = JCustomOptionPane.endSessionDialog();
             if(sessionEndMoney != -1) {
                 SessionsQueries.endCurrentSession(sessionEndMoney);
                 GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
-            }
+            } else inAnotherScreen = false;
         });
 
         view.addSellButton.addActionListener(e -> {
             ArrayList<Product> products = new ArrayList<>();
-            for(int i = 0; i < defaultListModel1.getSize(); i++) {
-                Product product = (Product) defaultListModel1.get(i);
+            for(int i = 0; i < cartListModel.getSize(); i++) {
+                Product product = (Product) cartListModel.get(i);
                 product.setProdName(product.getUnmodifiedProdName());
                 products.add(product);
             }
@@ -118,7 +129,7 @@ public class TurnController {
             });
 
             view.cartList.removeAll();
-            defaultListModel1.removeAllElements();
+            cartListModel.removeAllElements();
             view.addSellButton.setEnabled(false);
             view.exchangeLabel.setText("$0");
             view.totalLabel.setText("$0");
@@ -129,27 +140,37 @@ public class TurnController {
 
     }
 
+    private void modifyQuantity(Product product, int newQuantity) {
+        int index = isInList(cartListModel, product);
+        product.setQuantity(newQuantity);
+        product.setProdName(product.getUnmodifiedProdName() + "     (x" + newQuantity + ")               $" + product.getPrice() * newQuantity);
+        cartListModel.set(index, product);
+        updateTotal();
+    }
+
     private void handleKeyboard() {
         // Registers F7 in keyboard to focus the cursor to the barcode field.
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(e -> {
-                    view.dateNowLabel.setText("Fecha actual: " + new FDate()); // update date
                     if(e.getKeyCode() == 118) view.focusField();
-                    if(view.codeField.hasFocus()) {
-                        searchFilter(view.codeField.getText());
-                    }
+                    if(view.codeField.hasFocus()) searchFilter(view.codeField.getText());
                     if(view.exchangeField.hasFocus()) updateExchange();
+
+                    // Handle quantity
+                    if(e.getKeyCode() >= 97 && e.getKeyCode() <= 105 && !view.codeField.hasFocus() && !view.exchangeField.hasFocus() && !view.quantityField.hasFocus() && !inAnotherScreen) {
+                        modifyQuantity(((Product)view.cartList.getSelectedValue()), (e.getKeyCode() - 96));
+                    }
                     return false;
                 });
     }
 
-    DefaultListModel defaultListModel = new DefaultListModel();
-    DefaultListModel defaultListModel1 = new DefaultListModel();
+    DefaultListModel stockListModel = new DefaultListModel();
+    DefaultListModel cartListModel  = new DefaultListModel();
     private void stockList() {
         ProductsQueries.getAllProducts().forEach((product) -> {
-            if(!product.isDeleted()) defaultListModel.addElement(product);
+            if(!product.isDeleted()) stockListModel.addElement(product);
         });
-        view.productList.setModel(defaultListModel);
+        view.productList.setModel(stockListModel);
         view.productList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
@@ -173,30 +194,50 @@ public class TurnController {
             if((product.getProdName().toLowerCase().contains(searchTerm.toLowerCase())) && !product.isDeleted()) {
                 filteredItems.addElement(product);
             }
-            if(product.getCode().equals(searchTerm)) {
-                int index = isInList(defaultListModel1, product);
+            if(product.getCode().equals(searchTerm) && !product.isDeleted()) {
+                int index = isInList(cartListModel, product);
                 if(index != -1) {
-                    Product p = (Product) defaultListModel1.get(index);
-                    p.setQuantity(p.getQuantity() + 1);
+                    Product p = (Product) cartListModel.get(index);
+                    p.setQuantity(p.getQuantity());
                     p.setProdName(product.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
-                    defaultListModel1.set(index, p);
+                    cartListModel.set(index, p);
                 } else {
                     product.setQuantity(1);
                     product.setProdName(product.getProdName() + "     (x" + product.getQuantity() + ")               $" + product.getPrice() * product.getQuantity());
-                    defaultListModel1.addElement(product);
+                    cartListModel.addElement(product);
                 }
-                view.codeField.setText("");
+
+                /**
+                 * Explanation of this code:
+                 * When I tried view.codeField.setText(""); it made it blank but for some reason the
+                 * list went all blank. So to overcome this, I made a "robot" to type backspace a bunch
+                 * of times to clear the field and with that the list doesn't fail.
+                 * This needs to be replaced with a more optimal solution.
+                 */
                 try {
                     Robot robot = new Robot();
-                    robot.keyPress(KeyEvent.VK_ESCAPE);
-                    robot.keyRelease(KeyEvent.VK_ESCAPE);
-                } catch (AWTException e) {
+                    for(int i = 0; i < product.getCode().length() + product.getProdName().length(); i++) {
+                        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+                        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    // Select the new product in the cart list
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(10);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        view.cartList.setSelectedIndex(isInList(cartListModel, product));
+                        view.codeField.transferFocus();
+                    }).start();
                 }
             }
         });
-        defaultListModel = filteredItems;
-        view.productList.setModel(defaultListModel);
+        stockListModel = filteredItems;
+        view.productList.setModel(stockListModel);
     }
 
     private void cartSelection() {
@@ -225,8 +266,8 @@ public class TurnController {
 
     private double getTotal() {
         double total = 0;
-        for(int i = 0; i < defaultListModel1.getSize(); i++) {
-            Product product = ((Product)defaultListModel1.get(i));
+        for(int i = 0; i < cartListModel.getSize(); i++) {
+            Product product = ((Product) cartListModel.get(i));
             total += product.getPrice() * product.getQuantity();
         }
         return total;
@@ -250,5 +291,6 @@ public class TurnController {
 
     private TurnView view;
     private Session session;
+    private boolean inAnotherScreen;
 
 }
