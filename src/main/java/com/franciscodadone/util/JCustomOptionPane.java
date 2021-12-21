@@ -54,7 +54,7 @@ public class JCustomOptionPane {
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
-                null
+                "Si"
         );
         return result;
     }

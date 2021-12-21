@@ -39,6 +39,8 @@ public class TurnController {
         new Thread(() -> {
             while(true) {
                 view.dateNowLabel.setText("Fecha actual: " + new FDate());
+                updateTotal();
+                updateExchange();
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -112,32 +114,34 @@ public class TurnController {
         });
 
         view.addSellButton.addActionListener(e -> {
-            ArrayList<Product> products = new ArrayList<>();
-            for(int i = 0; i < cartListModel.getSize(); i++) {
-                Product product = (Product) cartListModel.get(i);
-                product.setProdName(product.getUnmodifiedProdName());
-                products.add(product);
-            }
-            Sell sell = new Sell(products, getTotal(), session.getId(), new FDate());
-            SellQueries.saveSell(sell, true);
+            saveCurrentSell();
+        });
+    }
 
-            // Removing from stock
-            products.forEach(product -> {
-                Product p = ProductsQueries.getProductByCode(product.getCode());
-                p.setQuantity(p.getQuantity() - product.getQuantity());
-                ProductsQueries.modifyProductByCode(product.getCode(), p);
-            });
+    private void saveCurrentSell() {
+        ArrayList<Product> products = new ArrayList<>();
+        for(int i = 0; i < cartListModel.getSize(); i++) {
+            Product product = (Product) cartListModel.get(i);
+            product.setProdName(product.getUnmodifiedProdName());
+            products.add(product);
+        }
+        Sell sell = new Sell(products, getTotal(), session.getId(), new FDate());
+        SellQueries.saveSell(sell, true);
 
-            view.cartList.removeAll();
-            cartListModel.removeAllElements();
-            view.addSellButton.setEnabled(false);
-            view.exchangeLabel.setText("$0");
-            view.totalLabel.setText("$0");
-            view.exchangeField.setText("");
-            GUIHandler.changeScreen(view.panel);
-
+        // Removing from stock
+        products.forEach(product -> {
+            Product p = ProductsQueries.getProductByCode(product.getCode());
+            p.setQuantity(p.getQuantity() - product.getQuantity());
+            ProductsQueries.modifyProductByCode(product.getCode(), p);
         });
 
+        view.cartList.removeAll();
+        cartListModel.removeAllElements();
+        view.addSellButton.setEnabled(false);
+        view.exchangeLabel.setText("$0");
+        view.totalLabel.setText("$0");
+        view.exchangeField.setText("");
+        GUIHandler.changeScreen(view.panel);
     }
 
     private void modifyQuantity(Product product, int newQuantity) {
@@ -159,6 +163,15 @@ public class TurnController {
                     // Handle quantity
                     if(e.getKeyCode() >= 97 && e.getKeyCode() <= 105 && !view.codeField.hasFocus() && !view.exchangeField.hasFocus() && !view.quantityField.hasFocus() && !inAnotherScreen) {
                         modifyQuantity(((Product)view.cartList.getSelectedValue()), (e.getKeyCode() - 96));
+                    }
+
+                    // Handle enter
+                    if(e.getKeyChar() == KeyEvent.VK_ENTER && !cartListModel.isEmpty() && view.productList.getSelectedValue() == null && !inAnotherScreen) {
+                        inAnotherScreen = true;
+                        if(JCustomOptionPane.confirmDialog("¿Guardar venta?", "Confirmar") == JOptionPane.YES_OPTION) {
+                            saveCurrentSell();
+                        }
+                        inAnotherScreen = false;
                     }
                     return false;
                 });
@@ -198,7 +211,7 @@ public class TurnController {
                 int index = isInList(cartListModel, product);
                 if(index != -1) {
                     Product p = (Product) cartListModel.get(index);
-                    p.setQuantity(p.getQuantity());
+                    p.setQuantity(p.getQuantity() + 1);
                     p.setProdName(product.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
                     cartListModel.set(index, p);
                 } else {
@@ -220,6 +233,7 @@ public class TurnController {
                         robot.keyPress(KeyEvent.VK_BACK_SPACE);
                         robot.keyRelease(KeyEvent.VK_BACK_SPACE);
                     }
+                    view.codeField.setText("");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
