@@ -24,6 +24,7 @@ public class MongoConnection {
         }
 
         MongoStatus.connected = true;
+        Logger.log("Connected to Mongo!");
 
         try {
             database.listCollectionNames().iterator();

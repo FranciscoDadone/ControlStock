@@ -10,7 +10,7 @@ import javax.swing.*;
 public class MongoBackup {
 
     public static void Backup() {
-        Logger.log("Initializing remote backup...");
+        Logger.log("Connecting to Mongo...");
         try {
             new MongoConnection().close();
         } catch (Exception e) {

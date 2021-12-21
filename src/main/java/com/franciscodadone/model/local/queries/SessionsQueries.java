@@ -1,6 +1,8 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
+import com.franciscodadone.model.models.Product;
+import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.model.models.Session;
 import com.franciscodadone.model.remote.queries.RemoteSessionsQueries;
 import com.franciscodadone.util.FDate;

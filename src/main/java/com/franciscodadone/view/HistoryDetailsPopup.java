@@ -1,6 +1,7 @@
 package com.franciscodadone.view;
 
 import com.franciscodadone.model.local.queries.SellQueries;
+import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.model.models.Session;
 import com.franciscodadone.util.JLabelFont;
 import org.jdesktop.swingx.VerticalLayout;
@@ -18,6 +19,7 @@ public class HistoryDetailsPopup extends JFrame {
     private JLabel endMoneyLabel;
     private JLabel earningsLabel;
     private JPanel panelScroll;
+    private JLabel totalEarnings;
     private Session session;
 
     public HistoryDetailsPopup(Session session) {
@@ -36,7 +38,8 @@ public class HistoryDetailsPopup extends JFrame {
         sellerLabel.setText("Vendedor: " + session.getSeller());
         startMoneyLabel.setText("Inicio de la caja: $" + session.getStartMoney());
         endMoneyLabel.setText("Fin de la caja: $" + session.getEndMoney());
-        earningsLabel.setText("Ganancias brutas: $" + (session.getEndMoney() - session.getStartMoney()));
+        earningsLabel.setText("Fin - Inicio: $" + (session.getEndMoney() - session.getStartMoney()));
+        totalEarnings.setText("Ganancias totales: $" + session.getEarnings());
     }
 
     private void showSells() {
@@ -47,7 +50,10 @@ public class HistoryDetailsPopup extends JFrame {
             i.getAndIncrement();
             JPanel sellPanel = new JPanel();
             sellPanel.setLayout(new VerticalLayout());
-            sellPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Venta #" + i));
+            sellPanel.setBorder(BorderFactory.createTitledBorder(
+                    BorderFactory.createLineBorder(Color.black),
+                    "Venta #" + i + " Total: $" + sell.getPrice()
+            ));
 
             sell.getProducts().forEach(product -> {
                 Font font = new Font("Arial", Font.PLAIN, 22);
@@ -55,7 +61,7 @@ public class HistoryDetailsPopup extends JFrame {
                 JPanel prod = new JPanel();
                 prod.setLayout(new BorderLayout());
                 prod.add(new JLabelFont(product.getProdName(), font), BorderLayout.WEST);
-                prod.add(new JLabelFont(String.valueOf(product.getQuantity()), font), BorderLayout.EAST);
+                prod.add(new JLabelFont("(" + product.getQuantity() + ")", font), BorderLayout.EAST);
 
                 sellPanel.add(prod);
             });

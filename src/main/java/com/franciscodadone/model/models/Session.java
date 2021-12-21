@@ -1,5 +1,6 @@
 package com.franciscodadone.model.models;
 
+import com.franciscodadone.model.local.queries.SellQueries;
 import com.franciscodadone.util.FDate;
 
 public class Session {
@@ -36,8 +37,6 @@ public class Session {
         return id;
     }
 
-
-
     public void setEndMoney(double endMoney) {
         this.endMoney = endMoney;
     }
@@ -60,6 +59,14 @@ public class Session {
 
     public FDate getDateEnded() {
         return dateEnded;
+    }
+
+    public double getEarnings() {
+        double earnings = 0;
+        for(Sell sell : SellQueries.getAllSellsFromSession(this)) {
+            earnings += sell.getPrice();
+        }
+        return earnings;
     }
 
     private int     id;
