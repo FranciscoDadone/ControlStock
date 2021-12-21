@@ -4,6 +4,7 @@ import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SellQueries;
 import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.model.models.Sell;
+import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.Logger;
 import com.mongodb.client.FindIterable;
@@ -39,7 +40,8 @@ public class RemoteSellQueries {
                     backupSell(sell);
                 }
             });
-        } else if(localRegisteredSells == 0 && localRegisteredSells != remoteRegisteredSells) { // if the local database is empty, retrieves from remote
+            // localRegisteredSells == 0 && localRegisteredSells != remoteRegisteredSells
+        } else if(localRegisteredSells < remoteRegisteredSells) { // if the local database is empty, retrieves from remote
             return true;
         }
 
@@ -60,15 +62,16 @@ public class RemoteSellQueries {
                 }
             }
         }
-
         mongoConnection.close();
         return false;
     }
 
     protected static void retrieveFromRemote() {
         getAllSells().forEach((remoteSell) -> {
-            Logger.log("Retrieving sell from remote. id=" + remoteSell.getId());
-            SellQueries.saveSell(remoteSell, false);
+            if(SellQueries.getSellID(remoteSell) == -1) {
+                Logger.log("Retrieving sell from remote. id=" + remoteSell.getId());
+                SellQueries.saveSell(remoteSell, false);
+            }
         });
 
         SellQueries.getAllSells().forEach((localSell) -> {
@@ -90,39 +93,43 @@ public class RemoteSellQueries {
     }
 
     public static void backupSell(Sell sell) {
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
+        if(MongoStatus.connected) {
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
 
-            int id = SellQueries.getSellID(sell);
+                int id = SellQueries.getSellID(sell);
 
-            Logger.log("Making backup of sell id=" + id);
-            mongoConnection.mongoSells.insertOne(new Document()
-                    .append("id", id)
-                    .append("products", sell.toString())
-                    .append("totalPrice", sell.getPrice())
-                    .append("sessionID", sell.getSessionID())
-                    .append("date", sell.getDate().toString())
-            );
-            mongoConnection.close();
-        }).start();
+                Logger.log("Making backup of sell id=" + id);
+                mongoConnection.mongoSells.insertOne(new Document()
+                        .append("id", id)
+                        .append("products", sell.toString())
+                        .append("totalPrice", sell.getPrice())
+                        .append("sessionID", sell.getSessionID())
+                        .append("date", sell.getDate().toString())
+                );
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     public static void editSell(Sell sell) {
-        Logger.log("Editing sell id=" + sell.getId());
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
+        if(MongoStatus.connected) {
+            Logger.log("Editing sell id=" + sell.getId());
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
 
-            Bson filter = Filters.eq("id", sell.getId());
-            Bson updateProducts = set("products", sell.toString());
-            Bson updateDate = set("date", sell.getDate().toString());
-            Bson updatePrice = set("totalPrice", sell.getPrice());
-            Bson updateSessionID = set("sessionID", sell.getSessionID());
+                Bson filter = Filters.eq("id", sell.getId());
+                Bson updateProducts = set("products", sell.toString());
+                Bson updateDate = set("date", sell.getDate().toString());
+                Bson updatePrice = set("totalPrice", sell.getPrice());
+                Bson updateSessionID = set("sessionID", sell.getSessionID());
 
-            Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice);
-            mongoConnection.mongoSells.updateOne(filter, updates);
+                Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice);
+                mongoConnection.mongoSells.updateOne(filter, updates);
 
-            mongoConnection.close();
-        }).start();
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     private static ArrayList<Sell> getAllSells() {

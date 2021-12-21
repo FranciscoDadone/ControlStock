@@ -3,6 +3,7 @@ package com.franciscodadone.model.remote.queries;
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.model.models.Product;
+import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.Logger;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
@@ -37,7 +38,8 @@ public class RemoteStockQueries {
                     backupProduct(product);
                 }
             });
-        } else if(localRegisteredStock == 0 && localRegisteredStock != remoteRegisteredStock) { // if the local database is empty, retrieves from remote
+            // localRegisteredStock == 0 && localRegisteredStock != remoteRegisteredStock
+        } else if(localRegisteredStock < remoteRegisteredStock) { // if the local database is empty, retrieves from remote
             return true;
         }
 
@@ -66,46 +68,52 @@ public class RemoteStockQueries {
 
     protected static void retrieveFromRemote() {
         getAllProducts().forEach((remoteProduct) -> {
-            Logger.log("Retrieving product from remote. name=" + remoteProduct.getProdName());
-            ProductsQueries.saveProduct(remoteProduct, false);
+            if(ProductsQueries.getProductByCode(remoteProduct.getCode()) == null) {
+                Logger.log("Retrieving product from remote. name=" + remoteProduct.getProdName());
+                ProductsQueries.saveProduct(remoteProduct, false);
+            }
         });
     }
 
     public static void backupProduct(Product product) {
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
-            Logger.log("Making backup of Product '" + product.getProdName() + "'");
-            mongoConnection.mongoStock.insertOne(new Document()
-                    .append("code", product.getCode())
-                    .append("title", product.getProdName())
-                    .append("quantity", product.getQuantity())
-                    .append("price", product.getPrice())
-                    .append("quantityType", product.getQuantityType())
-                    .append("deleted", product.isDeleted())
-                    .append("minQuantity", product.getMinQuantity())
-            );
-            mongoConnection.close();
-        }).start();
+        if(MongoStatus.connected) {
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
+                Logger.log("Making backup of Product '" + product.getProdName() + "'");
+                mongoConnection.mongoStock.insertOne(new Document()
+                        .append("code", product.getCode())
+                        .append("title", product.getProdName())
+                        .append("quantity", product.getQuantity())
+                        .append("price", product.getPrice())
+                        .append("quantityType", product.getQuantityType())
+                        .append("deleted", product.isDeleted())
+                        .append("minQuantity", product.getMinQuantity())
+                );
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     public static void editProduct(Product product) {
-        Logger.log("Editing Product '" + product.getProdName() + "'");
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
-            Bson filter = Filters.eq("code", product.getCode());
+        if(MongoStatus.connected) {
+            Logger.log("Editing Product '" + product.getProdName() + "'");
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
+                Bson filter = Filters.eq("code", product.getCode());
 
-            Bson updateProducts    = set("title", product.getProdName());
-            Bson updateDate        = set("quantity", product.getQuantity());
-            Bson updatePrice       = set("price", product.getPrice());
-            Bson updateSessionID   = set("quantityType", product.getQuantityType());
-            Bson updateDeleted     = set("deleted", product.isDeleted());
-            Bson updateMinQuantity = set("minQuantity", product.getMinQuantity());
+                Bson updateProducts    = set("title", product.getProdName());
+                Bson updateDate        = set("quantity", product.getQuantity());
+                Bson updatePrice       = set("price", product.getPrice());
+                Bson updateSessionID   = set("quantityType", product.getQuantityType());
+                Bson updateDeleted     = set("deleted", product.isDeleted());
+                Bson updateMinQuantity = set("minQuantity", product.getMinQuantity());
 
-            Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice, updateDeleted, updateMinQuantity);
-            mongoConnection.mongoStock.updateOne(filter, updates);
+                Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice, updateDeleted, updateMinQuantity);
+                mongoConnection.mongoStock.updateOne(filter, updates);
 
-            mongoConnection.close();
-        }).start();
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     private static ArrayList<Product> getAllProducts() {
@@ -127,5 +135,4 @@ public class RemoteStockQueries {
         mongoConnection.close();
         return products;
     }
-
 }

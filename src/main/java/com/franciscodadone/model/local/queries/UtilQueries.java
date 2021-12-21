@@ -1,7 +1,9 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
+import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.remote.queries.RemoteUtilQueries;
+import com.franciscodadone.util.Util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +17,18 @@ public class UtilQueries extends SQLiteConnection {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Util WHERE (id=1);");
             while(res.next()) {
                 code = res.getString("customQR");
+            }
+
+            int highestLocalCustomCode = 0;
+            for(Product product : ProductsQueries.getAllProducts()) {
+                if(product.getCode().contains("C")) {
+                    int pcode = Integer.parseInt(product.getCode().substring(1));
+                    if(highestLocalCustomCode < pcode) highestLocalCustomCode = pcode;
+                }
+            }
+            if(highestLocalCustomCode > Integer.parseInt(code.substring(1))) {
+                UtilQueries.modifyLastCode("C" + highestLocalCustomCode, true);
+                code = "C" + highestLocalCustomCode;
             }
         } catch (SQLException e) {}
         finally {

@@ -3,6 +3,7 @@ package com.franciscodadone.model.remote.queries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.model.models.Session;
+import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.Logger;
 import com.mongodb.client.FindIterable;
@@ -90,38 +91,42 @@ public class RemoteSessionsQueries {
     }
 
     public static void backupSession(Session session) {
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
-            Logger.log("Making backup of Session id=" + session.getId());
-            mongoConnection.mongoSessions.insertOne(new Document()
-                    .append("id", session.getId())
-                    .append("seller", session.getSeller())
-                    .append("dateStarted", session.getDateStarted().toString())
-                    .append("dateEnded", session.getDateEnded().toString())
-                    .append("startMoney", session.getStartMoney())
-                    .append("endMoney", session.getEndMoney())
-            );
-            mongoConnection.close();
-        }).start();
+        if(MongoStatus.connected) {
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
+                Logger.log("Making backup of Session id=" + session.getId());
+                mongoConnection.mongoSessions.insertOne(new Document()
+                        .append("id", session.getId())
+                        .append("seller", session.getSeller())
+                        .append("dateStarted", session.getDateStarted().toString())
+                        .append("dateEnded", session.getDateEnded().toString())
+                        .append("startMoney", session.getStartMoney())
+                        .append("endMoney", session.getEndMoney())
+                );
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     public static void editSession(Session session) {
-        Logger.log("Editing Session id=" + session.getId());
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
-            Bson filter = Filters.eq("id", session.getId());
+        if(MongoStatus.connected) {
+            Logger.log("Editing Session id=" + session.getId());
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
+                Bson filter = Filters.eq("id", session.getId());
 
-            Bson updateStartMoney  = set("startMoney", session.getStartMoney());
-            Bson updateEndMoney    = set("endMoney", session.getEndMoney());
-            Bson updateSeller      = set("seller", session.getSeller());
-            Bson updateDateStarted = set("dateStarted", session.getDateStarted().toString());
-            Bson updateDateEnded   = set("dateEnded", session.getDateEnded().toString());
+                Bson updateStartMoney  = set("startMoney", session.getStartMoney());
+                Bson updateEndMoney    = set("endMoney", session.getEndMoney());
+                Bson updateSeller      = set("seller", session.getSeller());
+                Bson updateDateStarted = set("dateStarted", session.getDateStarted().toString());
+                Bson updateDateEnded   = set("dateEnded", session.getDateEnded().toString());
 
-            Bson updates = Updates.combine(updateStartMoney, updateEndMoney, updateDateStarted, updateSeller, updateDateEnded);
-            mongoConnection.mongoSessions.updateOne(filter, updates);
+                Bson updates = Updates.combine(updateStartMoney, updateEndMoney, updateDateStarted, updateSeller, updateDateEnded);
+                mongoConnection.mongoSessions.updateOne(filter, updates);
 
-            mongoConnection.close();
-        }).start();
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     private static ArrayList<Session> getAllSessions() {
@@ -142,5 +147,4 @@ public class RemoteSessionsQueries {
         mongoConnection.close();
         return sessions;
     }
-
 }

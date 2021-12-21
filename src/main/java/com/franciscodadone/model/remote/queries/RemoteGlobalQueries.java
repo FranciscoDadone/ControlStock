@@ -2,6 +2,7 @@ package com.franciscodadone.model.remote.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
 import com.franciscodadone.model.remote.MongoConnection;
+import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.Logger;
 
 import java.sql.ResultSet;
@@ -15,41 +16,42 @@ public class RemoteGlobalQueries {
      * If the mongo leaks a table (collection) it creates it.
      */
     protected static void checkCollections() {
+        if(MongoStatus.connected) {
+            Logger.log("Checking collections...");
 
-        Logger.log("Checking collections...");
-
-        sqliteDatabase = SQLiteConnection.connect();
-        ResultSet res;
-        ArrayList<String> tables = new ArrayList<>();
-        try {
-            res = sqliteDatabase.createStatement().executeQuery("SELECT name FROM sqlite_master WHERE type='table';");
-            while(res.next()) {
-                tables.add(res.getString(1));
+            sqliteDatabase = SQLiteConnection.connect();
+            ResultSet res;
+            ArrayList<String> tables = new ArrayList<>();
+            try {
+                res = sqliteDatabase.createStatement().executeQuery("SELECT name FROM sqlite_master WHERE type='table';");
+                while(res.next()) {
+                    tables.add(res.getString(1));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            sqliteDatabase.close();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
+            try {
+                sqliteDatabase.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
 
-        MongoConnection mongoConnection = new MongoConnection();
-        ArrayList<String> mongoCollections = new ArrayList<>();
-        mongoConnection.mongoDatabase.listCollectionNames().forEach((collection) -> {
-            mongoCollections.add(collection);
-        });
+            MongoConnection mongoConnection = new MongoConnection();
+            ArrayList<String> mongoCollections = new ArrayList<>();
+            mongoConnection.mongoDatabase.listCollectionNames().forEach((collection) -> {
+                mongoCollections.add(collection);
+            });
 
-        for(String sqliteTableName : tables) {
-            if(!sqliteTableName.equals("sqlite_sequence")) {
-                if(!mongoCollections.contains(sqliteTableName)) {
-                    mongoConnection.mongoDatabase.createCollection(sqliteTableName);
-                    Logger.log("Mongo collection created: " + sqliteTableName);
+            for(String sqliteTableName : tables) {
+                if(!sqliteTableName.equals("sqlite_sequence")) {
+                    if(!mongoCollections.contains(sqliteTableName)) {
+                        mongoConnection.mongoDatabase.createCollection(sqliteTableName);
+                        Logger.log("Mongo collection created: " + sqliteTableName);
+                    }
                 }
             }
+            mongoConnection.close();
         }
-        mongoConnection.close();
     }
 
     private static java.sql.Connection sqliteDatabase;

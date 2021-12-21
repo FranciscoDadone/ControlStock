@@ -15,18 +15,19 @@ public class MongoBackup {
             new MongoConnection().close();
         } catch (Exception e) {
             Logger.log("Please fill up the MongoDB credentials under ControlStock/database/mongoCrendentials.yml to backup the data! Or check your internet connection!");
+            MongoStatus.connected = false;
         }
         if(MongoStatus.connected) {
             RemoteGlobalQueries.checkCollections();
 
             boolean isSellsOutdated    = RemoteSellQueries.isDatabaseOutdated();
-            Logger.log("Done checking Sells.");
+            Logger.log("Done checking Sells. Outdated:" + isSellsOutdated);
             boolean isStockOutdated    = RemoteStockQueries.isDatabaseOutdated();
-            Logger.log("Done checking Stock.");
+            Logger.log("Done checking Stock. Outdated:" + isStockOutdated);
             boolean isSessionsOutdated = RemoteSessionsQueries.isDatabaseOutdated();
-            Logger.log("Done checking Sessions.");
+            Logger.log("Done checking Sessions. Outdated:" + isSessionsOutdated);
             boolean isUtilOutdated     = RemoteUtilQueries.isDatabaseOutdated();
-            Logger.log("Done checking Util.");
+            Logger.log("Done checking Util. Outdated:" + isUtilOutdated);
 
             if(isSellsOutdated || isStockOutdated || isSessionsOutdated || isUtilOutdated) {
                 int res = JCustomOptionPane.confirmDialog("<html>Se ha detectado que la base de datos local está desactualizada.<br>¿Desea actualizarla?</html>", "Actualizar base de datos");

@@ -2,6 +2,7 @@ package com.franciscodadone.model.remote.queries;
 
 import com.franciscodadone.model.local.queries.UtilQueries;
 import com.franciscodadone.model.remote.MongoConnection;
+import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.Logger;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -57,18 +58,20 @@ public class RemoteUtilQueries {
     }
 
     public static void setLastCustomCode(String newCode) {
-        Logger.log("Editing Util (Custom QR) code=" + newCode);
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
-            Bson filter = Filters.eq("id", 1);
+        if(MongoStatus.connected) {
+            Logger.log("Editing Util (Custom QR) code=" + newCode);
+            new Thread(() -> {
+                MongoConnection mongoConnection = new MongoConnection();
+                Bson filter = Filters.eq("id", 1);
 
-            Bson updateStartMoney = set("customQR", newCode);
+                Bson updateStartMoney = set("customQR", newCode);
 
-            Bson updates = Updates.combine(updateStartMoney);
-            mongoConnection.mongoUtil.updateOne(filter, updates);
+                Bson updates = Updates.combine(updateStartMoney);
+                mongoConnection.mongoUtil.updateOne(filter, updates);
 
-            mongoConnection.close();
-        }).start();
+                mongoConnection.close();
+            }).start();
+        }
     }
 
     private static String getLastCustomCode() {
