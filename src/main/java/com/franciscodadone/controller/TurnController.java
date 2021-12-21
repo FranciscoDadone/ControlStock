@@ -12,6 +12,8 @@ import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.util.Util;
 import com.franciscodadone.view.MainScreen;
 import com.franciscodadone.view.TurnView;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -61,12 +63,12 @@ public class TurnController {
                 if(index != -1) {
                     Product p1 = (Product) cartListModel.get(index);
                     p1.setQuantity(p1.getQuantity() + quantity);
-                    p1.setProdName(p.getProdName() + "     (x" + p1.getQuantity() + ")               $" + p.getPrice() * p1.getQuantity());
                     cartListModel.set(index, p1);
+                    modifyQuantity(p1, p1.getQuantity());
                 } else {
                     p.setQuantity(quantity);
-                    p.setProdName(p.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
                     cartListModel.addElement(p);
+                    modifyQuantity(p, p.getQuantity());
                 }
             }
             view.codeField.setText("");
@@ -95,8 +97,15 @@ public class TurnController {
             if(!Util.isNumeric(newQuantity)) JCustomOptionPane.messageDialog("La cantidad tiene que ser numérica", "Error", JOptionPane.ERROR_MESSAGE);
             else {
                 modifyQuantity(p, Integer.parseInt(newQuantity));
-                inAnotherScreen = false;
             }
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                inAnotherScreen = false;
+            }).start();
         });
 
         view.backButton.addActionListener(e -> {
@@ -147,8 +156,10 @@ public class TurnController {
     private void modifyQuantity(Product product, int newQuantity) {
         int index = isInList(cartListModel, product);
         product.setQuantity(newQuantity);
-        product.setProdName(product.getUnmodifiedProdName() + "     (x" + newQuantity + ")               $" + product.getPrice() * newQuantity);
-        cartListModel.set(index, product);
+        product.setProdName("(x" + newQuantity + ")($" + (product.getQuantity() * product.getPrice()) + ")   " + product.getUnmodifiedProdName());
+        if(index != -1) {
+            cartListModel.set(index, product);
+        }
         updateTotal();
     }
 
@@ -212,11 +223,11 @@ public class TurnController {
                 if(index != -1) {
                     Product p = (Product) cartListModel.get(index);
                     p.setQuantity(p.getQuantity() + 1);
-                    p.setProdName(product.getProdName() + "     (x" + p.getQuantity() + ")               $" + p.getPrice() * p.getQuantity());
+                    modifyQuantity(p, p.getQuantity());
                     cartListModel.set(index, p);
                 } else {
                     product.setQuantity(1);
-                    product.setProdName(product.getProdName() + "     (x" + product.getQuantity() + ")               $" + product.getPrice() * product.getQuantity());
+                    modifyQuantity(product, product.getQuantity());
                     cartListModel.addElement(product);
                 }
 
