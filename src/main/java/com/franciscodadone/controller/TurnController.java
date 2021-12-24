@@ -6,17 +6,13 @@ import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.model.models.Session;
-import com.franciscodadone.util.FDate;
-import com.franciscodadone.util.GUIHandler;
-import com.franciscodadone.util.JCustomOptionPane;
-import com.franciscodadone.util.Util;
+import com.franciscodadone.util.*;
 import com.franciscodadone.view.MainScreen;
 import com.franciscodadone.view.TurnView;
-import org.apache.commons.lang3.StringUtils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class TurnController {
@@ -25,6 +21,8 @@ public class TurnController {
         this.view       = view;
         this.session    = session;
         this.inAnotherScreen = false;
+
+        this.products = ProductsQueries.getAllProducts();
 
         handleKeyboard();
         stockList();
@@ -167,9 +165,10 @@ public class TurnController {
         // Registers F7 in keyboard to focus the cursor to the barcode field.
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(e -> {
-                    if(e.getKeyCode() == 118) view.focusField();
+                    if(e.getKeyCode() == 118) {
+                        view.focusField();
+                    }
                     if(view.codeField.hasFocus()) searchFilter(view.codeField.getText());
-                    if(view.exchangeField.hasFocus()) updateExchange();
 
                     // Handle quantity
                     if(e.getKeyCode() >= 97 && e.getKeyCode() <= 105 && !view.codeField.hasFocus() && !view.exchangeField.hasFocus() && !view.quantityField.hasFocus() && !inAnotherScreen) {
@@ -214,11 +213,12 @@ public class TurnController {
      */
     private void searchFilter(String searchTerm) {
         DefaultListModel filteredItems = new DefaultListModel();
-        ProductsQueries.getAllProducts().forEach((product) -> {
-            if((product.getProdName().toLowerCase().contains(searchTerm.toLowerCase())) && !product.isDeleted()) {
+        products.forEach((product) -> {
+            if((product.getProdName().toLowerCase().contains(searchTerm.toLowerCase())) || product.getCode().contains(searchTerm) && !product.isDeleted()) {
                 filteredItems.addElement(product);
             }
             if(product.getCode().equals(searchTerm) && !product.isDeleted()) {
+                new Sound().playBeep();
                 int index = isInList(cartListModel, product);
                 if(index != -1) {
                     Product p = (Product) cartListModel.get(index);
@@ -227,40 +227,19 @@ public class TurnController {
                     cartListModel.set(index, p);
                 } else {
                     product.setQuantity(1);
-                    modifyQuantity(product, product.getQuantity());
+                    modifyQuantity(product, 1);
                     cartListModel.addElement(product);
                 }
-
-                /**
-                 * Explanation of this code:
-                 * When I tried view.codeField.setText(""); it made it blank but for some reason the
-                 * list went all blank. So to overcome this, I made a "robot" to type backspace a bunch
-                 * of times to clear the field and with that the list doesn't fail.
-                 * This needs to be replaced with a more optimal solution.
-                 */
-                try {
-                    Robot robot = new Robot();
-                    for(int i = 0; i < product.getCode().length() + product.getProdName().length(); i++) {
-                        robot.keyPress(KeyEvent.VK_BACK_SPACE);
-                        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
-                    }
-                    view.codeField.setText("");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    // Select the new product in the cart list
-                    new Thread(() -> {
-                        try {
-                            Thread.sleep(10);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        view.cartList.setSelectedIndex(isInList(cartListModel, product));
-                        view.codeField.transferFocus();
-                    }).start();
-                }
+                this.products = ProductsQueries.getAllProducts();
+                view.codeField.setText("");
+                filteredItems.removeAllElements();
+                for(Product product1 : products) filteredItems.addElement(product1);
+                view.cartList.setSelectedIndex(isInList(cartListModel, product));
+                view.codeField.transferFocus();
             }
         });
+
+
         stockListModel = filteredItems;
         view.productList.setModel(stockListModel);
     }
@@ -295,7 +274,7 @@ public class TurnController {
             Product product = ((Product) cartListModel.get(i));
             total += product.getPrice() * product.getQuantity();
         }
-        return total;
+        return Double.parseDouble(new DecimalFormat("#.##").format(total));
     }
 
     private void updateTotal() {
@@ -317,5 +296,6 @@ public class TurnController {
     private TurnView view;
     private Session session;
     private boolean inAnotherScreen;
+    private ArrayList<Product> products;
 
 }

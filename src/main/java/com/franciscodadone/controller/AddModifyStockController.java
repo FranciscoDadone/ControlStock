@@ -176,7 +176,8 @@ public class AddModifyStockController {
 
     private void addProductButton() {
         view.addProductButton.addActionListener(e -> {
-            if(view.priceField.getText().length() == 0 || !Util.isNumeric(view.priceField.getText()) ) {
+            String priceFormatted = view.priceField.getText().replace(",", ".");
+            if(priceFormatted.length() == 0 || !Util.isNumeric(priceFormatted) ) {
                 JCustomOptionPane.messageDialog("El precio no puede quedar vacío o tener letras.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if(view.descriptionField.getText().length() == 0) {
                 JCustomOptionPane.messageDialog("La descripción no puede quedar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -203,7 +204,7 @@ public class AddModifyStockController {
                 Product product = new Product(
                         view.codeField.getText(),
                         view.descriptionField.getText(),
-                        Double.parseDouble(view.priceField.getText()),
+                        Double.parseDouble(priceFormatted),
                         Integer.parseInt(view.quantityField.getText()),
                         (view.unitRadioButton.isSelected()) ? "U" : "G",
                         false,
@@ -250,8 +251,6 @@ public class AddModifyStockController {
                     return false;
                 });
     }
-
-
 
     private AddModifyStock view;
 

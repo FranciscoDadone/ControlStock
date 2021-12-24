@@ -35,5 +35,4 @@ public class TurnView {
         codeField.setText("");
         codeField.requestFocusInWindow();
     }
-
 }
