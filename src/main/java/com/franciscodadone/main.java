@@ -12,8 +12,6 @@ public class main {
 
     public static void main(String[] args) {
 
-        new Sound().playBeep();
-
         GUIHandler.main();
 
         com.franciscodadone.util.Logger.log("Booting up...");
