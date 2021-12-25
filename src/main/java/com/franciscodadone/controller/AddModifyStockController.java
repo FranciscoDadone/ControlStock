@@ -212,7 +212,8 @@ public class AddModifyStockController {
                 int res = JCustomOptionPane.confirmDialog(product);
 
                 if(res == JOptionPane.YES_OPTION && (resCode == -1 || resCode == JOptionPane.YES_OPTION)) {
-                    if(ProductsQueries.getProductByCode(product.getCode()) == null) {
+                    Product p = ProductsQueries.getProductByCode(product.getCode());
+                    if(p == null || p.isDeleted()) {
                         ProductsQueries.saveProduct(product, true);
                         JCustomOptionPane.messageDialog("Producto guardado correctamente!", "", JOptionPane.PLAIN_MESSAGE);
                     } else {
@@ -236,10 +237,11 @@ public class AddModifyStockController {
                 .addKeyEventDispatcher(e -> {
                     if(e.getKeyCode() == 118) view.focusField();
                     if(view.codeField.hasFocus() && view.codeField.getText().length() > 5) {
-                        if(ProductsQueries.getProductByCode(view.codeField.getText()) == null) {
+                        Product product = ProductsQueries.getProductByCode(view.codeField.getText());
+                        if(product == null) {
                             view.descriptionField.setText(new CSVQueries().search(view.codeField.getText()));
                             view.searchStock.setText("");
-                        } else {
+                        } else if(!product.isDeleted()) {
                             view.searchStock.setText(view.codeField.getText());
                             searchFilter(view.codeField.getText());
                             view.stockList.setSelectedIndex(0);

@@ -213,6 +213,7 @@
                         <constraints/>
                         <properties>
                           <font size="24"/>
+                          <visibleRowCount value="8"/>
                         </properties>
                       </component>
                     </children>
