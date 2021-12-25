@@ -31,6 +31,9 @@ public class RemoteStockQueries {
         long localRegisteredStock  = ProductsQueries.getAllProducts().size();
         long remoteRegisteredStock = getMongoProductsCount();
 
+        System.out.println(localRegisteredStock);
+        System.out.println(remoteRegisteredStock);
+
         if(localRegisteredStock > remoteRegisteredStock) { // makes the backup on remote
             ProductsQueries.getAllProducts().forEach((product) -> {
                 Document mongoQuery = (Document) mongoConnection.mongoStock.find(Filters.eq("code", product.getCode())).first();
@@ -68,7 +71,8 @@ public class RemoteStockQueries {
 
     protected static void retrieveFromRemote() {
         getAllProducts().forEach((remoteProduct) -> {
-            if(ProductsQueries.getProductByCode(remoteProduct.getCode()) == null) {
+            Product localProduct = ProductsQueries.getProductByCode(remoteProduct.getCode());
+            if(localProduct == null || localProduct.isDeleted()) {
                 Logger.log("Retrieving product from remote. name=" + remoteProduct.getProdName());
                 ProductsQueries.saveProduct(remoteProduct, false);
             }
