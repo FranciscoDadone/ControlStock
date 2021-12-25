@@ -22,7 +22,7 @@ public class TurnController {
         this.session    = session;
         this.inAnotherScreen = false;
 
-        this.products = ProductsQueries.getAllProducts();
+        this.products = ProductsQueries.getAllProductsNonDeleted();
 
         handleKeyboard();
         stockList();
@@ -190,8 +190,8 @@ public class TurnController {
     DefaultListModel stockListModel = new DefaultListModel();
     DefaultListModel cartListModel  = new DefaultListModel();
     private void stockList() {
-        ProductsQueries.getAllProducts().forEach((product) -> {
-            if(!product.isDeleted()) stockListModel.addElement(product);
+        ProductsQueries.getAllProductsNonDeleted().forEach((product) -> {
+            stockListModel.addElement(product);
         });
         view.productList.setModel(stockListModel);
         view.productList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -230,7 +230,7 @@ public class TurnController {
                     modifyQuantity(product, 1);
                     cartListModel.addElement(product);
                 }
-                this.products = ProductsQueries.getAllProducts();
+                this.products = ProductsQueries.getAllProductsNonDeleted();
                 view.codeField.setText("");
                 filteredItems.removeAllElements();
                 for(Product product1 : products) filteredItems.addElement(product1);

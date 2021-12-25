@@ -66,8 +66,8 @@ public class MainScreenController {
 
     private void lowStockNotification() {
         String lowStockStr = "";
-        for(Product product: ProductsQueries.getAllProducts()) {
-            if((product.getQuantity() < product.getMinQuantity()) && !product.isDeleted()) {
+        for(Product product: ProductsQueries.getAllProductsNonDeleted()) {
+            if((product.getQuantity() < product.getMinQuantity())) {
                 lowStockStr += "   - " + product.getProdName() + "<br>";
             }
         }
