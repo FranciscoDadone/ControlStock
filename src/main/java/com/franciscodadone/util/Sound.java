@@ -14,21 +14,14 @@ public class Sound {
     public void playBeep(){
 
         try {
-            new FileInputStream("/beep.wav");
-            soundFile = new File("/beep.wav");
+            audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/beep.wav"));
         } catch (Exception e) {
-            soundFile = new File("/home/franciscodadone/Dev/ControlStock/src/main/resources/beep.wav");
-        }
-
-        try {
-            audioStream = AudioSystem.getAudioInputStream(soundFile);
-        } catch (Exception e){
             e.printStackTrace();
         }
 
         audioFormat = audioStream.getFormat();
-
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+
         try {
             sourceLine = (SourceDataLine) AudioSystem.getLine(info);
             sourceLine.open(audioFormat);

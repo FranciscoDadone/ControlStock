@@ -3,6 +3,7 @@ package com.franciscodadone.model.local.queries;
 import com.franciscodadone.model.local.SQLiteConnection;
 import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.remote.queries.RemoteStockQueries;
+import com.franciscodadone.util.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

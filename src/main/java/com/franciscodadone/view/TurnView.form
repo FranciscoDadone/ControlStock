@@ -76,7 +76,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <font size="24"/>
+                  <font size="20"/>
                   <horizontalAlignment value="4"/>
                   <horizontalTextPosition value="4"/>
                   <text value="Código:"/>
@@ -89,7 +89,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <font size="28"/>
+                  <font size="18"/>
                 </properties>
               </component>
               <scrollpane id="29cc8">
@@ -102,7 +102,7 @@
                   <component id="8b84b" class="javax.swing.JList" binding="productList">
                     <constraints/>
                     <properties>
-                      <font size="28"/>
+                      <font size="18"/>
                       <maximumSize width="0" height="200"/>
                       <visibleRowCount value="5"/>
                     </properties>
@@ -136,7 +136,7 @@
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="24"/>
+                          <font size="20"/>
                           <text value="Cantidad:"/>
                         </properties>
                       </component>
@@ -148,7 +148,7 @@
                         </constraints>
                         <properties>
                           <background color="-393729"/>
-                          <font size="24"/>
+                          <font size="20"/>
                           <text value="1"/>
                         </properties>
                       </component>
@@ -170,7 +170,7 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
                       <text value="Descripción: "/>
                     </properties>
                   </component>
@@ -179,7 +179,7 @@
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
                       <text value="Precio: $0000"/>
                     </properties>
                   </component>
@@ -224,7 +224,7 @@
                   <component id="cbc70" class="javax.swing.JList" binding="cartList">
                     <constraints/>
                     <properties>
-                      <font size="22"/>
+                      <font size="18"/>
                     </properties>
                   </component>
                 </children>
@@ -283,17 +283,8 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
                       <text value="Total"/>
-                    </properties>
-                  </component>
-                  <component id="995eb" class="javax.swing.JLabel" binding="totalLabel">
-                    <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <font size="24"/>
-                      <text value="$0"/>
                     </properties>
                   </component>
                   <component id="4f578" class="javax.swing.JLabel">
@@ -301,7 +292,7 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
                       <text value="Efectivo"/>
                     </properties>
                   </component>
@@ -312,7 +303,7 @@
                       </grid>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
                     </properties>
                   </component>
                   <component id="8161e" class="javax.swing.JLabel">
@@ -320,7 +311,7 @@
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
                       <text value="Cambio"/>
                     </properties>
                   </component>
@@ -329,7 +320,16 @@
                       <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <font size="24"/>
+                      <font size="20"/>
+                      <text value="$0"/>
+                    </properties>
+                  </component>
+                  <component id="995eb" class="javax.swing.JLabel" binding="totalLabel">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font size="20"/>
                       <text value="$0"/>
                     </properties>
                   </component>
