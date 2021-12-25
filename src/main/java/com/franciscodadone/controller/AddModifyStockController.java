@@ -238,7 +238,7 @@ public class AddModifyStockController {
                     if(e.getKeyCode() == 118) view.focusField();
                     if(view.codeField.hasFocus() && view.codeField.getText().length() > 5) {
                         Product product = ProductsQueries.getProductByCode(view.codeField.getText());
-                        if(product == null) {
+                        if(product == null || product.isDeleted()) {
                             view.descriptionField.setText(new CSVQueries().search(view.codeField.getText()));
                             view.searchStock.setText("");
                         } else if(!product.isDeleted()) {
