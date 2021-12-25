@@ -46,15 +46,17 @@ public class ProductsQueries extends SQLiteConnection {
         try {
             ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Stock;");
             while(res.next()) {
-                products.add(new Product(
-                        res.getString("code"),
-                        res.getString("title"),
-                        res.getDouble("price"),
-                        res.getInt("quantity"),
-                        res.getString("quantityType"),
-                        res.getBoolean("deleted"),
-                        res.getInt("minQuantity")
-                ));
+                if(res.getBoolean("deleted") == false) {
+                    products.add(new Product(
+                            res.getString("code"),
+                            res.getString("title"),
+                            res.getDouble("price"),
+                            res.getInt("quantity"),
+                            res.getString("quantityType"),
+                            res.getBoolean("deleted"),
+                            res.getInt("minQuantity")
+                    ));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
