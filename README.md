@@ -50,19 +50,24 @@ I've created this project for a small market in my city to control the stock of 
    * And more!
 
 
-Main screen
+### Main screen
+
 ![](.github/images/mainScreen.png)
 
-Add or modify stock
+### Add or modify stock
+
 ![](.github/images/addModifyStock.png)
 
-Session
+### Session
+
 ![](.github/images/turn.png)
 
-History
+### History
+
 ![](.github/images/history.png)
 
-History details
+### History details
+
 ![](.github/images/historyDetails.png)
 
 <br />
