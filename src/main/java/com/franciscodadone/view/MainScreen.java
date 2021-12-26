@@ -22,7 +22,7 @@ public class MainScreen extends JFrame {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             this.setTitle("Control de Stock - Mundo Helado");
-//        this.setIconImage(new ImageIcon(getClass().getResource("/images/logo.jpg")).getImage());
+            this.setIconImage(new ImageIcon(getClass().getResource("/boxIcon.png")).getImage());
 
             this.addWindowListener(new WindowAdapter(){
                 public void windowClosing(WindowEvent e) {
