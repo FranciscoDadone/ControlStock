@@ -128,42 +128,4 @@ public class JCustomOptionPane {
         }
         return null;
     }
-
-
-    public static double endSessionDialog() {
-        Font font = new Font("Arial", Font.PLAIN, 30);
-
-        JTextField endMoney = new JTextField(8);
-        endMoney.setFont(font);
-
-        Session activeSession = SessionsQueries.getActiveSession();
-
-        JLabel moneyLabel = new JLabel("Dinero en la caja al finalizar el turno:");
-        JLabel info = new JLabel("¿Finalizar turno de " + activeSession.getSeller() + "?");
-        JLabel info1 = new JLabel("El turno inició: " + activeSession.getDateStarted());
-        JLabel spacer = new JLabel("");
-        moneyLabel.setFont(font);
-        info.setFont(font);
-        info1.setFont(font);
-
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(info);
-        mainPanel.add(info1);
-        mainPanel.add(spacer);
-        mainPanel.add(moneyLabel);
-        mainPanel.add(endMoney);
-
-        int result = JOptionPane.showConfirmDialog(null, mainPanel,
-                "Finalizar turno", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            if(!Util.isNumeric(endMoney.getText()) || endMoney.getText().equals("")) {
-                JCustomOptionPane.messageDialog("El dinero en caja tiene que ser numérico. Reintentar.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                return Double.parseDouble(endMoney.getText());
-            }
-        }
-        return -1;
-    }
-
 }

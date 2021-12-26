@@ -19,25 +19,19 @@ public class MainScreenController {
             Session activeSession = SessionsQueries.getActiveSession();
 
             if(activeSession != null) {
-                int res = JCustomOptionPane.confirmDialog("Hay un turno activo. ¿Desea seguir trabajando en él o iniciar uno nuevo?", "Turno activo");
+                int res = JCustomOptionPane.confirmDialog("Hay un turno activo. ¿Desea seguir trabajando en él? O iniciar uno nuevo", "Turno activo");
                 if(res == JOptionPane.YES_OPTION) {
                     TurnView turn = new TurnView(activeSession);
                     GUIHandler.changeScreen(turn.panel);
                     turn.focusField();
                 } else if(res == JOptionPane.NO_OPTION) {
-                    double endMoney = JCustomOptionPane.endSessionDialog();
-                    if(endMoney != -1) {
-                        SessionsQueries.endCurrentSession(endMoney);
-                        Object[] nameAndMoney = JCustomOptionPane.startSessionDialog();
-                        if(nameAndMoney != null) {
-                            String sellerName = (String)nameAndMoney[0];
-                            double money = Double.parseDouble(nameAndMoney[1].toString());
-
-                            TurnView turn = new TurnView(SessionsQueries.startSession(money, sellerName, new FDate()));
-                            GUIHandler.changeScreen(turn.panel);
-                            turn.focusField();
-                        }
-                    }
+                    double earnings = SessionsQueries.getMoneyFromActiveSession();
+                    JCustomOptionPane.messageDialog(
+                            "<html>Turno de: " + activeSession.getSeller() + "<br>" +
+                                    "Ingresos totales en el turno: $" + earnings + "<br>" +
+                                    "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
+                                    "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                    SessionsQueries.endCurrentSession();
                 }
             } else {
                 Object[] nameAndMoney = JCustomOptionPane.startSessionDialog();

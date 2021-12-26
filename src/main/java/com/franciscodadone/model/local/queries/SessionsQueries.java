@@ -64,10 +64,20 @@ public class SessionsQueries extends SQLiteConnection {
         }
     }
 
-    public static void endCurrentSession(double sessionEndMoney) {
+    public static double getMoneyFromActiveSession() {
+        double earnings = 0;
+        for(Sell sell : SellQueries.getAllSellsFromSession(getActiveSession())) {
+            earnings += sell.getPrice();
+        }
+        return earnings;
+    }
+
+    public static void endCurrentSession() {
         Session currentSession = getActiveSession();
         currentSession.setDateEnded(new FDate());
-        currentSession.setEndMoney(sessionEndMoney);
+        double earnings = getMoneyFromActiveSession();
+        currentSession.setEndMoney(earnings);
+
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
@@ -77,7 +87,7 @@ public class SessionsQueries extends SQLiteConnection {
                     "UPDATE Sessions SET dateEnded='" + currentSession.getDateEnded().toString() + "' WHERE id=" + currentSession.getId() + ";"
             );
             connection.createStatement().execute(
-                    "UPDATE Sessions SET endMoney=" + sessionEndMoney + " WHERE id=" + currentSession.getId() + ";"
+                    "UPDATE Sessions SET endMoney=" + earnings + " WHERE id=" + currentSession.getId() + ";"
             );
         } catch (SQLException e) {
             e.printStackTrace();

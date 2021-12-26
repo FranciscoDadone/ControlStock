@@ -30,7 +30,7 @@ public class Session {
     }
 
     public double getEndMoney() {
-        return endMoney;
+        return this.endMoney;
     }
 
     public int getId() {
@@ -59,14 +59,6 @@ public class Session {
 
     public FDate getDateEnded() {
         return dateEnded;
-    }
-
-    public double getEarnings() {
-        double earnings = 0;
-        for(Sell sell : SellQueries.getAllSellsFromSession(this)) {
-            earnings += sell.getPrice();
-        }
-        return earnings;
     }
 
     private int     id;

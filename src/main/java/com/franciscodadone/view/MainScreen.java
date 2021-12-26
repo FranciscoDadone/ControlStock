@@ -30,12 +30,14 @@ public class MainScreen extends JFrame {
                     if(activeSession != null) {
                         int res = JCustomOptionPane.confirmDialog("Advertencia, hay un turno abierto. ¿Desea cerrarlo antes de salir?", "Turno abierto");
                         if(res == JOptionPane.YES_OPTION) {
-                            double endMoney = JCustomOptionPane.endSessionDialog();
-                            if(endMoney != -1) {
-                                SessionsQueries.endCurrentSession(endMoney);
-                                JCustomOptionPane.messageDialog("Turno gurdado exitosamente!", "", JOptionPane.PLAIN_MESSAGE);
-                                System.exit(0);
-                            }
+                            double earnings = SessionsQueries.getMoneyFromActiveSession();
+                            JCustomOptionPane.messageDialog(
+                                    "<html>Turno de: " + activeSession.getSeller() + "<br>" +
+                                            "Ingresos totales en el turno: $" + earnings + "<br>" +
+                                            "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
+                                            "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                            SessionsQueries.endCurrentSession();
+                            System.exit(0);
                         } else if(res == JOptionPane.NO_OPTION) System.exit(0);
                     } else System.exit(0);
                 }

@@ -40,7 +40,7 @@
             <properties>
               <font size="20"/>
               <foreground color="-16777216"/>
-              <text value="Fin de la caja: $0000"/>
+              <text value="Inicio + Ganancias: $0000"/>
             </properties>
           </component>
           <component id="1b310" class="javax.swing.JLabel" binding="sellerLabel">
@@ -55,22 +55,12 @@
           </component>
           <component id="4bad0" class="javax.swing.JLabel" binding="earningsLabel">
             <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font size="20"/>
-              <foreground color="-16777216"/>
-              <text value="Fin - Inicio: $0000"/>
-            </properties>
-          </component>
-          <component id="3357f" class="javax.swing.JLabel" binding="totalEarnings">
-            <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font size="20"/>
               <foreground color="-16777216"/>
-              <text value="Ganancias totales: $0000"/>
+              <text value="Ganancias del turno: $0000"/>
             </properties>
           </component>
         </children>

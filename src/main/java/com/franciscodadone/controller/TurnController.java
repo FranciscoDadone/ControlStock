@@ -113,9 +113,17 @@ public class TurnController {
 
         view.endTurnButton.addActionListener(e -> {
             inAnotherScreen = true;
-            double sessionEndMoney = JCustomOptionPane.endSessionDialog();
-            if(sessionEndMoney != -1) {
-                SessionsQueries.endCurrentSession(sessionEndMoney);
+
+            int res = JCustomOptionPane.confirmDialog("¿Seguro quiere terminar el turno?", "");
+            if(res == JOptionPane.YES_OPTION) {
+                double earnings = SessionsQueries.getMoneyFromActiveSession();
+                Session activeSession = SessionsQueries.getActiveSession();
+                JCustomOptionPane.messageDialog(
+                        "<html>Turno de: " + activeSession.getSeller() + "<br>" +
+                                "Ingresos totales en el turno: $" + earnings + "<br>" +
+                                "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
+                                "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                SessionsQueries.endCurrentSession();
                 GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
             } else inAnotherScreen = false;
         });
