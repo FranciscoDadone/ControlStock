@@ -141,14 +141,17 @@ public class TurnController {
             products.add(product);
         }
         Sell sell = new Sell(products, getTotal(), session.getId(), new FDate());
-        SellQueries.saveSell(sell, true);
 
-        // Removing from stock
-        products.forEach(product -> {
-            Product p = ProductsQueries.getProductByCode(product.getCode());
-            p.setQuantity(p.getQuantity() - product.getQuantity());
-            ProductsQueries.modifyProductByCode(product.getCode(), p);
-        });
+        new Thread(() -> {
+            SellQueries.saveSell(sell, true);
+
+            // Removing from stock
+            products.forEach(product -> {
+                Product p = ProductsQueries.getProductByCode(product.getCode());
+                p.setQuantity(p.getQuantity() - product.getQuantity());
+                ProductsQueries.modifyProductByCode(product.getCode(), p);
+            });
+        }).start();
 
         view.cartList.removeAll();
         cartListModel.removeAllElements();

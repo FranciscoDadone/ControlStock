@@ -10,7 +10,9 @@ import com.mongodb.client.MongoDatabase;
 
 public class MongoConnection {
 
-    public MongoConnection() {
+    public static void connect() {
+        Logger.log("Mongo connected!");
+
         MongoDatabase database = null;
         if(!MongoCredentials.getCredentials().get("username").equals("") || !MongoCredentials.getCredentials().get("password").equals("")) {
             ConnectionString connectionString = new ConnectionString("mongodb+srv://" + MongoCredentials.getCredentials().get("username") + ":" + MongoCredentials.getCredentials().get("password") + "@" + MongoCredentials.getCredentials().get("url"));
@@ -42,19 +44,21 @@ public class MongoConnection {
 
     }
 
-    public MongoDatabase getDatabase() {
+    public static MongoDatabase getDatabase() {
         return mongoDatabase;
     }
 
 
-    public void close() {
+    public static void close() {
         if(mongoClient != null) mongoClient.close();
+        MongoStatus.connected = false;
+        Logger.log("Connection closed.");
     }
 
-    private MongoClient        mongoClient;
-    public MongoDatabase       mongoDatabase;
-    public MongoCollection     mongoSells;
-    public MongoCollection     mongoSessions;
-    public MongoCollection     mongoStock;
-    public MongoCollection     mongoUtil;
+    private static MongoClient         mongoClient;
+    public static MongoDatabase mongoDatabase;
+    public static MongoCollection      mongoSells;
+    public static MongoCollection      mongoSessions;
+    public static MongoCollection      mongoStock;
+    public static MongoCollection      mongoUtil;
 }

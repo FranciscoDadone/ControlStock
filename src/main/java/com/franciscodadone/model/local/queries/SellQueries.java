@@ -35,7 +35,9 @@ public class SellQueries extends SQLiteConnection {
                 e.printStackTrace();
             }
         }
-        if(saveRemote) RemoteSellQueries.backupSell(sell);
+        if(saveRemote) {
+            RemoteSellQueries.backupSell(sell);
+        }
     }
 
     public static ArrayList<Sell> getAllSellsFromSession(Session session) {

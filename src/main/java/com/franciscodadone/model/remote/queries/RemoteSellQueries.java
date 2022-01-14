@@ -7,6 +7,7 @@ import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.FDate;
 import com.franciscodadone.util.Logger;
+import com.franciscodadone.util.exceptions.MongoNotConnected;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -20,14 +21,14 @@ import static com.mongodb.client.model.Updates.set;
 public class RemoteSellQueries {
 
     private static long getMongoSellsCount() {
-        MongoConnection mongoConnection = new MongoConnection();
-        long count = mongoConnection.mongoSells.countDocuments(new Document());
-        mongoConnection.close();
+        long count = MongoConnection.mongoSells.countDocuments(new Document());
         return count;
     }
 
-    protected static boolean isDatabaseOutdated() {
-        MongoConnection mongoConnection = new MongoConnection();
+    protected static boolean isDatabaseOutdated() throws MongoNotConnected {
+        if(!MongoStatus.connected) {
+            throw new MongoNotConnected();
+        }
         Logger.log("Checking (Sells) Collection on Mongo...");
 
         long localRegisteredSells = SellQueries.getAllSells().size();
@@ -35,7 +36,7 @@ public class RemoteSellQueries {
 
         if(localRegisteredSells > remoteRegisteredSells) { // makes the backup on remote
             SellQueries.getAllSells().forEach((sell) -> {
-                Document mongoQuery = (Document) mongoConnection.mongoSells.find(Filters.eq("id", sell.getId())).first();
+                Document mongoQuery = (Document) MongoConnection.mongoSells.find(Filters.eq("id", sell.getId())).first();
                 if(mongoQuery == null) {
                     backupSell(sell);
                 }
@@ -62,7 +63,6 @@ public class RemoteSellQueries {
                 }
             }
         }
-        mongoConnection.close();
         return false;
     }
 
@@ -81,60 +81,38 @@ public class RemoteSellQueries {
 
     private static void updateSellID(Sell sell) {
         Logger.log("Updating remote id of sell id=" + sell.getId());
-        new Thread(() -> {
-            MongoConnection mongoConnection = new MongoConnection();
-
-            Bson filter = Filters.eq("date", sell.getDate().toString());
-            Bson updateOperation = set("id", sell.getId());
-            mongoConnection.mongoSells.updateOne(filter, updateOperation);
-
-            mongoConnection.close();
-        }).start();
+        Bson filter = Filters.eq("date", sell.getDate().toString());
+        Bson updateOperation = set("id", sell.getId());
+        MongoConnection.mongoSells.updateOne(filter, updateOperation);
     }
 
     public static void backupSell(Sell sell) {
-        if(MongoStatus.connected) {
-            new Thread(() -> {
-                MongoConnection mongoConnection = new MongoConnection();
-
-                int id = SellQueries.getSellID(sell);
-
-                Logger.log("Making backup of sell id=" + id);
-                mongoConnection.mongoSells.insertOne(new Document()
-                        .append("id", id)
-                        .append("products", sell.toString())
-                        .append("totalPrice", sell.getPrice())
-                        .append("sessionID", sell.getSessionID())
-                        .append("date", sell.getDate().toString())
-                );
-                mongoConnection.close();
-            }).start();
-        }
+        int id = SellQueries.getSellID(sell);
+        Logger.log("Making backup of sell id=" + id);
+        MongoConnection.mongoSells.insertOne(new Document()
+                .append("id", id)
+                .append("products", sell.toString())
+                .append("totalPrice", sell.getPrice())
+                .append("sessionID", sell.getSessionID())
+                .append("date", sell.getDate().toString())
+        );
     }
 
     public static void editSell(Sell sell) {
-        if(MongoStatus.connected) {
-            Logger.log("Editing sell id=" + sell.getId());
-            new Thread(() -> {
-                MongoConnection mongoConnection = new MongoConnection();
+        Logger.log("Editing sell id=" + sell.getId());
 
-                Bson filter = Filters.eq("id", sell.getId());
-                Bson updateProducts = set("products", sell.toString());
-                Bson updateDate = set("date", sell.getDate().toString());
-                Bson updatePrice = set("totalPrice", sell.getPrice());
-                Bson updateSessionID = set("sessionID", sell.getSessionID());
+        Bson filter = Filters.eq("id", sell.getId());
+        Bson updateProducts = set("products", sell.toString());
+        Bson updateDate = set("date", sell.getDate().toString());
+        Bson updatePrice = set("totalPrice", sell.getPrice());
+        Bson updateSessionID = set("sessionID", sell.getSessionID());
 
-                Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice);
-                mongoConnection.mongoSells.updateOne(filter, updates);
-
-                mongoConnection.close();
-            }).start();
-        }
+        Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice);
+        MongoConnection.mongoSells.updateOne(filter, updates);
     }
 
     private static ArrayList<Sell> getAllSells() {
-        MongoConnection mongoConnection = new MongoConnection();
-        FindIterable remoteSells = mongoConnection.mongoSells.find();
+        FindIterable remoteSells = MongoConnection.mongoSells.find();
 
         ArrayList<Sell> sells = new ArrayList<>();
         remoteSells.forEach((sell) -> {
@@ -146,7 +124,6 @@ public class RemoteSellQueries {
                     new FDate(((Document)sell).getString("date"))
             ));
         });
-        mongoConnection.close();
         return sells;
     }
 

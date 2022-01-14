@@ -5,6 +5,7 @@ import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.Logger;
+import com.franciscodadone.util.exceptions.MongoNotConnected;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -18,25 +19,22 @@ import static com.mongodb.client.model.Updates.set;
 public class RemoteStockQueries {
 
     private static long getMongoProductsCount() {
-        MongoConnection mongoConnection = new MongoConnection();
-        long count = mongoConnection.mongoStock.countDocuments(new Document());
-        mongoConnection.close();
+        long count = MongoConnection.mongoStock.countDocuments(new Document());
         return count;
     }
 
-    protected static boolean isDatabaseOutdated() {
-        MongoConnection mongoConnection = new MongoConnection();
+    protected static boolean isDatabaseOutdated() throws MongoNotConnected {
+        if(!MongoStatus.connected) {
+            throw new MongoNotConnected();
+        }
         Logger.log("Checking (Stock) Collection on Mongo...");
 
         long localRegisteredStock  = ProductsQueries.getAllProducts().size();
         long remoteRegisteredStock = getMongoProductsCount();
 
-        System.out.println(localRegisteredStock);
-        System.out.println(remoteRegisteredStock);
-
         if(localRegisteredStock > remoteRegisteredStock) { // makes the backup on remote
             ProductsQueries.getAllProducts().forEach((product) -> {
-                Document mongoQuery = (Document) mongoConnection.mongoStock.find(Filters.eq("code", product.getCode())).first();
+                Document mongoQuery = (Document) MongoConnection.mongoStock.find(Filters.eq("code", product.getCode())).first();
                 if(mongoQuery == null) {
                     backupProduct(product);
                 }
@@ -65,7 +63,6 @@ public class RemoteStockQueries {
                 }
             }
         }
-        mongoConnection.close();
         return false;
     }
 
@@ -80,49 +77,35 @@ public class RemoteStockQueries {
     }
 
     public static void backupProduct(Product product) {
-        if(MongoStatus.connected) {
-            new Thread(() -> {
-                MongoConnection mongoConnection = new MongoConnection();
-                Logger.log("Making backup of Product '" + product.getProdName() + "'");
-                mongoConnection.mongoStock.insertOne(new Document()
-                        .append("code", product.getCode())
-                        .append("title", product.getProdName())
-                        .append("quantity", product.getQuantity())
-                        .append("price", product.getPrice())
-                        .append("quantityType", product.getQuantityType())
-                        .append("deleted", product.isDeleted())
-                        .append("minQuantity", product.getMinQuantity())
-                );
-                mongoConnection.close();
-            }).start();
-        }
+        Logger.log("Making backup of Product '" + product.getProdName() + "'");
+        MongoConnection.mongoStock.insertOne(new Document()
+                .append("code", product.getCode())
+                .append("title", product.getProdName())
+                .append("quantity", product.getQuantity())
+                .append("price", product.getPrice())
+                .append("quantityType", product.getQuantityType())
+                .append("deleted", product.isDeleted())
+                .append("minQuantity", product.getMinQuantity())
+        );
     }
 
     public static void editProduct(Product product) {
-        if(MongoStatus.connected) {
-            Logger.log("Editing Product '" + product.getProdName() + "'");
-            new Thread(() -> {
-                MongoConnection mongoConnection = new MongoConnection();
-                Bson filter = Filters.eq("code", product.getCode());
+        Logger.log("Editing Product '" + product.getProdName() + "'");
+        Bson filter = Filters.eq("code", product.getCode());
 
-                Bson updateProducts    = set("title", product.getProdName());
-                Bson updateDate        = set("quantity", product.getQuantity());
-                Bson updatePrice       = set("price", product.getPrice());
-                Bson updateSessionID   = set("quantityType", product.getQuantityType());
-                Bson updateDeleted     = set("deleted", product.isDeleted());
-                Bson updateMinQuantity = set("minQuantity", product.getMinQuantity());
+        Bson updateProducts    = set("title", product.getProdName());
+        Bson updateDate        = set("quantity", product.getQuantity());
+        Bson updatePrice       = set("price", product.getPrice());
+        Bson updateSessionID   = set("quantityType", product.getQuantityType());
+        Bson updateDeleted     = set("deleted", product.isDeleted());
+        Bson updateMinQuantity = set("minQuantity", product.getMinQuantity());
 
-                Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice, updateDeleted, updateMinQuantity);
-                mongoConnection.mongoStock.updateOne(filter, updates);
-
-                mongoConnection.close();
-            }).start();
-        }
+        Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice, updateDeleted, updateMinQuantity);
+        MongoConnection.mongoStock.updateOne(filter, updates);
     }
 
     private static ArrayList<Product> getAllProducts() {
-        MongoConnection mongoConnection = new MongoConnection();
-        FindIterable remoteProducts = mongoConnection.mongoStock.find();
+        FindIterable remoteProducts = MongoConnection.mongoStock.find();
 
         ArrayList<Product> products = new ArrayList<>();
         remoteProducts.forEach((product) -> {
@@ -136,7 +119,6 @@ public class RemoteStockQueries {
                     ((Document)product).getInteger("minQuantity")
             ));
         });
-        mongoConnection.close();
         return products;
     }
 }

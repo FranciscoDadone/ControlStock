@@ -3,11 +3,13 @@ package com.franciscodadone.view;
 import com.franciscodadone.controller.MainScreenController;
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.model.models.Session;
+import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.util.JCustomOptionPane;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 
 public class MainScreen extends JFrame {
     private JPanel panel;
@@ -31,15 +33,22 @@ public class MainScreen extends JFrame {
                         int res = JCustomOptionPane.confirmDialog("Advertencia, hay un turno abierto. ¿Desea cerrarlo antes de salir?", "Turno abierto");
                         if(res == JOptionPane.YES_OPTION) {
                             double earnings = SessionsQueries.getMoneyFromActiveSession();
+
+                            DecimalFormat df = new DecimalFormat("#.##");
+
                             JCustomOptionPane.messageDialog(
                                     "<html>Turno de: " + activeSession.getSeller() + "<br>" +
-                                            "Ingresos totales en el turno: $" + earnings + "<br>" +
+                                            "Ingresos totales en el turno: $" + df.format(earnings) + "<br>" +
                                             "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
-                                            "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                                            "Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
                             SessionsQueries.endCurrentSession();
+                            MongoConnection.close();
                             System.exit(0);
                         } else if(res == JOptionPane.NO_OPTION) System.exit(0);
-                    } else System.exit(0);
+                    } else {
+                        MongoConnection.close();
+                        System.exit(0);
+                    }
                 }
             });
             this.setVisible(true);
