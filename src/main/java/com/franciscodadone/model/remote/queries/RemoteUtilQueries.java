@@ -56,13 +56,15 @@ public class RemoteUtilQueries {
     }
 
     public static void setLastCustomCode(String newCode) {
-        Logger.log("Editing Util (Custom QR) code=" + newCode);
-        Bson filter = Filters.eq("id", 1);
+        if(MongoStatus.connected) {
+            Logger.log("Editing Util (Custom QR) code=" + newCode);
+            Bson filter = Filters.eq("id", 1);
 
-        Bson updateStartMoney = set("customQR", newCode);
+            Bson updateStartMoney = set("customQR", newCode);
 
-        Bson updates = Updates.combine(updateStartMoney);
-        MongoConnection.mongoUtil.updateOne(filter, updates);
+            Bson updates = Updates.combine(updateStartMoney);
+            MongoConnection.mongoUtil.updateOne(filter, updates);
+        }
     }
 
     private static String getLastCustomCode() {

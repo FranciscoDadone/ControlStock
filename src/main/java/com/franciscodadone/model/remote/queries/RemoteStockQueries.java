@@ -77,31 +77,35 @@ public class RemoteStockQueries {
     }
 
     public static void backupProduct(Product product) {
-        Logger.log("Making backup of Product '" + product.getProdName() + "'");
-        MongoConnection.mongoStock.insertOne(new Document()
-                .append("code", product.getCode())
-                .append("title", product.getProdName())
-                .append("quantity", product.getQuantity())
-                .append("price", product.getPrice())
-                .append("quantityType", product.getQuantityType())
-                .append("deleted", product.isDeleted())
-                .append("minQuantity", product.getMinQuantity())
-        );
+        if(MongoStatus.connected) {
+            Logger.log("Making backup of Product '" + product.getProdName() + "'");
+            MongoConnection.mongoStock.insertOne(new Document()
+                    .append("code", product.getCode())
+                    .append("title", product.getProdName())
+                    .append("quantity", product.getQuantity())
+                    .append("price", product.getPrice())
+                    .append("quantityType", product.getQuantityType())
+                    .append("deleted", product.isDeleted())
+                    .append("minQuantity", product.getMinQuantity())
+            );
+        }
     }
 
     public static void editProduct(Product product) {
-        Logger.log("Editing Product '" + product.getProdName() + "'");
-        Bson filter = Filters.eq("code", product.getCode());
+        if(MongoStatus.connected) {
+            Logger.log("Editing Product '" + product.getProdName() + "'");
+            Bson filter = Filters.eq("code", product.getCode());
 
-        Bson updateProducts    = set("title", product.getProdName());
-        Bson updateDate        = set("quantity", product.getQuantity());
-        Bson updatePrice       = set("price", product.getPrice());
-        Bson updateSessionID   = set("quantityType", product.getQuantityType());
-        Bson updateDeleted     = set("deleted", product.isDeleted());
-        Bson updateMinQuantity = set("minQuantity", product.getMinQuantity());
+            Bson updateProducts    = set("title", product.getProdName());
+            Bson updateDate        = set("quantity", product.getQuantity());
+            Bson updatePrice       = set("price", product.getPrice());
+            Bson updateSessionID   = set("quantityType", product.getQuantityType());
+            Bson updateDeleted     = set("deleted", product.isDeleted());
+            Bson updateMinQuantity = set("minQuantity", product.getMinQuantity());
 
-        Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice, updateDeleted, updateMinQuantity);
-        MongoConnection.mongoStock.updateOne(filter, updates);
+            Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice, updateDeleted, updateMinQuantity);
+            MongoConnection.mongoStock.updateOne(filter, updates);
+        }
     }
 
     private static ArrayList<Product> getAllProducts() {

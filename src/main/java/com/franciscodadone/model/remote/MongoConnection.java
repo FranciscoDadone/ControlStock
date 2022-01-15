@@ -11,8 +11,6 @@ import com.mongodb.client.MongoDatabase;
 public class MongoConnection {
 
     public static void connect() {
-        Logger.log("Mongo connected!");
-
         MongoDatabase database = null;
         if(!MongoCredentials.getCredentials().get("username").equals("") || !MongoCredentials.getCredentials().get("password").equals("")) {
             ConnectionString connectionString = new ConnectionString("mongodb+srv://" + MongoCredentials.getCredentials().get("username") + ":" + MongoCredentials.getCredentials().get("password") + "@" + MongoCredentials.getCredentials().get("url"));
@@ -21,11 +19,13 @@ public class MongoConnection {
                     .build();
             mongoClient = MongoClients.create(settings);
             database = mongoClient.getDatabase("ControlStock");
+
+            Logger.log("Mongo connected!");
+            MongoStatus.connected = true;
         } else {
             Logger.log("Please fill up the MongoDB credentials under ControlStock/database/mongoCrendentials.yml to backup the data!");
+            MongoStatus.connected = false;
         }
-
-        MongoStatus.connected = true;
 
         try {
             database.listCollectionNames().iterator();
