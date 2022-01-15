@@ -56,7 +56,7 @@ public class SQLiteConnection {
                         "products TEXT,"     +
                         "date VARCHAR(255)," +
                         "totalPrice DOUBLE," +
-                        "sessionID INTEGER"  +
+                        "sessionID INTEGER,"  +
                         "posnet INTEGER"     +
                         ");"
                 );
