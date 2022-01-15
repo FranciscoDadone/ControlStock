@@ -117,13 +117,19 @@ public class TurnController {
             int res = JCustomOptionPane.confirmDialog("¿Seguro quiere terminar el turno?", "");
             if(res == JOptionPane.YES_OPTION) {
                 double earnings = SessionsQueries.getMoneyFromActiveSession();
+                double withdraw = SessionsQueries.getWithdrawFromSession(SessionsQueries.getActiveSession());
                 Session activeSession = SessionsQueries.getActiveSession();
 
                 JCustomOptionPane.messageDialog(
                         "<html>Turno de: " + activeSession.getSeller() + "<br>" +
                                 "Ingresos totales en el turno: $" + earnings + "<br>" +
+                                "Retiros de dinero en el turno: $" + withdraw + "<br>" +
                                 "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
-                                "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                                "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "<br>" +
+                                "Inicio + Ingresos - Retiros: $" + (activeSession.getStartMoney() + earnings - withdraw) + "</html>",
+                        "",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
                 SessionsQueries.endCurrentSession();
                 GUIHandler.changeScreen(new MainScreen(false).getContentPanel());
             } else inAnotherScreen = false;
@@ -135,26 +141,24 @@ public class TurnController {
 
         view.withdrawMoney.addActionListener(e -> {
             Object[] res = JCustomOptionPane.withdrawMoneyDialog();
-
             if(res != null) {
-
                 ArrayList<Product> prod = new ArrayList<>();
-                prod.add(new Product("retiro",
+                prod.add(new Product("retiro." + res[1],
                         "Retiro de dinero",
-                        Double.parseDouble((String) res[0]),
+                        - (Double.parseDouble((String) res[0])),
                         Integer.parseInt((String) res[0]),
                         "U",
                         false,
                         0));
-
                 Sell sell = new Sell(
                         prod,
-                        Double.parseDouble((String) res[0]),
+                        - (Double.parseDouble((String) res[0])),
                         session.getId(),
                         new FDate()
                 );
 
                 SellQueries.saveSell(sell, true);
+                JCustomOptionPane.messageDialog("Retiro de dinero guardado exitosamente.", "", JOptionPane.PLAIN_MESSAGE);
 
             }
 
@@ -210,7 +214,7 @@ public class TurnController {
                     if(view.codeField.hasFocus()) searchFilter(view.codeField.getText());
 
                     // Handle quantity
-                    if(e.getKeyCode() >= 97 && e.getKeyCode() <= 105 && !view.codeField.hasFocus() && !view.exchangeField.hasFocus() && !view.quantityField.hasFocus() && !inAnotherScreen) {
+                    if(e.getKeyCode() >= 97 && e.getKeyCode() <= 105 && !view.codeField.hasFocus() && !view.exchangeField.hasFocus() && !view.quantityField.hasFocus() && !inAnotherScreen && view.cartList.getSelectedIndex() != -1) {
                         modifyQuantity(((Product)view.cartList.getSelectedValue()), (e.getKeyCode() - 96));
                     }
 

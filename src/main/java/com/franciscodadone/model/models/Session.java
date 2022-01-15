@@ -1,6 +1,4 @@
 package com.franciscodadone.model.models;
-
-import com.franciscodadone.model.local.queries.SellQueries;
 import com.franciscodadone.util.FDate;
 
 public class Session {

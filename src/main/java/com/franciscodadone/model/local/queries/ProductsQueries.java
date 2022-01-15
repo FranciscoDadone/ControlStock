@@ -157,18 +157,20 @@ public class ProductsQueries extends SQLiteConnection {
         for(int i = 0; i < prod.length; i++) {
             String[] prodWithQuantity = prod[i].split(":");
             Product product;
-            if(prodWithQuantity[0].equals("retiro")) {
-                product = new Product("retiro",
-                        "Retiro de dinero",
+            if(prodWithQuantity[0].contains("retiro")) {
+                product = new Product(
+                        prodWithQuantity[0],
+                        "Retiro de dinero (" + prodWithQuantity[0].substring(7) + ") [$" + prodWithQuantity[1] + "]",
                         Double.parseDouble(prodWithQuantity[1]),
-                        1,
+                        0,
                         "U",
                         false,
-                        0);
+                        0
+                );
             } else {
                 product = getProductByCode(prodWithQuantity[0]);
+                product.setQuantity(Integer.parseInt(prodWithQuantity[1]));
             }
-            product.setQuantity(Integer.parseInt(prodWithQuantity[1]));
             products1.add(product);
         }
         return products1;

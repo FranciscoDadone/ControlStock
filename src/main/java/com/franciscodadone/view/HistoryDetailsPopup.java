@@ -19,13 +19,15 @@ public class HistoryDetailsPopup extends JFrame {
     private JLabel endMoneyLabel;
     private JLabel earningsLabel;
     private JPanel panelScroll;
+    private JLabel earningsWithWithdrawsLabel;
+    private JLabel withdrawsLabel;
     private Session session;
 
     public HistoryDetailsPopup(Session session) {
         this.session = session;
 
         this.setVisible(true);
-        this.setBounds(20,20,750,700);
+        this.setBounds(20,20,850,700);
         this.setContentPane(panel1);
         this.setTitle(session.getDateStarted() + " - " + session.getDateEnded());
 
@@ -38,6 +40,8 @@ public class HistoryDetailsPopup extends JFrame {
         startMoneyLabel.setText("Inicio de la caja: $" + session.getStartMoney());
         endMoneyLabel.setText("Inicio + Ganancias: $" + (session.getStartMoney() + session.getEndMoney()));
         earningsLabel.setText("Ganancias del turno: $" + session.getEndMoney());
+        withdrawsLabel.setText("Retiros: $" + SessionsQueries.getWithdrawFromSession(session));
+        earningsWithWithdrawsLabel.setText("Inicio + Ganancias - Retiros: $" + (session.getStartMoney() + session.getEndMoney() - SessionsQueries.getWithdrawFromSession(session)));
     }
 
     private void showSells() {

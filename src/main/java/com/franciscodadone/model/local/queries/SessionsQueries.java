@@ -1,12 +1,11 @@
 package com.franciscodadone.model.local.queries;
 
 import com.franciscodadone.model.local.SQLiteConnection;
+import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.model.models.Session;
 import com.franciscodadone.model.remote.queries.RemoteSessionsQueries;
 import com.franciscodadone.util.FDate;
-import com.franciscodadone.util.exceptions.MongoNotConnected;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -68,9 +67,25 @@ public class SessionsQueries extends SQLiteConnection {
     public static double getMoneyFromActiveSession() {
         double earnings = 0;
         for(Sell sell : SellQueries.getAllSellsFromSession(getActiveSession())) {
-            earnings += sell.getPrice();
+            for(Product product : sell.getProducts()) {
+                if(!product.getCode().contains("retiro.")) {
+                    earnings += product.getPrice() * product.getQuantity();
+                }
+            }
         }
         return earnings;
+    }
+
+    public static double getWithdrawFromSession(Session session) {
+        double w = 0;
+        for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
+            for(Product product : sell.getProducts()) {
+                if(product.getCode().contains("retiro.")) {
+                    w += product.getPrice();
+                }
+            }
+        }
+        return w;
     }
 
     public static void endCurrentSession() {
