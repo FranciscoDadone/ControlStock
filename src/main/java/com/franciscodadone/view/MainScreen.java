@@ -34,18 +34,26 @@ public class MainScreen extends JFrame {
                         if(res == JOptionPane.YES_OPTION) {
                             DecimalFormat df = new DecimalFormat("#.##");
 
-                            double earnings = SessionsQueries.getMoneyFromActiveSession();
+                            double earningsBox = SessionsQueries.getMoneyFromSessionBox(SessionsQueries.getActiveSession());
+                            double earningsPosnet = SessionsQueries.getMoneyFromSessionPosnet(SessionsQueries.getActiveSession());
+                            double totalEarnings = earningsBox + earningsPosnet;
                             double withdraw = SessionsQueries.getWithdrawFromSession(SessionsQueries.getActiveSession());
-
                             JCustomOptionPane.messageDialog(
-                                    "<html>Turno de: " + activeSession.getSeller() + "<br>" +
-                                            "Ingresos totales en el turno: $" + df.format(earnings) + "<br>" +
-                                            "Retiros de dinero en el turno: $" + df.format(withdraw) + "<br>" +
-                                            "La caja inició con: $" + df.format(activeSession.getStartMoney()) + "<br>" +
-                                            "Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earnings) + "<br>" +
-                                            "Inicio + Ingresos - Retiros: $" + df.format(activeSession.getStartMoney() + earnings - withdraw) + "</html>",
-                                    "",
-                                    JOptionPane.INFORMATION_MESSAGE
+                                    "<html>" +
+                                            "<hr><b>Turno de: " + activeSession.getSeller() + "</b><br>" +
+                                            "Ingresos totales: $" + df.format(totalEarnings) + "<br>" +
+                                            "Ingresos totales - Retiros: $" + df.format(totalEarnings - withdraw) + "<br>" +
+                                            "<hr><li><b>CAJA:</b>" +
+                                            "   <ul>Ingresos: $" + df.format(earningsBox) + "</ul>" +
+                                            "   <ul>Dinero inicial: $" + df.format(activeSession.getStartMoney()) + "</ul>" +
+                                            "   <ul>Retiros de dinero: $" + df.format(withdraw) + "</ul>" +
+                                            "   <ul>Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earningsBox) + "</ul>" +
+                                            "   <ul>Inicio + Ingresos - Retiros: $" + df.format(activeSession.getStartMoney() + earningsBox - withdraw) + "<br></ul>" +
+                                            "</li><li><b>POSNET:</b> <br>" +
+                                            "   <ul>Ingresos: $" + df.format(earningsPosnet) + "</ul>" +
+                                            "</li><hr></html>",
+                                    "Fin del turno",
+                                    JOptionPane.PLAIN_MESSAGE
                             );
 
                             SessionsQueries.endCurrentSession();

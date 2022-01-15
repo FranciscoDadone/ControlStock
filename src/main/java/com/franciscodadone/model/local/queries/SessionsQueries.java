@@ -64,12 +64,28 @@ public class SessionsQueries extends SQLiteConnection {
         }
     }
 
-    public static double getMoneyFromActiveSession() {
+    public static double getMoneyFromSessionBox(Session session) {
         double earnings = 0;
-        for(Sell sell : SellQueries.getAllSellsFromSession(getActiveSession())) {
-            for(Product product : sell.getProducts()) {
-                if(!product.getCode().contains("retiro.")) {
-                    earnings += product.getPrice() * product.getQuantity();
+        for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
+            if(!sell.isViaPosnet()) {
+                for(Product product : sell.getProducts()) {
+                    if(!product.getCode().contains("retiro.")) {
+                        earnings += product.getPrice() * product.getQuantity();
+                    }
+                }
+            }
+        }
+        return earnings;
+    }
+
+    public static double getMoneyFromSessionPosnet(Session session) {
+        double earnings = 0;
+        for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
+            if(sell.isViaPosnet()) {
+                for(Product product : sell.getProducts()) {
+                    if(!product.getCode().contains("retiro.")) {
+                        earnings += product.getPrice() * product.getQuantity();
+                    }
                 }
             }
         }
@@ -91,7 +107,7 @@ public class SessionsQueries extends SQLiteConnection {
     public static void endCurrentSession() {
         Session currentSession = getActiveSession();
         currentSession.setDateEnded(new FDate());
-        double earnings = getMoneyFromActiveSession();
+        double earnings = getMoneyFromSessionBox(currentSession) + getMoneyFromSessionPosnet(currentSession);
         currentSession.setEndMoney(earnings);
 
         java.sql.Connection connection = connect();

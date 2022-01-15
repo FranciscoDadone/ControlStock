@@ -9,6 +9,7 @@ import com.franciscodadone.util.GUIHandler;
 import com.franciscodadone.util.JCustomOptionPane;
 import com.franciscodadone.view.*;
 import javax.swing.*;
+import java.text.DecimalFormat;
 
 public class MainScreenController {
 
@@ -25,12 +26,29 @@ public class MainScreenController {
                     GUIHandler.changeScreen(turn.panel);
                     turn.focusField();
                 } else if(res == JOptionPane.NO_OPTION) {
-                    double earnings = SessionsQueries.getMoneyFromActiveSession();
+                    DecimalFormat df = new DecimalFormat("#.##");
+
+                    double earningsBox = SessionsQueries.getMoneyFromSessionBox(SessionsQueries.getActiveSession());
+                    double earningsPosnet = SessionsQueries.getMoneyFromSessionPosnet(SessionsQueries.getActiveSession());
+                    double totalEarnings = earningsBox + earningsPosnet;
+                    double withdraw = SessionsQueries.getWithdrawFromSession(SessionsQueries.getActiveSession());
                     JCustomOptionPane.messageDialog(
-                            "<html>Turno de: " + activeSession.getSeller() + "<br>" +
-                                    "Ingresos totales en el turno: $" + earnings + "<br>" +
-                                    "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
-                                    "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                            "<html>" +
+                                    "<hr><b>Turno de: " + activeSession.getSeller() + "</b><br>" +
+                                    "Ingresos totales: $" + df.format(totalEarnings) + "<br>" +
+                                    "Ingresos totales - Retiros: $" + df.format(totalEarnings - withdraw) + "<br>" +
+                                    "<hr><li><b>CAJA:</b>" +
+                                    "   <ul>Ingresos: $" + df.format(earningsBox) + "</ul>" +
+                                    "   <ul>Dinero inicial: $" + df.format(activeSession.getStartMoney()) + "</ul>" +
+                                    "   <ul>Retiros de dinero: $" + df.format(withdraw) + "</ul>" +
+                                    "   <ul>Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earningsBox) + "</ul>" +
+                                    "   <ul>Inicio + Ingresos - Retiros: $" + df.format(activeSession.getStartMoney() + earningsBox - withdraw) + "<br></ul>" +
+                                    "</li><li><b>POSNET:</b> <br>" +
+                                    "   <ul>Ingresos: $" + df.format(earningsPosnet) + "</ul>" +
+                                    "</li><hr></html>",
+                            "Fin del turno",
+                            JOptionPane.PLAIN_MESSAGE
+                    );
                     SessionsQueries.endCurrentSession();
                 }
             } else {

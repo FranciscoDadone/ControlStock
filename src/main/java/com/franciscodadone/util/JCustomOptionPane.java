@@ -20,7 +20,7 @@ public class JCustomOptionPane {
         UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL",Font.PLAIN,20)));
         JOptionPane.showMessageDialog(
                 null,
-                new JLabelFont(txt, new Font("Arial", Font.BOLD, 24)),
+                new JLabelFont(txt, new Font("Arial", Font.PLAIN, 24)),
                 title,
                 warningType
         );
