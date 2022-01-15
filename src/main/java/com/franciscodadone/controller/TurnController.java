@@ -116,17 +116,19 @@ public class TurnController {
 
             int res = JCustomOptionPane.confirmDialog("¿Seguro quiere terminar el turno?", "");
             if(res == JOptionPane.YES_OPTION) {
+                DecimalFormat df = new DecimalFormat("#.##");
+
                 double earnings = SessionsQueries.getMoneyFromActiveSession();
                 double withdraw = SessionsQueries.getWithdrawFromSession(SessionsQueries.getActiveSession());
                 Session activeSession = SessionsQueries.getActiveSession();
 
                 JCustomOptionPane.messageDialog(
                         "<html>Turno de: " + activeSession.getSeller() + "<br>" +
-                                "Ingresos totales en el turno: $" + earnings + "<br>" +
-                                "Retiros de dinero en el turno: $" + withdraw + "<br>" +
-                                "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
-                                "Inicio + Ingresos: $" + (activeSession.getStartMoney() + earnings) + "<br>" +
-                                "Inicio + Ingresos - Retiros: $" + (activeSession.getStartMoney() + earnings - withdraw) + "</html>",
+                                "Ingresos totales en el turno: $" + df.format(earnings) + "<br>" +
+                                "Retiros de dinero en el turno: $" + df.format(withdraw) + "<br>" +
+                                "La caja inició con: $" + df.format(activeSession.getStartMoney()) + "<br>" +
+                                "Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earnings) + "<br>" +
+                                "Inicio + Ingresos - Retiros: $" + df.format(activeSession.getStartMoney() + earnings - withdraw) + "</html>",
                         "",
                         JOptionPane.INFORMATION_MESSAGE
                 );
@@ -146,7 +148,7 @@ public class TurnController {
                 prod.add(new Product("retiro." + res[1],
                         "Retiro de dinero",
                         - (Double.parseDouble((String) res[0])),
-                        Integer.parseInt((String) res[0]),
+                        (int) Double.parseDouble((String) res[0]),
                         "U",
                         false,
                         0));

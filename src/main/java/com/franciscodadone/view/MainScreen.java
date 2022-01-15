@@ -32,15 +32,22 @@ public class MainScreen extends JFrame {
                     if(activeSession != null) {
                         int res = JCustomOptionPane.confirmDialog("Advertencia, hay un turno abierto. ¿Desea cerrarlo antes de salir?", "Turno abierto");
                         if(res == JOptionPane.YES_OPTION) {
-                            double earnings = SessionsQueries.getMoneyFromActiveSession();
-
                             DecimalFormat df = new DecimalFormat("#.##");
+
+                            double earnings = SessionsQueries.getMoneyFromActiveSession();
+                            double withdraw = SessionsQueries.getWithdrawFromSession(SessionsQueries.getActiveSession());
 
                             JCustomOptionPane.messageDialog(
                                     "<html>Turno de: " + activeSession.getSeller() + "<br>" +
                                             "Ingresos totales en el turno: $" + df.format(earnings) + "<br>" +
-                                            "La caja inició con: $" + activeSession.getStartMoney() + "<br>" +
-                                            "Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earnings) + "</html>", "", JOptionPane.INFORMATION_MESSAGE);
+                                            "Retiros de dinero en el turno: $" + df.format(withdraw) + "<br>" +
+                                            "La caja inició con: $" + df.format(activeSession.getStartMoney()) + "<br>" +
+                                            "Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earnings) + "<br>" +
+                                            "Inicio + Ingresos - Retiros: $" + df.format(activeSession.getStartMoney() + earnings - withdraw) + "</html>",
+                                    "",
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+
                             SessionsQueries.endCurrentSession();
                             MongoConnection.close();
                             System.exit(0);
