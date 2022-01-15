@@ -26,6 +26,7 @@ public class TurnView {
     public JLabel sellerNameField;
     public JLabel sessionStartLabel;
     public JLabel dateNowLabel;
+    public JButton withdrawMoney;
 
     public TurnView(Session session) {
         new TurnController(this, session);

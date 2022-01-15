@@ -25,7 +25,7 @@ public class HistoryDetailsPopup extends JFrame {
         this.session = session;
 
         this.setVisible(true);
-        this.setBounds(20,20,650,700);
+        this.setBounds(20,20,750,700);
         this.setContentPane(panel1);
         this.setTitle(session.getDateStarted() + " - " + session.getDateEnded());
 

@@ -128,4 +128,40 @@ public class JCustomOptionPane {
         }
         return null;
     }
+
+    public static Object[] withdrawMoneyDialog() {
+        Font font = new Font("Arial", Font.PLAIN, 30);
+
+        JTextField quantityField = new JTextField(8);
+        JTextField descriptionArea = new JTextField();
+        quantityField.setFont(font);
+        descriptionArea.setFont(font);
+
+        JLabel quantityLabel = new JLabel("Dinero a retirar: $");
+        JLabel descriptionLabel = new JLabel("Descripcion:");
+        quantityLabel.setFont(font);
+        descriptionLabel.setFont(font);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(quantityLabel);
+        mainPanel.add(quantityField);
+        mainPanel.add(descriptionLabel);
+        mainPanel.add(descriptionArea);
+
+        int result = JOptionPane.showConfirmDialog(null, mainPanel,
+                "Retiro de caja", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            if(!Util.isNumeric(quantityField.getText()) || quantityField.getText().equals("")) {
+                JCustomOptionPane.messageDialog("El dinero a retirar tiene que ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+
+            Object[] values = new Object[2];
+            values[0] = quantityField.getText();
+            values[1] = descriptionArea.getText();
+            return values;
+        }
+        return null;
+    }
 }

@@ -118,6 +118,7 @@ public class TurnController {
             if(res == JOptionPane.YES_OPTION) {
                 double earnings = SessionsQueries.getMoneyFromActiveSession();
                 Session activeSession = SessionsQueries.getActiveSession();
+
                 JCustomOptionPane.messageDialog(
                         "<html>Turno de: " + activeSession.getSeller() + "<br>" +
                                 "Ingresos totales en el turno: $" + earnings + "<br>" +
@@ -130,6 +131,33 @@ public class TurnController {
 
         view.addSellButton.addActionListener(e -> {
             saveCurrentSell();
+        });
+
+        view.withdrawMoney.addActionListener(e -> {
+            Object[] res = JCustomOptionPane.withdrawMoneyDialog();
+
+            if(res != null) {
+
+                ArrayList<Product> prod = new ArrayList<>();
+                prod.add(new Product("retiro",
+                        "Retiro de dinero",
+                        Double.parseDouble((String) res[0]),
+                        Integer.parseInt((String) res[0]),
+                        "U",
+                        false,
+                        0));
+
+                Sell sell = new Sell(
+                        prod,
+                        Double.parseDouble((String) res[0]),
+                        session.getId(),
+                        new FDate()
+                );
+
+                SellQueries.saveSell(sell, true);
+
+            }
+
         });
     }
 
