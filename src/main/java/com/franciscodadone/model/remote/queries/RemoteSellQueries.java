@@ -96,6 +96,7 @@ public class RemoteSellQueries {
                     .append("totalPrice", sell.getPrice())
                     .append("sessionID", sell.getSessionID())
                     .append("date", sell.getDate().toString())
+                    .append("posnet", sell.isViaPosnet())
             );
         }
     }
@@ -120,12 +121,17 @@ public class RemoteSellQueries {
 
         ArrayList<Sell> sells = new ArrayList<>();
         remoteSells.forEach((sell) -> {
+            boolean posnet = false;
+            try {
+                posnet = ((Document)sell).getBoolean("posnet");
+            } catch (Exception e) {}
             sells.add(new Sell(
                     ((Document)sell).getInteger("id"),
                     ProductsQueries.getProducts(((Document)sell).getString("products")),
                     ((Document)sell).getDouble("totalPrice"),
                     ((Document)sell).getInteger("sessionID"),
-                    new FDate(((Document)sell).getString("date"))
+                    new FDate(((Document)sell).getString("date")),
+                    posnet
             ));
         });
         return sells;

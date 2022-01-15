@@ -138,7 +138,11 @@ public class TurnController {
         });
 
         view.addSellButton.addActionListener(e -> {
-            saveCurrentSell();
+            saveCurrentSell(false);
+        });
+
+        view.addSellPosnetButton.addActionListener(e -> {
+            saveCurrentSell(true);
         });
 
         view.withdrawMoney.addActionListener(e -> {
@@ -156,7 +160,8 @@ public class TurnController {
                         prod,
                         - (Double.parseDouble((String) res[0])),
                         session.getId(),
-                        new FDate()
+                        new FDate(),
+                        false
                 );
 
                 SellQueries.saveSell(sell, true);
@@ -167,14 +172,14 @@ public class TurnController {
         });
     }
 
-    private void saveCurrentSell() {
+    private void saveCurrentSell(boolean viaPosnet) {
         ArrayList<Product> products = new ArrayList<>();
         for(int i = 0; i < cartListModel.getSize(); i++) {
             Product product = (Product) cartListModel.get(i);
             product.setProdName(product.getUnmodifiedProdName());
             products.add(product);
         }
-        Sell sell = new Sell(products, getTotal(), session.getId(), new FDate());
+        Sell sell = new Sell(products, getTotal(), session.getId(), new FDate(), viaPosnet);
 
         new Thread(() -> {
             SellQueries.saveSell(sell, true);
@@ -190,6 +195,7 @@ public class TurnController {
         view.cartList.removeAll();
         cartListModel.removeAllElements();
         view.addSellButton.setEnabled(false);
+        view.addSellPosnetButton.setEnabled(false);
         view.exchangeLabel.setText("$0");
         view.totalLabel.setText("$0");
         view.exchangeField.setText("");
@@ -223,8 +229,14 @@ public class TurnController {
                     // Handle enter
                     if(e.getKeyChar() == KeyEvent.VK_ENTER && !cartListModel.isEmpty() && view.productList.getSelectedValue() == null && !inAnotherScreen) {
                         inAnotherScreen = true;
-                        if(JCustomOptionPane.confirmDialog("¿Guardar venta?", "Confirmar") == JOptionPane.YES_OPTION) {
-                            saveCurrentSell();
+                        Object[] options = { "Caja", "Posnet", "Cancelar" };
+
+                        int res = JCustomOptionPane.confirmDialog("¿Guardar venta?", "Confirmar", options, "Caja");
+
+                        if(res == JOptionPane.YES_OPTION) {
+                            saveCurrentSell(false);
+                        } else if(res == JOptionPane.NO_OPTION) {
+                            saveCurrentSell(true);
                         }
                         inAnotherScreen = false;
                     }
@@ -325,8 +337,13 @@ public class TurnController {
     private void updateTotal() {
         double total = getTotal();
         view.totalLabel.setText("$" + total);
-        if(total != 0) view.addSellButton.setEnabled(true);
-        else view.addSellButton.setEnabled(false);
+        if(total != 0) {
+            view.addSellButton.setEnabled(true);
+            view.addSellPosnetButton.setEnabled(true);
+        } else {
+            view.addSellButton.setEnabled(false);
+            view.addSellPosnetButton.setEnabled(false);
+        }
     }
 
     public void updateExchange() {

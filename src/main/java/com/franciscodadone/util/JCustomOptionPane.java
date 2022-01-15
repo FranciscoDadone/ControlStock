@@ -59,6 +59,21 @@ public class JCustomOptionPane {
         return result;
     }
 
+    public static int confirmDialog(String txt, String title, Object[] options, String defaultOption) {
+        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL",Font.PLAIN,20)));
+        int result = JOptionPane.showOptionDialog(
+                null,
+                new JLabelFont(txt, new Font("Arial", Font.PLAIN, 24)),
+                title,
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                defaultOption
+        );
+        return result;
+    }
+
     /**
      * Confirm dialog for the new product.
      * @param product

@@ -20,11 +20,12 @@ public class SellQueries extends SQLiteConnection {
         java.sql.Connection connection = connect();
         try {
             connection.createStatement().execute(
-                    "INSERT INTO Sells (products, date, totalPrice, sessionID) VALUES (" +
+                    "INSERT INTO Sells (products, date, totalPrice, sessionID, posnet) VALUES (" +
                             "'" + sell.toString()            + "'," +
                             "'" + sell.getDate().toString()  + "'," +
                                   sell.getPrice()            + "," +
-                                  sell.getSessionID()        + ");"
+                                  sell.getSessionID()        + "," +
+                                  sell.isViaPosnet()         + ");"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +52,8 @@ public class SellQueries extends SQLiteConnection {
                         ProductsQueries.getProducts(res.getString("products")),
                         res.getDouble("totalPrice"),
                         session.getId(),
-                        new FDate(res.getString("date"))
+                        new FDate(res.getString("date")),
+                        res.getBoolean("posnet")
                 ));
             }
         } catch (SQLException e) {}
@@ -76,7 +78,8 @@ public class SellQueries extends SQLiteConnection {
                         ProductsQueries.getProducts(res.getString("products")),
                         res.getDouble("totalPrice"),
                         res.getInt("sessionID"),
-                        new FDate(res.getString("date"))
+                        new FDate(res.getString("date")),
+                        res.getBoolean("posnet")
                 ));
             }
         } catch (SQLException e) {}
