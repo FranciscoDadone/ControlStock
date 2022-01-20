@@ -8,6 +8,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class MongoConnection {
 
     public static void connect() {
@@ -42,6 +46,24 @@ public class MongoConnection {
             mongoStock    = mongoDatabase.getCollection("Stock");
         }
 
+        new Thread(() -> {
+            while(true) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    URL u = new URL("https://www.google.com");
+                    URLConnection conn = u.openConnection();
+                    conn.connect();
+                    MongoStatus.connected = true;
+                } catch (Exception e) {
+                    MongoStatus.connected = false;
+                }
+            }
+        }).start();
+
     }
 
     public static MongoDatabase getDatabase() {
@@ -56,7 +78,7 @@ public class MongoConnection {
     }
 
     private static MongoClient         mongoClient;
-    public static MongoDatabase mongoDatabase;
+    public static MongoDatabase        mongoDatabase;
     public static MongoCollection      mongoSells;
     public static MongoCollection      mongoSessions;
     public static MongoCollection      mongoStock;
