@@ -41,8 +41,7 @@ public class RemoteSellQueries {
                     backupSell(sell);
                 }
             });
-            // localRegisteredSells == 0 && localRegisteredSells != remoteRegisteredSells
-        } else if(localRegisteredSells < remoteRegisteredSells) { // if the local database is empty, retrieves from remote
+        } else if(localRegisteredSells == 0 && localRegisteredSells != remoteRegisteredSells) { // if the local database is empty, retrieves from remote
             return true;
         }
 

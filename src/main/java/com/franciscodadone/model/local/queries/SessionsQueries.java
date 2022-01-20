@@ -68,10 +68,15 @@ public class SessionsQueries extends SQLiteConnection {
         double earnings = 0;
         for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
             if(!sell.isViaPosnet()) {
+                boolean ret = false;
                 for(Product product : sell.getProducts()) {
-                    if(!product.getCode().contains("retiro.")) {
-                        earnings += product.getPrice() * product.getQuantity();
+                    if(product.getCode().contains("retiro.")) {
+                        ret = true;
+                        break;
                     }
+                }
+                if(!ret) {
+                    earnings += sell.getPrice();
                 }
             }
         }
@@ -82,10 +87,15 @@ public class SessionsQueries extends SQLiteConnection {
         double earnings = 0;
         for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
             if(sell.isViaPosnet()) {
+                boolean ret = false;
                 for(Product product : sell.getProducts()) {
-                    if(!product.getCode().contains("retiro.")) {
-                        earnings += product.getPrice() * product.getQuantity();
+                    if(product.getCode().contains("retiro.")) {
+                        ret = true;
+                        break;
                     }
+                }
+                if(!ret) {
+                    earnings += sell.getPrice();
                 }
             }
         }
@@ -97,11 +107,11 @@ public class SessionsQueries extends SQLiteConnection {
         for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
             for(Product product : sell.getProducts()) {
                 if(product.getCode().contains("retiro.")) {
-                    w += product.getPrice();
+                    w += sell.getPrice();
                 }
             }
         }
-        return w;
+        return -w;
     }
 
     public static void endCurrentSession() {

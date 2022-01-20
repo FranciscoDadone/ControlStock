@@ -39,8 +39,7 @@ public class RemoteStockQueries {
                     backupProduct(product);
                 }
             });
-            // localRegisteredStock == 0 && localRegisteredStock != remoteRegisteredStock
-        } else if(localRegisteredStock < remoteRegisteredStock) { // if the local database is empty, retrieves from remote
+        } else if(localRegisteredStock == 0 && localRegisteredStock != remoteRegisteredStock) { // if the local database is empty, retrieves from remote
             return true;
         }
 

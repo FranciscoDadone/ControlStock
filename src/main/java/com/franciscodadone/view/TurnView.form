@@ -392,7 +392,8 @@
                     </constraints>
                     <properties>
                       <background color="-13633152"/>
-                      <font size="28"/>
+                      <font size="28" style="1"/>
+                      <foreground color="-16777216"/>
                       <text value="Guardar venta (Caja)"/>
                     </properties>
                   </component>
@@ -402,8 +403,12 @@
                     </constraints>
                     <properties>
                       <background color="-16721455"/>
+                      <borderPainted value="true"/>
+                      <contentAreaFilled value="true"/>
+                      <defaultCapable value="true"/>
                       <enabled value="false"/>
-                      <font size="28"/>
+                      <font size="28" style="1"/>
+                      <foreground color="-16777216"/>
                       <text value="Guardar venta (Posnet)"/>
                     </properties>
                   </component>

@@ -21,13 +21,16 @@ public class HistoryDetailsPopup extends JFrame {
     private JPanel panelScroll;
     private JLabel earningsWithWithdrawsLabel;
     private JLabel withdrawsLabel;
+    private JLabel earningsBoxLabel;
+    private JLabel earningsPosnetLabel;
+    private JLabel earningsWithdrawsLabel;
     private Session session;
 
     public HistoryDetailsPopup(Session session) {
         this.session = session;
 
         this.setVisible(true);
-        this.setBounds(20,20,850,700);
+        this.setBounds(20,20,900,700);
         this.setContentPane(panel1);
         this.setTitle(session.getDateStarted() + " - " + session.getDateEnded());
 
@@ -36,12 +39,21 @@ public class HistoryDetailsPopup extends JFrame {
     }
 
     private void setupHeader() {
+        double withdraws = SessionsQueries.getWithdrawFromSession(session);
+        double earningsBox = SessionsQueries.getMoneyFromSessionBox(session);
+        double earningsPosnet = SessionsQueries.getMoneyFromSessionPosnet(session);
+        double earningsTotal = earningsBox + earningsPosnet;
+
+
         sellerLabel.setText("Vendedor: " + session.getSeller());
+        earningsBoxLabel.setText("Ganancias caja: $" + earningsBox);
+        earningsPosnetLabel.setText("Ganancias posnet: $" + earningsPosnet);
         startMoneyLabel.setText("Inicio de la caja: $" + session.getStartMoney());
-        endMoneyLabel.setText("Inicio + Ganancias: $" + (session.getStartMoney() + session.getEndMoney()));
-        earningsLabel.setText("Ganancias del turno: $" + session.getEndMoney());
-        withdrawsLabel.setText("Retiros: $" + SessionsQueries.getWithdrawFromSession(session));
-        earningsWithWithdrawsLabel.setText("Inicio + Ganancias - Retiros: $" + (session.getStartMoney() + session.getEndMoney() - SessionsQueries.getWithdrawFromSession(session)));
+        endMoneyLabel.setText("Inicio + Ganancias: $" + (session.getStartMoney() + earningsBox));
+        earningsLabel.setText("Ganancias del turno: $" + earningsTotal);
+        earningsWithdrawsLabel.setText("Ganancias del turno - Retiros: $" + (earningsTotal - withdraws));
+        withdrawsLabel.setText("Retiros: $" + withdraws);
+        earningsWithWithdrawsLabel.setText("Inicio + Ganancias - Retiros: $" + (session.getStartMoney() + earningsBox - withdraws));
     }
 
     private void showSells() {
