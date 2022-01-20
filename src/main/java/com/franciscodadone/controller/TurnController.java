@@ -339,11 +339,12 @@ public class TurnController {
             Product product = ((Product) cartListModel.get(i));
             total += product.getPrice() * product.getQuantity();
         }
-        return Double.parseDouble(new DecimalFormat("#.##").format(total));
+        return total;
     }
 
     private void updateTotal() {
         double total = getTotal();
+        // Double.parseDouble(new DecimalFormat("#.##").format(total))
         view.totalLabel.setText("$" + total);
         if(total != 0) {
             view.addSellButton.setEnabled(true);
