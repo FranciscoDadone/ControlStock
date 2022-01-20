@@ -8,6 +8,7 @@ import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HistoryDetailsPopup extends JFrame {
@@ -39,6 +40,9 @@ public class HistoryDetailsPopup extends JFrame {
     }
 
     private void setupHeader() {
+
+        DecimalFormat format = new DecimalFormat("#.##");
+
         double withdraws = SessionsQueries.getWithdrawFromSession(session);
         double earningsBox = SessionsQueries.getMoneyFromSessionBox(session);
         double earningsPosnet = SessionsQueries.getMoneyFromSessionPosnet(session);
@@ -49,11 +53,11 @@ public class HistoryDetailsPopup extends JFrame {
         earningsBoxLabel.setText("Ganancias caja: $" + earningsBox);
         earningsPosnetLabel.setText("Ganancias posnet: $" + earningsPosnet);
         startMoneyLabel.setText("Inicio de la caja: $" + session.getStartMoney());
-        endMoneyLabel.setText("Inicio + Ganancias: $" + (session.getStartMoney() + earningsBox));
+        endMoneyLabel.setText("Inicio + Ganancias: $" + format.format(session.getStartMoney() + earningsBox));
         earningsLabel.setText("Ganancias del turno: $" + earningsTotal);
-        earningsWithdrawsLabel.setText("Ganancias del turno - Retiros: $" + (earningsTotal - withdraws));
+        earningsWithdrawsLabel.setText("Ganancias del turno - Retiros: $" + format.format(earningsTotal - withdraws));
         withdrawsLabel.setText("Retiros: $" + withdraws);
-        earningsWithWithdrawsLabel.setText("Inicio + Ganancias - Retiros: $" + (session.getStartMoney() + earningsBox - withdraws));
+        earningsWithWithdrawsLabel.setText("Inicio + Ganancias - Retiros: $" + format.format(session.getStartMoney() + earningsBox - withdraws));
     }
 
     private void showSells() {

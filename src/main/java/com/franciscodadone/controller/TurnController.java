@@ -21,7 +21,7 @@ public class TurnController {
         this.view       = view;
         this.session    = session;
         this.inAnotherScreen = false;
-
+        this.inAnotherScreen = false;
         this.products = ProductsQueries.getAllProductsNonDeleted();
 
         handleKeyboard();

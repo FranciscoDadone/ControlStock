@@ -88,31 +88,35 @@ public class RemoteSessionsQueries {
 
     public static void backupSession(Session session) {
         if(MongoStatus.connected) {
-            Logger.log("Making backup of Session id=" + session.getId());
-            MongoConnection.mongoSessions.insertOne(new Document()
-                    .append("id", session.getId())
-                    .append("seller", session.getSeller())
-                    .append("dateStarted", session.getDateStarted().toString())
-                    .append("dateEnded", session.getDateEnded().toString())
-                    .append("startMoney", session.getStartMoney())
-                    .append("endMoney", session.getEndMoney())
-            );
+            new Thread(() -> {
+                Logger.log("Making backup of Session id=" + session.getId());
+                MongoConnection.mongoSessions.insertOne(new Document()
+                        .append("id", session.getId())
+                        .append("seller", session.getSeller())
+                        .append("dateStarted", session.getDateStarted().toString())
+                        .append("dateEnded", session.getDateEnded().toString())
+                        .append("startMoney", session.getStartMoney())
+                        .append("endMoney", session.getEndMoney())
+                );
+            }).start();
         }
     }
 
     public static void editSession(Session session) {
         if(MongoStatus.connected) {
-            Logger.log("Editing Session id=" + session.getId());
-            Bson filter = Filters.eq("id", session.getId());
+            new Thread(() -> {
+                Logger.log("Editing Session id=" + session.getId());
+                Bson filter = Filters.eq("id", session.getId());
 
-            Bson updateStartMoney  = set("startMoney", session.getStartMoney());
-            Bson updateEndMoney    = set("endMoney", session.getEndMoney());
-            Bson updateSeller      = set("seller", session.getSeller());
-            Bson updateDateStarted = set("dateStarted", session.getDateStarted().toString());
-            Bson updateDateEnded   = set("dateEnded", session.getDateEnded().toString());
+                Bson updateStartMoney  = set("startMoney", session.getStartMoney());
+                Bson updateEndMoney    = set("endMoney", session.getEndMoney());
+                Bson updateSeller      = set("seller", session.getSeller());
+                Bson updateDateStarted = set("dateStarted", session.getDateStarted().toString());
+                Bson updateDateEnded   = set("dateEnded", session.getDateEnded().toString());
 
-            Bson updates = Updates.combine(updateStartMoney, updateEndMoney, updateDateStarted, updateSeller, updateDateEnded);
-            MongoConnection.mongoSessions.updateOne(filter, updates);
+                Bson updates = Updates.combine(updateStartMoney, updateEndMoney, updateDateStarted, updateSeller, updateDateEnded);
+                MongoConnection.mongoSessions.updateOne(filter, updates);
+            }).start();
         }
     }
 

@@ -87,31 +87,35 @@ public class RemoteSellQueries {
 
     public static void backupSell(Sell sell) {
         if(MongoStatus.connected) {
-            int id = SellQueries.getSellID(sell);
-            Logger.log("Making backup of sell id=" + id);
-            MongoConnection.mongoSells.insertOne(new Document()
-                    .append("id", id)
-                    .append("products", sell.toString())
-                    .append("totalPrice", sell.getPrice())
-                    .append("sessionID", sell.getSessionID())
-                    .append("date", sell.getDate().toString())
-                    .append("posnet", sell.isViaPosnet())
-            );
+            new Thread(() -> {
+                int id = SellQueries.getSellID(sell);
+                Logger.log("Making backup of sell id=" + id);
+                MongoConnection.mongoSells.insertOne(new Document()
+                        .append("id", id)
+                        .append("products", sell.toString())
+                        .append("totalPrice", sell.getPrice())
+                        .append("sessionID", sell.getSessionID())
+                        .append("date", sell.getDate().toString())
+                        .append("posnet", sell.isViaPosnet())
+                );
+            }).start();
         }
     }
 
     public static void editSell(Sell sell) {
         if(MongoStatus.connected) {
-            Logger.log("Editing sell id=" + sell.getId());
+            new Thread(() -> {
+                Logger.log("Editing sell id=" + sell.getId());
 
-            Bson filter = Filters.eq("id", sell.getId());
-            Bson updateProducts = set("products", sell.toString());
-            Bson updateDate = set("date", sell.getDate().toString());
-            Bson updatePrice = set("totalPrice", sell.getPrice());
-            Bson updateSessionID = set("sessionID", sell.getSessionID());
+                Bson filter = Filters.eq("id", sell.getId());
+                Bson updateProducts = set("products", sell.toString());
+                Bson updateDate = set("date", sell.getDate().toString());
+                Bson updatePrice = set("totalPrice", sell.getPrice());
+                Bson updateSessionID = set("sessionID", sell.getSessionID());
 
-            Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice);
-            MongoConnection.mongoSells.updateOne(filter, updates);
+                Bson updates = Updates.combine(updateProducts, updateDate, updateSessionID, updatePrice);
+                MongoConnection.mongoSells.updateOne(filter, updates);
+            }).start();
         }
     }
 
