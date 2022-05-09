@@ -5,7 +5,6 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.franciscodadone.model.remote.queries.MongoBackup;
 import com.franciscodadone.util.GUIHandler;
-import com.franciscodadone.util.Sound;
 import org.slf4j.LoggerFactory;
 
 public class main {
