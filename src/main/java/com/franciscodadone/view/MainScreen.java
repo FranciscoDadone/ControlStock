@@ -16,6 +16,7 @@ public class MainScreen extends JFrame {
     public JButton startTurnButton;
     public JButton addStockButton;
     public JButton historyButton;
+    public JComboBox printersComboBox;
 
     public MainScreen(boolean buildFrame) {
         if(buildFrame) {

@@ -41,6 +41,42 @@ public class UtilQueries extends SQLiteConnection {
         }
     }
 
+    public static void setPrinterName(String name) {
+        java.sql.Connection connection = connect();
+        try {
+            connection.createStatement().execute(
+                    "UPDATE Util SET printerName='" + name + "' WHERE id=1;"
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String getPrinterName() {
+        String name = "";
+        java.sql.Connection connection = connect();
+        try {
+            ResultSet res = connection.createStatement().executeQuery("SELECT * FROM Util WHERE (id=1);");
+            while(res.next()) {
+                name = res.getString("printerName");
+            }
+        } catch (SQLException e) {}
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return name;
+        }
+    }
+
     public static void modifyLastCode(String newCode, boolean saveRemote) {
         java.sql.Connection connection = connect();
         try {

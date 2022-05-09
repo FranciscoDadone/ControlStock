@@ -76,7 +76,7 @@
           </component>
         </children>
       </grid>
-      <grid id="2b96f" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+      <grid id="2b96f" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="South"/>
         <properties>
           <background color="-8618111"/>
@@ -84,11 +84,31 @@
         <border type="none"/>
         <children>
           <component id="63dc4" class="javax.swing.JLabel">
-            <constraints/>
+            <constraints border-constraint="West"/>
             <properties>
               <text value="01Computación"/>
             </properties>
           </component>
+          <grid id="58bdd" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="East"/>
+            <properties>
+              <background color="-8618111"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="8f480" class="javax.swing.JComboBox" binding="printersComboBox">
+                <constraints border-constraint="Center"/>
+                <properties/>
+              </component>
+              <component id="ec5c5" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <font size="18"/>
+                  <text value="Impresora  "/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>

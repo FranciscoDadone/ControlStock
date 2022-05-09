@@ -184,6 +184,7 @@ public class TurnController {
 
     private void saveCurrentSell(boolean viaPosnet) {
         ArrayList<Product> products = new ArrayList<>();
+        PrinterService printerService = new PrinterService();
         for(int i = 0; i < cartListModel.getSize(); i++) {
             Product product = (Product) cartListModel.get(i);
             product.setProdName(product.getUnmodifiedProdName());
@@ -193,6 +194,7 @@ public class TurnController {
 
         new Thread(() -> {
             SellQueries.saveSell(sell, true);
+            printerService.printCart(products);
 
             // Removing from stock
             products.forEach(product -> {

@@ -2,19 +2,40 @@ package com.franciscodadone.controller;
 
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SessionsQueries;
+import com.franciscodadone.model.local.queries.UtilQueries;
 import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.models.Session;
-import com.franciscodadone.util.FDate;
-import com.franciscodadone.util.GUIHandler;
-import com.franciscodadone.util.JCustomOptionPane;
+import com.franciscodadone.util.*;
 import com.franciscodadone.view.*;
 import javax.swing.*;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class MainScreenController {
 
     public MainScreenController(MainScreen view) {
         this.view = view;
+
+        PrinterService printerService = new PrinterService();
+        printerService.getPrinters().forEach(printer -> {
+            view.printersComboBox.addItem(printer);
+        });
+
+        String selectedPrinter = UtilQueries.getPrinterName();
+        if (selectedPrinter != null) {
+            for (int i = 0; i < view.printersComboBox.getItemCount(); i++) {
+                if (view.printersComboBox.getItemAt(i).toString().equals(selectedPrinter)) {
+                    view.printersComboBox.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+
+        view.printersComboBox.addActionListener(e -> {
+            UtilQueries.setPrinterName(view.printersComboBox.getItemAt(view.printersComboBox.getSelectedIndex()).toString());
+        });
 
         view.startTurnButton.addActionListener(e -> {
             Session activeSession = SessionsQueries.getActiveSession();

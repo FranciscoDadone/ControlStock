@@ -85,7 +85,8 @@ public class SQLiteConnection {
                 Statement statement = con.createStatement();
                 statement.execute("CREATE TABLE Util (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "customQR VARCHAR(255));"
+                        "customQR VARCHAR(255)," +
+                        "printerName VARCHAR(255));"
                 );
                 statement.execute("INSERT INTO Util (customQR) values ('C0');");
             }
