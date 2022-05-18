@@ -127,34 +127,35 @@ public class PrinterService implements Printable {
 
     public void printCart(ArrayList<Product> products) {
         PrinterOptions p = new PrinterOptions();
-
-        p.resetAll();
-        p.initialize();
-        p.alignCenter();
-        p.addLineSeperator();
-        p.newLine();
-        p.setText("Mundo Helado");
-        p.newLine();
-        p.addLineSeperator();
-        p.newLine();
-        p.alignLeft();
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        p.setText("Fecha y hora:");
-        p.newLine();
-        p.setText(myDateObj.format(myFormatObj));
-        p.newLine();
-        p.alignCenter();
-        p.newLine();
-        p.alignLeft();
-        p.newLine();
-        p.setText("Item\tCant\tPrecio");
-        p.newLine();
-        products.forEach(product -> {
-            p.setText(product.getProdName() + " (" +  product.getQuantity() + ") $" + (product.getPrice() * product.getQuantity()));
+        if (!products.isEmpty()) {
+            p.resetAll();
+            p.initialize();
+            p.alignCenter();
+            p.addLineSeperator();
             p.newLine();
-        });
-        p.feed((byte)3);
+            p.setText("Mundo Helado");
+            p.newLine();
+            p.addLineSeperator();
+            p.newLine();
+            p.alignLeft();
+            LocalDateTime myDateObj = LocalDateTime.now();
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            p.setText("Fecha y hora:");
+            p.newLine();
+            p.setText(myDateObj.format(myFormatObj));
+            p.newLine();
+            p.alignCenter();
+            p.newLine();
+            p.alignLeft();
+            p.newLine();
+            p.setText("Item\tCant\tPrecio");
+            p.newLine();
+            products.forEach(product -> {
+                p.setText(product.getProdName() + " (" +  product.getQuantity() + ") $" + (product.getPrice() * product.getQuantity()));
+                p.newLine();
+            });
+            p.feed((byte)3);
+        }
         p.finit();
 
         feedPrinter(UtilQueries.getPrinterName(), p.finalCommandSet().getBytes());

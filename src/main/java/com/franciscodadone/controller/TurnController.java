@@ -194,7 +194,7 @@ public class TurnController {
 
         new Thread(() -> {
             SellQueries.saveSell(sell, true);
-            printerService.printCart(products);
+            printerService.printCart(view.printTicket.isSelected() ? products : new ArrayList<>());
 
             // Removing from stock
             products.forEach(product -> {

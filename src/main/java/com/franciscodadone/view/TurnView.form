@@ -31,6 +31,16 @@
             </properties>
             <border type="none"/>
             <children>
+              <component id="4118e" class="javax.swing.JCheckBox" binding="printTicket">
+                <constraints/>
+                <properties>
+                  <background color="-4604738"/>
+                  <font size="20"/>
+                  <foreground color="-16777216"/>
+                  <selected value="true"/>
+                  <text value="Imprimir ticket"/>
+                </properties>
+              </component>
               <component id="6ca25" class="javax.swing.JButton" binding="withdrawMoney">
                 <constraints/>
                 <properties>
