@@ -23,17 +23,17 @@ public class RemoteStockQueries {
         return count;
     }
 
-    protected static boolean isDatabaseOutdated() throws MongoNotConnected {
+    protected static boolean isDatabaseOutdated(ArrayList<Product> allProducts) throws MongoNotConnected {
         if(!MongoStatus.connected) {
             throw new MongoNotConnected();
         }
         Logger.log("Checking (Stock) Collection on Mongo...");
 
-        long localRegisteredStock  = ProductsQueries.getAllProducts().size();
+        long localRegisteredStock  = allProducts.size();
         long remoteRegisteredStock = getMongoProductsCount();
 
         if(localRegisteredStock > remoteRegisteredStock) { // makes the backup on remote
-            ProductsQueries.getAllProducts().forEach((product) -> {
+            allProducts.forEach((product) -> {
                 Document mongoQuery = (Document) MongoConnection.mongoStock.find(Filters.eq("code", product.getCode())).first();
                 if(mongoQuery == null) {
                     backupProduct(product);
@@ -44,7 +44,7 @@ public class RemoteStockQueries {
         }
 
         ArrayList<Product> remoteProducts = getAllProducts();
-        for(Product localProduct : ProductsQueries.getAllProducts()) {
+        for(Product localProduct : allProducts) {
             if(remoteProducts.contains(localProduct)) break;
             for(Product remoteProduct : remoteProducts) {
                 if(localProduct.getCode().equals(remoteProduct.getCode()))   {

@@ -3,8 +3,6 @@ package com.franciscodadone.model.local.queries;
 import com.franciscodadone.model.local.SQLiteConnection;
 import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.remote.queries.RemoteStockQueries;
-import com.franciscodadone.util.Logger;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -147,6 +145,38 @@ public class ProductsQueries extends SQLiteConnection {
             }
         }
         RemoteStockQueries.editProduct(product);
+    }
+
+    public static ArrayList<Product> getProductsOptimized(String productsStr, ArrayList<Product> allProducts) {
+        ArrayList<Product> products = new ArrayList<>();
+        if (productsStr.length() != 0) {
+            String[] prod = productsStr.split(";");
+            for (int i = 0; i < prod.length; i++) {
+                String[] prodWithQuantity = prod[i].split(":");
+                Product product = null;
+                if (prodWithQuantity[0].contains("retiro")) {
+                    product = new Product(
+                            prodWithQuantity[0],
+                            "Retiro de dinero (" + prodWithQuantity[0].substring(7) + ") [$" + prodWithQuantity[1] + "]",
+                            Double.parseDouble(prodWithQuantity[1]),
+                            0,
+                            "U",
+                            false,
+                            0
+                    );
+                } else {
+                    for (Product p : allProducts) {
+                        if (p.getCode().equals(prodWithQuantity[0])) {
+                            product = p;
+                            product.setQuantity(Integer.parseInt(prodWithQuantity[1]));
+                            break;
+                        }
+                    }
+                }
+                if (product != null) products.add(product);
+            }
+        }
+        return products;
     }
 
     public static ArrayList<Product> getProducts(String products) {

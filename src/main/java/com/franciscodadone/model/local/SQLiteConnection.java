@@ -16,6 +16,7 @@ public class SQLiteConnection {
      * @return Connection
      */
     public static java.sql.Connection connect() {
+        System.out.println("Db connection opened");
         java.sql.Connection con = null;
         String dbPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/ControlStock/database";
         try {

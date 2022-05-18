@@ -1,5 +1,11 @@
 package com.franciscodadone.model.remote.queries;
 
+import com.franciscodadone.model.local.queries.ProductsQueries;
+import com.franciscodadone.model.local.queries.SellQueries;
+import com.franciscodadone.model.local.queries.SessionsQueries;
+import com.franciscodadone.model.models.Product;
+import com.franciscodadone.model.models.Sell;
+import com.franciscodadone.model.models.Session;
 import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.model.remote.MongoStatus;
 import com.franciscodadone.util.JCustomOptionPane;
@@ -7,6 +13,7 @@ import com.franciscodadone.util.Logger;
 import com.franciscodadone.util.exceptions.MongoNotConnected;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class MongoBackup {
 
@@ -26,12 +33,17 @@ public class MongoBackup {
                     isSessionsOutdated = false,
                     isUtilOutdated = false;
 
+            ArrayList<Sell> allSells = SellQueries.getAllSells();
+            ArrayList<Product> allProducts = ProductsQueries.getAllProducts();
+            ArrayList<Session> allSessions = SessionsQueries.getAllSessions();
+            Logger.log("Finished fetching local DB.");
+
             try {
-                isSellsOutdated    = RemoteSellQueries.isDatabaseOutdated();
+                isSellsOutdated    = RemoteSellQueries.isDatabaseOutdated(allSells);
                 Logger.log("Done checking Sells. Outdated:" + isSellsOutdated);
-                isStockOutdated    = RemoteStockQueries.isDatabaseOutdated();
+                isStockOutdated    = RemoteStockQueries.isDatabaseOutdated(allProducts);
                 Logger.log("Done checking Stock. Outdated:" + isStockOutdated);
-                isSessionsOutdated = RemoteSessionsQueries.isDatabaseOutdated();
+                isSessionsOutdated = RemoteSessionsQueries.isDatabaseOutdated(allSessions);
                 Logger.log("Done checking Sessions. Outdated:" + isSessionsOutdated);
                 isUtilOutdated     = RemoteUtilQueries.isDatabaseOutdated();
                 Logger.log("Done checking Util. Outdated:" + isUtilOutdated);

@@ -24,7 +24,7 @@ public class RemoteSessionsQueries {
         return count;
     }
 
-    protected static boolean isDatabaseOutdated() throws MongoNotConnected {
+    protected static boolean isDatabaseOutdated(ArrayList<Session> allSessions) throws MongoNotConnected {
         boolean outdated = false;
 
         if(!MongoStatus.connected) {
@@ -32,11 +32,11 @@ public class RemoteSessionsQueries {
         }
         Logger.log("Checking (Sessions) Collection on Mongo...");
 
-        long localRegisteredSessions  = SessionsQueries.getAllSessions().size();
+        long localRegisteredSessions  = allSessions.size();
         long remoteRegisteredSessions = getMongoSessionsCount();
 
         if(localRegisteredSessions > remoteRegisteredSessions) { // makes the backup on remote
-            SessionsQueries.getAllSessions().forEach((session) -> {
+            allSessions.forEach((session) -> {
                 Document mongoQuery = (Document) MongoConnection.mongoSessions.find(Filters.eq("id", session.getId())).first();
                 if(mongoQuery == null) {
                     backupSession(session);
@@ -47,7 +47,7 @@ public class RemoteSessionsQueries {
         }
 
         ArrayList<Session> remoteSessions = getAllSessions();
-        for(Session localSessions : SessionsQueries.getAllSessions()) {
+        for(Session localSessions : allSessions) {
             if(remoteSessions.contains(localSessions)) break;
             for(Session remoteProduct : remoteSessions) {
                 if(localSessions.getId() == remoteProduct.getId())   {

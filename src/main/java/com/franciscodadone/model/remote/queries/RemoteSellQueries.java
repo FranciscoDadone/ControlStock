@@ -2,6 +2,7 @@ package com.franciscodadone.model.remote.queries;
 
 import com.franciscodadone.model.local.queries.ProductsQueries;
 import com.franciscodadone.model.local.queries.SellQueries;
+import com.franciscodadone.model.models.Product;
 import com.franciscodadone.model.remote.MongoConnection;
 import com.franciscodadone.model.models.Sell;
 import com.franciscodadone.model.remote.MongoStatus;
@@ -25,17 +26,17 @@ public class RemoteSellQueries {
         return count;
     }
 
-    protected static boolean isDatabaseOutdated() throws MongoNotConnected {
+    protected static boolean isDatabaseOutdated(ArrayList<Sell> allSells) throws MongoNotConnected {
         if(!MongoStatus.connected) {
             throw new MongoNotConnected();
         }
         Logger.log("Checking (Sells) Collection on Mongo...");
 
-        long localRegisteredSells = SellQueries.getAllSells().size();
+        long localRegisteredSells = allSells.size();
         long remoteRegisteredSells = getMongoSellsCount();
 
         if(localRegisteredSells > remoteRegisteredSells) { // makes the backup on remote
-            SellQueries.getAllSells().forEach((sell) -> {
+            allSells.forEach((sell) -> {
                 Document mongoQuery = (Document) MongoConnection.mongoSells.find(Filters.eq("id", sell.getId())).first();
                 if(mongoQuery == null) {
                     backupSell(sell);
@@ -44,9 +45,8 @@ public class RemoteSellQueries {
         } else if(localRegisteredSells == 0 && localRegisteredSells != remoteRegisteredSells) { // if the local database is empty, retrieves from remote
             return true;
         }
-
         ArrayList<Sell> remoteSells = getAllSells();
-        for(Sell localSell : SellQueries.getAllSells()) {
+        for(Sell localSell : allSells) {
             if(remoteSells.contains(localSell)) break;
             for(Sell remoteSell : remoteSells) {
                 if(localSell.getId() == remoteSell.getId()) {
@@ -122,6 +122,8 @@ public class RemoteSellQueries {
     private static ArrayList<Sell> getAllSells() {
         FindIterable remoteSells = MongoConnection.mongoSells.find();
 
+        ArrayList<Product> allProducts = ProductsQueries.getAllProducts();
+
         ArrayList<Sell> sells = new ArrayList<>();
         remoteSells.forEach((sell) -> {
             boolean posnet = false;
@@ -130,7 +132,7 @@ public class RemoteSellQueries {
             } catch (Exception e) {}
             sells.add(new Sell(
                     ((Document)sell).getInteger("id"),
-                    ProductsQueries.getProducts(((Document)sell).getString("products")),
+                    ProductsQueries.getProductsOptimized(((Document)sell).getString("products"), allProducts),
                     ((Document)sell).getDouble("totalPrice"),
                     ((Document)sell).getInteger("sessionID"),
                     new FDate(((Document)sell).getString("date")),
