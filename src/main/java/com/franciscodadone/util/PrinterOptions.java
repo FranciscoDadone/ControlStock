@@ -9,6 +9,13 @@ public class PrinterOptions {
         return new String(Init);
     }
 
+    public String openDrawer() {
+        final byte[] openCD={27,112,0,60,120};
+        String s=new String(openCD);
+        commandSet+=s;
+        return s;
+    }
+
     public String chooseFont(int Options) {
         String s = "";
         final byte[] ChooseFontA = {27, 77, 0};

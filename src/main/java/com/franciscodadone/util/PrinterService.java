@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PrinterService implements Printable {
 
@@ -150,12 +151,21 @@ public class PrinterService implements Printable {
             p.newLine();
             p.setText("Item\tCant\tPrecio");
             p.newLine();
+            AtomicReference<Double> total = new AtomicReference<>((double) 0);
             products.forEach(product -> {
                 p.setText(product.getProdName() + " (" +  product.getQuantity() + ") $" + (product.getPrice() * product.getQuantity()));
                 p.newLine();
+                total.updateAndGet(v -> new Double((double) (v + product.getQuantity() * product.getPrice())));
             });
+            p.newLine();
+            p.setText("Total: " + total.get());
+            p.newLine();
             p.feed((byte)3);
+        } else {
+            p.resetAll();
+            p.initialize();
         }
+        p.openDrawer();
         p.finit();
 
         feedPrinter(UtilQueries.getPrinterName(), p.finalCommandSet().getBytes());
