@@ -239,17 +239,17 @@ public class TurnController {
                     }
 
                     // Handle enter
-                    if(e.getKeyChar() == KeyEvent.VK_ENTER && !cartListModel.isEmpty() && view.productList.getSelectedValue() == null && !inAnotherScreen) {
-                        inAnotherScreen = true;
-                        Object[] options = { "Caja", "Posnet", "Cancelar" };
-                        int res = JCustomOptionPane.confirmDialog("¿Guardar venta?", "Confirmar", options, "Caja");
-                        if(res == JOptionPane.YES_OPTION) {
-                            saveCurrentSell(false);
-                        } else if(res == JOptionPane.NO_OPTION) {
-                            saveCurrentSell(true);
-                        }
-                        inAnotherScreen = false;
-                    }
+//                    if(e.getKeyChar() == KeyEvent.VK_ENTER && !cartListModel.isEmpty() && view.productList.getSelectedValue() == null && !inAnotherScreen) {
+//                        inAnotherScreen = true;
+//                        Object[] options = { "Caja", "Posnet", "Cancelar" };
+//                        int res = JCustomOptionPane.confirmDialog("¿Guardar venta?", "Confirmar", options, "Caja");
+//                        if(res == JOptionPane.YES_OPTION) {
+//                            saveCurrentSell(false);
+//                        } else if(res == JOptionPane.NO_OPTION) {
+//                            saveCurrentSell(true);
+//                        }
+//                        inAnotherScreen = false;
+//                    }
                     return false;
                 });
     }
