@@ -121,6 +121,7 @@ public class TurnController {
                 double earningsPosnet = SessionsQueries.getMoneyFromSessionPosnet(SessionsQueries.getActiveSession());
                 double totalEarnings = earningsBox + earningsPosnet;
                 double withdraw = SessionsQueries.getWithdrawFromSession(SessionsQueries.getActiveSession());
+                double deposits = SessionsQueries.getDepositsFromSession(session);
 
                 Session activeSession = SessionsQueries.getActiveSession();
 
@@ -133,6 +134,7 @@ public class TurnController {
                                 "   <ul>Ingresos: $" + df.format(earningsBox) + "</ul>" +
                                 "   <ul>Dinero inicial: $" + df.format(activeSession.getStartMoney()) + "</ul>" +
                                 "   <ul>Retiros de dinero: $" + df.format(withdraw) + "</ul>" +
+                                "   <ul>Ingresos de dinero: $" + df.format(deposits) + "</ul>" +
                                 "   <ul>Inicio + Ingresos: $" + df.format(activeSession.getStartMoney() + earningsBox) + "</ul>" +
                                 "   <ul>Inicio + Ingresos - Retiros: $" + df.format(activeSession.getStartMoney() + earningsBox - withdraw) + "<br></ul>" +
                                 "</li><li><b>POSNET:</b> <br>" +
@@ -175,9 +177,31 @@ public class TurnController {
 
                 SellQueries.saveSell(sell, true);
                 JCustomOptionPane.messageDialog("Retiro de dinero guardado exitosamente.", "", JOptionPane.PLAIN_MESSAGE);
-
             }
+        });
 
+        view.depositMoney.addActionListener(e -> {
+            Object[] res = JCustomOptionPane.depositMoneyDialog();
+            if(res != null) {
+                ArrayList<Product> prod = new ArrayList<>();
+                prod.add(new Product("ingreso." + res[1],
+                        "Ingreso de dinero",
+                        (Double.parseDouble((String) res[0])),
+                        (int) Double.parseDouble((String) res[0]),
+                        "U",
+                        false,
+                        0));
+                Sell sell = new Sell(
+                        prod,
+                        (Double.parseDouble((String) res[0])),
+                        session.getId(),
+                        new FDate(),
+                        false
+                );
+
+                SellQueries.saveSell(sell, true);
+                JCustomOptionPane.messageDialog("Ingreso de dinero guardado exitosamente.", "", JOptionPane.PLAIN_MESSAGE);
+            }
         });
     }
 

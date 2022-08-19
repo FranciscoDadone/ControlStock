@@ -154,10 +154,10 @@ public class ProductsQueries extends SQLiteConnection {
             for (int i = 0; i < prod.length; i++) {
                 String[] prodWithQuantity = prod[i].split(":");
                 Product product = null;
-                if (prodWithQuantity[0].contains("retiro")) {
+                if (prodWithQuantity[0].contains("retiro.") || prodWithQuantity[0].contains("ingreso.")) {
                     product = new Product(
                             prodWithQuantity[0],
-                            "Retiro de dinero (" + prodWithQuantity[0].substring(7) + ") [$" + prodWithQuantity[1] + "]",
+                            (prodWithQuantity[0].contains("retiro.")) ? ("Retiro de dinero (" + prodWithQuantity[0].substring(7) + ") [$" + prodWithQuantity[1] + "]") : ("Ingreso de dinero (" + prodWithQuantity[0].substring(8) + ") [$" + prodWithQuantity[1] + "]"),
                             Double.parseDouble(prodWithQuantity[1]),
                             0,
                             "U",
@@ -187,10 +187,10 @@ public class ProductsQueries extends SQLiteConnection {
         for(int i = 0; i < prod.length; i++) {
             String[] prodWithQuantity = prod[i].split(":");
             Product product;
-            if(prodWithQuantity[0].contains("retiro")) {
+            if(prodWithQuantity[0].contains("retiro.") || prodWithQuantity[0].contains("ingreso.")) {
                 product = new Product(
                         prodWithQuantity[0],
-                        "Retiro de dinero (" + prodWithQuantity[0].substring(7) + ") [$" + prodWithQuantity[1] + "]",
+                        (prodWithQuantity[0].contains("retiro.")) ? ("Retiro de dinero (" + prodWithQuantity[0].substring(7) + ") [$" + prodWithQuantity[1] + "]") : ("Ingreso de dinero (" + prodWithQuantity[0].substring(8) + ") [$" + prodWithQuantity[1] + "]"),
                         Double.parseDouble(prodWithQuantity[1]),
                         0,
                         "U",

@@ -57,7 +57,7 @@ public class HistoryController {
             subPanelCenter.setBackground(new Color(164,167,169));
             subPanelCenter.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-            btn.setFont(new Font("Arial", Font.BOLD, 15));
+            btn.setFont(new Font("Arial", Font.BOLD, 16));
             JPanel subPanelRight = new JPanel();
             subPanelRight.add(btn);
             buttonsPanel.add(subPanelRight);

@@ -44,6 +44,7 @@ public class HistoryDetailsPopup extends JFrame {
         DecimalFormat format = new DecimalFormat("#.##");
 
         double withdraws = SessionsQueries.getWithdrawFromSession(session);
+        double deposits = SessionsQueries.getDepositsFromSession(session);
         double earningsBox = SessionsQueries.getMoneyFromSessionBox(session);
         double earningsPosnet = SessionsQueries.getMoneyFromSessionPosnet(session);
         double earningsTotal = earningsBox + earningsPosnet;
@@ -57,6 +58,7 @@ public class HistoryDetailsPopup extends JFrame {
         earningsLabel.setText("Ganancias del turno: $" + earningsTotal);
         earningsWithdrawsLabel.setText("Ganancias del turno - Retiros: $" + format.format(earningsTotal - withdraws));
         withdrawsLabel.setText("Retiros: $" + withdraws);
+        withdrawsLabel.setText("Ingresos: $" + deposits);
         earningsWithWithdrawsLabel.setText("Inicio + Ganancias - Retiros: $" + format.format(session.getStartMoney() + earningsBox - withdraws));
     }
 

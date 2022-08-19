@@ -29,6 +29,7 @@ public class TurnView {
     public JButton withdrawMoney;
     public JButton addSellPosnetButton;
     public JCheckBox printTicket;
+    public JButton depositMoney;
 
     public TurnView(Session session) {
         new TurnController(this, session);

@@ -114,6 +114,18 @@ public class SessionsQueries extends SQLiteConnection {
         return -w;
     }
 
+    public static double getDepositsFromSession(Session session) {
+        double d = 0;
+        for(Sell sell : SellQueries.getAllSellsFromSession(session)) {
+            for(Product product : sell.getProducts()) {
+                if(product.getCode().contains("ingreso.")) {
+                    d += sell.getPrice();
+                }
+            }
+        }
+        return d;
+    }
+
     public static void endCurrentSession() {
         Session currentSession = getActiveSession();
         currentSession.setDateEnded(new FDate());

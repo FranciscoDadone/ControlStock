@@ -42,6 +42,13 @@
                   <text value="Imprimir ticket"/>
                 </properties>
               </component>
+              <component id="c3a01" class="javax.swing.JButton" binding="depositMoney">
+                <constraints/>
+                <properties>
+                  <font size="20"/>
+                  <text value="Ingresar dinero"/>
+                </properties>
+              </component>
               <component id="6ca25" class="javax.swing.JButton" binding="withdrawMoney">
                 <constraints/>
                 <properties>
