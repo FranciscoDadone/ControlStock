@@ -19,6 +19,7 @@ public class MongoBackup {
 
     public static void Backup() {
         Logger.log("Connecting to Mongo...");
+
         try {
             MongoConnection.connect();
         } catch (Exception e) {

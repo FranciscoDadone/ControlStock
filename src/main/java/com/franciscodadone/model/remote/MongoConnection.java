@@ -8,6 +8,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import sun.rmi.runtime.Log;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,6 +16,12 @@ import java.net.URLConnection;
 public class MongoConnection {
 
     public static void connect() {
+        if (!Configuration.getSaveRemote()) {
+            MongoStatus.connected = false;
+            Logger.log("Remote backups off.");
+            return;
+        }
+
         MongoDatabase database = null;
         if(!Configuration.getUsername().equals("") || !Configuration.getPassword().equals("")) {
             ConnectionString connectionString = new ConnectionString("mongodb+srv://" + Configuration.getUsername() + ":" + Configuration.getPassword() + "@" + Configuration.getUrl());

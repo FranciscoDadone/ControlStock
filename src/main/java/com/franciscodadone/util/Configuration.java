@@ -37,6 +37,7 @@ public class Configuration {
             dataMap.put("password", "");
             dataMap.put("username", "");
             dataMap.put("database_file", "");
+            dataMap.put("save_remote", "true");
 
             PrintWriter writer = null;
             try {
@@ -64,5 +65,9 @@ public class Configuration {
 
     public static String getDatabaseLocation() {
         return getConfiguration().get("database_file");
+    }
+
+    public static boolean getSaveRemote() {
+        return Boolean.parseBoolean(getConfiguration().get("save_remote"));
     }
 }
