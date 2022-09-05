@@ -1,5 +1,7 @@
 package com.franciscodadone.model.local;
 
+import com.franciscodadone.util.Configuration;
+
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.sql.*;
@@ -17,7 +19,10 @@ public class SQLiteConnection {
      */
     public static java.sql.Connection connect() {
         java.sql.Connection con = null;
-        String dbPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/ControlStock/database";
+        String dbPath = Configuration.getDatabaseLocation();
+        if (Configuration.getDatabaseLocation().equals("")) {
+            dbPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/ControlStock/database";
+        }
         try {
             File theDir = new File(dbPath);
             if (!theDir.exists()){

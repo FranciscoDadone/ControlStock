@@ -1,6 +1,7 @@
 package com.franciscodadone.model.remote;
 
 import com.franciscodadone.util.Logger;
+import com.franciscodadone.util.Configuration;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
@@ -8,7 +9,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -16,8 +16,8 @@ public class MongoConnection {
 
     public static void connect() {
         MongoDatabase database = null;
-        if(!MongoCredentials.getCredentials().get("username").equals("") || !MongoCredentials.getCredentials().get("password").equals("")) {
-            ConnectionString connectionString = new ConnectionString("mongodb+srv://" + MongoCredentials.getCredentials().get("username") + ":" + MongoCredentials.getCredentials().get("password") + "@" + MongoCredentials.getCredentials().get("url"));
+        if(!Configuration.getUsername().equals("") || !Configuration.getPassword().equals("")) {
+            ConnectionString connectionString = new ConnectionString("mongodb+srv://" + Configuration.getUsername() + ":" + Configuration.getPassword() + "@" + Configuration.getUrl());
             MongoClientSettings settings = MongoClientSettings.builder()
                     .applyConnectionString(connectionString)
                     .build();

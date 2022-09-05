@@ -1,4 +1,4 @@
-package com.franciscodadone.model.remote;
+package com.franciscodadone.util;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -7,9 +7,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MongoCredentials {
+public class Configuration {
 
-    public static Map<String, String> getCredentials() {
+    private static Map<String, String> getConfiguration() {
         String filePath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/ControlStock/database/mongoCredentials.yml";
         File file = new File(filePath);
         boolean isNew = false;
@@ -36,6 +36,7 @@ public class MongoCredentials {
             dataMap.put("url", "");
             dataMap.put("password", "");
             dataMap.put("username", "");
+            dataMap.put("database_file", "");
 
             PrintWriter writer = null;
             try {
@@ -47,5 +48,21 @@ public class MongoCredentials {
         }
 
         return yaml.load(inputStream);
+    }
+
+    public static String getUsername() {
+        return getConfiguration().get("username");
+    }
+
+    public static String getPassword() {
+        return getConfiguration().get("password");
+    }
+
+    public static String getUrl() {
+        return getConfiguration().get("url");
+    }
+
+    public static String getDatabaseLocation() {
+        return getConfiguration().get("database_file");
     }
 }
