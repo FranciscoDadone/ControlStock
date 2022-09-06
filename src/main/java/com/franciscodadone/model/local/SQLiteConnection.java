@@ -1,9 +1,12 @@
 package com.franciscodadone.model.local;
 
 import com.franciscodadone.util.Configuration;
+import com.franciscodadone.util.JCustomOptionPane;
 
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -25,9 +28,9 @@ public class SQLiteConnection {
         }
         try {
             File theDir = new File(dbPath);
-            if (!theDir.exists()){
-                theDir.mkdirs();
-            }
+            if (!theDir.exists() && dbPath.contains("\\")) throw new Exception("NetShare not found");
+            if (!theDir.exists()) theDir.mkdirs();
+
             con = DriverManager.getConnection("jdbc:sqlite:" + dbPath + "/sqlite.db");
             ResultSet res = con.createStatement().executeQuery("SELECT name FROM sqlite_master WHERE type='table';");
             ArrayList<String> tables = new ArrayList<>();
@@ -97,6 +100,11 @@ public class SQLiteConnection {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (Exception e) {
+            if (e.getMessage().equals("NetShare not found")) {
+                JCustomOptionPane.messageDialog("Revisar la conexión con la red!", "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
         }
         return con;
     }

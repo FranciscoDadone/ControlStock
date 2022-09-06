@@ -215,17 +215,19 @@ public class TurnController {
         }
         Sell sell = new Sell(products, getTotal(), session.getId(), new FDate(), viaPosnet);
 
-        new Thread(() -> {
-            SellQueries.saveSell(sell, true);
-            printerService.printCart(view.printTicket.isSelected() ? products : new ArrayList<>());
+        if (view.printTicket.isSelected()) {
+            new Thread(() -> {
+                SellQueries.saveSell(sell, true);
+                printerService.printCart(view.printTicket.isSelected() ? products : new ArrayList<>());
 
-            // Removing from stock
-            products.forEach(product -> {
-                Product p = ProductsQueries.getProductByCode(product.getCode());
-                p.setQuantity(p.getQuantity() - product.getQuantity());
-                ProductsQueries.modifyProductByCode(product.getCode(), p);
-            });
-        }).start();
+                // Removing from stock
+                products.forEach(product -> {
+                    Product p = ProductsQueries.getProductByCode(product.getCode());
+                    p.setQuantity(p.getQuantity() - product.getQuantity());
+                    ProductsQueries.modifyProductByCode(product.getCode(), p);
+                });
+            }).start();
+        }
 
         view.cartList.removeAll();
         cartListModel.removeAllElements();
