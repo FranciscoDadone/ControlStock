@@ -4,6 +4,7 @@ import com.franciscodadone.controller.MainScreenController;
 import com.franciscodadone.model.local.queries.SessionsQueries;
 import com.franciscodadone.model.models.Session;
 import com.franciscodadone.model.remote.MongoConnection;
+import com.franciscodadone.util.Configuration;
 import com.franciscodadone.util.JCustomOptionPane;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class MainScreen extends JFrame {
             this.addWindowListener(new WindowAdapter(){
                 public void windowClosing(WindowEvent e) {
                     Session activeSession = SessionsQueries.getActiveSession();
-                    if(activeSession != null) {
+                    if(activeSession != null && !Configuration.isRemoteAdminTerminal()) {
                         int res = JCustomOptionPane.confirmDialog("Advertencia, hay un turno abierto. ¿Desea cerrarlo antes de salir?", "Turno abierto");
                         if(res == JOptionPane.YES_OPTION) {
                             DecimalFormat df = new DecimalFormat("#.##");

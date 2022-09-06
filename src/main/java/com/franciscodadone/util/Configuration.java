@@ -38,6 +38,7 @@ public class Configuration {
             dataMap.put("username", "");
             dataMap.put("database_file", "");
             dataMap.put("save_remote", "true");
+            dataMap.put("remote_admin_terminal", "false");
 
             PrintWriter writer = null;
             try {
@@ -70,4 +71,9 @@ public class Configuration {
     public static boolean getSaveRemote() {
         return Boolean.parseBoolean(getConfiguration().get("save_remote"));
     }
+
+    public static boolean isRemoteAdminTerminal() {
+        return Boolean.parseBoolean(getConfiguration().get("remote_admin_terminal"));
+    }
+
 }

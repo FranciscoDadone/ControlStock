@@ -18,6 +18,8 @@ public class MainScreenController {
     public MainScreenController(MainScreen view) {
         this.view = view;
 
+        view.startTurnButton.setEnabled(!Configuration.isRemoteAdminTerminal());
+
         PrinterService printerService = new PrinterService();
         printerService.getPrinters().forEach(printer -> {
             view.printersComboBox.addItem(printer);
