@@ -16,6 +16,7 @@ public class Configuration {
 
         if(!file.exists()) {
             try {
+                new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/ControlStock/database/").mkdirs();
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
